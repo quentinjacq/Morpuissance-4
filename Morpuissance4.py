@@ -24,30 +24,44 @@ class Joueur:
         else:
             actionJoueurReel = [[],[]]
             print("C'est le tour du Joueur %i" %self.numJoueur) 
-            listeactions = self.Action(grille)
+            listeactions = self.Action(grille,modeJeu)
             for i in range (len(listeactions)):
                 for j in range(len(listeactions[i])):
                     print('La/les case(s) %i,%i' %(i,j), end ="")
-            print(' est/sont jouable.') 
-            CoordX=(eval(input('Quelle est la coordonnée en X ?')))
-            CoordY=(eval(input('Quelle est la coordonnée en Y ?')))
-            actionJoueurReel=[CoordX,CoordY][self.numJoueur]
-            grille = self.Result(grille,actionJoueurReel)
+            print(' est/sont jouable.')
+            if modeJeu==1:
+                CoordX=(eval(input('Quelle est la coordonnée en X ?')))
+                CoordY=(eval(input('Quelle est la coordonnée en Y ?')))
+                actionJoueurReel=[CoordX,CoordY][self.numJoueur]
+                grille = self.Result(grille,actionJoueurReel)
+            else :               
+                CoordX=(eval(input('Dans quelle colonne voulez vous mettre votre pion ?')))
+                for i in range (len(listeactions)):
+                    if (listeactions[i][1]==CoordX):
+                        CoordY =listeactions[i][0]
+                actionJoueurReel=[CoordX,CoordY][self.numJoueur]
+                grille = self.Result(grille,actionJoueurReel)
             
     
     #def JeuIA(grille):
         
-        
-        
+
         
     
-    def Action(grille):#Va lister les actions que l'IA peut réaliser
+    def Action(grille, modeJeu):#Va lister les actions que l'IA peut réaliser
         actionspossible = [] #On intancie une liste vide qui va stocker les coordonnées de la grille dont la valeur est égale à 0
-        for i in range(len(grille)):
-            for j in range(len(grille[i])):#On parcourt toutes les cases
-                if(grille[i][j]==0):#On ajoute au tableau si c'est égal à zéro
-                    actionspossible.append([i,j])
+        if (modeJeu==1):
+            for i in range(len(grille)):
+                for j in range(len(grille[i])):#On parcourt toutes les cases
+                    if(grille[i][j]==0):#On ajoute au tableau si c'est égal à zéro
+                        actionspossible.append([i,j])
+        else:
+            for j in range(len(grille[i])):
+                for i in range(len(grille)):#On parcourt toutes les cases
+                    if (grille[i][j]==0):
+                        actionspossible.append(i,j)
         return actionspossible
+
             
     def Result(grille, action):#Va appliquer l'action à la grille (action est une liste avec les deux coordonnés puis la valeur)
         grille[action[0]][action[1]]=action[2]
@@ -122,6 +136,10 @@ def AfficherGrille(grille):#Simple méthode pour afficher esthétiquement la gri
 
 
 if __name__== '__main__':
+    print("A quel mode voulez vous jouer ?")
+    print (" 1. Tic Tac Toe")
+    print (" 2. Connect 4")
+    modeJeu = eval(input())
     
     #Initialisation des taille du jeu MORPION
     taillegrillex = 3
