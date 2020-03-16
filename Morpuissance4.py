@@ -9,6 +9,7 @@ Created on Fri Mar 13 09:08:49 2020
 
 
 #COUCOULESAMIS
+# il est 11h32 et on a pas avancé
 
 
 
