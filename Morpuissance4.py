@@ -59,9 +59,15 @@ class Joueur:
         scoreMax = -10
         actionspossibles = self.Action(grille, modeJeu)
         for i in range(len(actionspossibles)):
+            print("Coord : ", end='')
+            print(actionspossibles[i])
             grillenv=copy.deepcopy(grille)
             grillenv[:]=list(self.Result(grillenv, actionspossibles[i]))
             score = self.MinValue(grillenv, modeJeu)
+            print(score)
+            
+            
+            
             if (score>scoreMax):
                 scoreMax = score
                 choix = i
@@ -69,32 +75,35 @@ class Joueur:
     
     def MinValue(self,grille, modeJeu):
         gagnant = self.TerminalTest(grille, modeJeu)
+        print(gagnant)
         if(gagnant >=0):
-            return gagnant
+            return self.Utility(gagnant)
         else :
             scoreMin = 10
             actionspossibles = self.Action(grille, modeJeu)
             for i in range(len(actionspossibles)):
-                grillenv=list(self.Result(grille, actionspossibles[i]))
+                grillenv=copy.deepcopy(grille)
+                grillenv[:]=list(self.Result(grillenv, actionspossibles[i]))
                 score = self.MaxValue(grillenv, modeJeu)
                 if (score<scoreMin):
                     scoreMin = score
-                    choix = i
+            print("Choix final")
+            print(scoreMin)
             return (scoreMin)
     
     def MaxValue(self,grille, modeJeu):
         gagnant = self.TerminalTest(grille, modeJeu)
         if(gagnant >=0):
-            return gagnant
+            return self.Utility(gagnant)
         else :
             scoreMax = -10
             actionspossibles = self.Action(grille, modeJeu)
             for i in range(len(actionspossibles)):
-                grillenv=list(self.Result(grille, actionspossibles[i]))
+                grillenv=copy.deepcopy(grille)
+                grillenv[:]=list(self.Result(grillenv, actionspossibles[i]))
                 score = self.MinValue(grillenv, modeJeu)
                 if (score>scoreMax):
                     scoreMax = score
-                    choix = i
             return (scoreMax)
         
         
@@ -203,12 +212,12 @@ class Joueur:
         return gagnant
         #Ou mettre le for pour les deux joueur test (tableau)
         
-    def Utility(gagnant):#On récupère le gagnant grâce à Terminal
-        if(gagnant==-1):#Cette valeur est retournée si il y a égalitée
+    def Utility(self,gagnant):#On récupère le gagnant grâce à Terminal
+        if(gagnant==0):#Cette valeur est retournée si il y a égalitée
             valeur = 0
         elif(gagnant==1):
             valeur = 1
-        elif(gagnant==1):
+        elif(gagnant==2):
             valeur = -1
         return valeur
         
