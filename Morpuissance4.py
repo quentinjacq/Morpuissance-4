@@ -11,36 +11,45 @@ import tkinter
 
 
 class Joueur:
-    def __init__(self,pseudo, estuneIA):
+    def __init__(self,pseudo, estuneIA, symbole):
         self.pseudo=pseudo
         self.estuneIA=estuneIA
+        self.symbole=symbole
+        
     
-    def Joue(grille):
-        if(estuneIA==True):
-            JeuIA(grille)
+    def Joue(self,grille):
+        if(self.estuneIA==True):
+            #JeuIA(grille)
+            print('')
         else:
-            JeuIA(grille)
+            listeactions = Action(grille)
+            for i in range (len(listeactions)):
+                for j in range(len(listeactions[i])):
+                    print('La case %i,%i est jouable.' %(i,j))
+            JeuJoueurReel(self,grille,0,2)
             
-            
-            
-            
+            print('')
+         
+   
     
-    def JeuJoueurReel(grille):
-        zfzefzef
+def JeuJoueurReel(self, grille, X, Y):    
+    grille[X][Y]=self.symbole  
     
-    def JeuIA(grille):
+    
+    
+    #def JeuIA(grille):
         
         
         
         
     
-    def Action(grille):#Va lister les actions que l'IA peut réaliser
-        actionspossible = [] #On intancie une liste vide qui va stocker les coordonnées de la grille dont la valeur est égale à 0
-        for i in range(len(grille)):
-            for j in range(len(grille[i])):#On parcourt toutes les cases
-                if(grille[i][j]==0):#On ajoute au tableau si c'est égal à zéro
-                    actionspossible.append([i,j])
-        return actionspossible
+def Action(grille):#Va lister les actions que l'IA peut réaliser
+    actionspossible = [] #On intancie une liste vide qui va stocker les coordonnées de la grille dont la valeur est égale à 0
+    for i in range(len(grille)):
+        for j in range(len(grille[i])):#On parcourt toutes les cases
+            if(grille[i][j]==0):#On ajoute au tableau si c'est égal à zéro
+                actionspossible.append([i,j])
+    return actionspossible
         
     def Result(grille, action):#Va appliquer l'action à la grille (action est une liste avec les deux coordonnés puis la valeur)
         grille[action[0]][action[1]]=action[2]
@@ -70,10 +79,10 @@ class Joueur:
                     suitecontinue=True
                     while(suitecontinue==True and n<len(pionplacement[k])-1):
                         if (pionplacement[k][n]==pionplacement[k][n-1]+1):
-                            m++
+                            m=m+1
                         else:
                             suitecontinue = False
-                        n++
+                        n=n+1
                         if (m>=nombrepourgagner):
                             termine = True
             
@@ -110,7 +119,9 @@ if __name__== '__main__':
     grille = [[0 for j in range(taillegrilley)] for i in range(taillegrillex)]
     
     #On affiche l'état de la grille
-    AfficherGrille(grille,taillegrillex, taillegrilley)
+    AfficherGrille(grille)
+    J1 = Joueur('moi',False,'♦')
+    J1.Joue(grille)
+    AfficherGrille(grille)
     
-
     
