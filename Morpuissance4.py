@@ -8,6 +8,7 @@ Created on Fri Mar 13 09:08:49 2020
 
 import tkinter
 #tkinter._test()
+import copy
 
 
 class Joueur:
@@ -17,10 +18,11 @@ class Joueur:
         self.numJoueur=numJoueur
         
     
-    def Joue(self,grille):
+    def Joue(self,grille, modeJeu):
         if(self.estuneIA==True):
-            #JeuIA(grille)
-            print('')
+            actionfinal = self.MiniMaxDecision(grille, modeJeu)
+            return self.Result(grille, actionfinal)
+        
         else:
             actionJoueurReel = [[],[]]
             print("C'est le tour du Joueur %i" %self.numJoueur) 
@@ -31,42 +33,95 @@ class Joueur:
                     print('(%i,%i), ' %(i,j), end ="")
             print(' est/sont jouable.')
             if modeJeu==1:
-                CoordX=(eval(input('Quelle est la coordonnée en X ?')))
-                CoordY=(eval(input('Quelle est la coordonnée en Y ?')))
-                actionJoueurReel=[CoordX,CoordY,self.numJoueur]
-                grille = self.Result(grille, actionJoueurReel)
+                entreevalable = False
+                while(entreevalable == False):
+                    CoordX=(eval(input('Quelle est la coordonnée en X ?')))
+                    CoordY=(eval(input('Quelle est la coordonnée en Y ?')))
+                    if(grille[CoordX][CoordY]==0):
+                        entreevalable = True
+                    else:
+                        print("Tu peux pas jouer la")
+                
+                grille = self.Result(grille, [CoordX,CoordY])
             else :               
                 CoordX=(eval(input('Dans quelle colonne voulez vous mettre votre pion ?')))
                 for i in range (len(listeactions)):
                     if (listeactions[i][1]==CoordX):
                         CoordY =listeactions[i][0]
-                actionJoueurReel=[CoordX,CoordY,self.numJoueur]
+                actionJoueurReel=[CoordX,CoordY]
                 grille = self.Result(grille, actionJoueurReel)
+        return grille
             
     
-    #def JeuIA(grille):
+
+    
+    def MiniMaxDecision(self, grille, modeJeu):
+        scoreMax = -10
+        actionspossibles = self.Action(grille, modeJeu)
+        for i in range(len(actionspossibles)):
+            grillenv=copy.deepcopy(grille)
+            grillenv[:]=list(self.Result(grillenv, actionspossibles[i]))
+            score = self.MinValue(grillenv, modeJeu)
+            if (score>scoreMax):
+                scoreMax = score
+                choix = i
+        return (actionspossibles[choix])
+    
+    def MinValue(self,grille, modeJeu):
+        gagnant = self.TerminalTest(grille, modeJeu)
+        if(gagnant >=0):
+            return gagnant
+        else :
+            scoreMin = 10
+            actionspossibles = self.Action(grille, modeJeu)
+            for i in range(len(actionspossibles)):
+                grillenv=list(self.Result(grille, actionspossibles[i]))
+                score = self.MaxValue(grillenv, modeJeu)
+                if (score<scoreMin):
+                    scoreMin = score
+                    choix = i
+            return (scoreMin)
+    
+    def MaxValue(self,grille, modeJeu):
+        gagnant = self.TerminalTest(grille, modeJeu)
+        if(gagnant >=0):
+            return gagnant
+        else :
+            scoreMax = -10
+            actionspossibles = self.Action(grille, modeJeu)
+            for i in range(len(actionspossibles)):
+                grillenv=list(self.Result(grille, actionspossibles[i]))
+                score = self.MinValue(grillenv, modeJeu)
+                if (score>scoreMax):
+                    scoreMax = score
+                    choix = i
+            return (scoreMax)
+        
         
 
-        
     
     def Action(self,grille, modeJeu): #Va lister les actions que l'IA peut réaliser
-        actionspossible = [] #On intancie une liste vide qui va stocker les coordonnées de la grille dont la valeur est égale à 0
+        actionspossibles = [] #On intancie une liste vide qui va stocker les coordonnées de la grille dont la valeur est égale à 0
         if (modeJeu==1):
             for i in range(len(grille)):
                 for j in range(len(grille[i])):#On parcourt toutes les cases
                     if(grille[i][j]==0):#On ajoute au tableau si c'est égal à zéro
-                        actionspossible.append([i,j])
+                        actionspossibles.append([i,j])
         else:
-            for j in range(len(grille[i])):
+            for j in range(len(grille[0])):
                 for i in range(len(grille)):#On parcourt toutes les cases
-                    if (grille[i][j]==0):
-                        actionspossible.append(i,j)
-        return actionspossible
+                    if (grille[i][j]!=0):
+                        actionspossibles.append(i-1,j)
+                    elif(i == len(grille)-1):
+                        actionspossibles.append(i,j)
+                        
+        return actionspossibles
 
             
     def Result(self, grille, action):#Va appliquer l'action à la grille (action est une liste avec les deux coordonnés puis la valeur)
-        grille[action[0]][action[1]]=action[2]
-        return grille
+        grillenv=copy.deepcopy(grille)
+        grillenv[action[0]][action[1]]=self.numJoueur
+        return grillenv
     
     def TerminalTest(self, grille, modeJeu):#Test si c'est la fin du jeu, et qui a gagné
         
@@ -75,11 +130,11 @@ class Joueur:
         else:
             nombrepourgagner = 3
         
-        gagnant = -1#Retourne -1 si la table est complete sans gagnant, 0 si le jeu continue, 1 si le joueur 1 a gagné, 2 si le joueur 2 a gagné
+        gagnant = 0#Retourne 0 si la table est complete sans gagnant, -1 si le jeu continue, 1 si le joueur 1 a gagné, 2 si le joueur 2 a gagné
         for i in range(len(grille)):
             for j in range(len(grille[i])):#On parcourt toutes les cases
                 if(grille[i][j]==0):#Si une case est égalse à zéro, cela n'est pas fini
-                    gagnant = 0
+                    gagnant = -1
         
         #Check si gagner par lignes
         for i in range(len(grille)):
@@ -169,10 +224,12 @@ def AfficherGrille(grille):#Simple méthode pour afficher esthétiquement la gri
 
 
 if __name__== '__main__':
-    print("A quel mode voulez vous jouer ?")
+    """print("A quel mode voulez vous jouer ?")
     print (" 1. Tic Tac Toe")
     print (" 2. Connect 4")
-    modeJeu = eval(input())
+    modeJeu = eval(input())"""
+    
+    modeJeu = 1
     
     #Initialisation des taille du jeu MORPION
     taillegrillex = 3
@@ -181,22 +238,22 @@ if __name__== '__main__':
     #On crée la grille de départ, valable pour n'importe quel jeu avec une grille
     grille = [[0 for j in range(taillegrilley)] for i in range(taillegrillex)]
     
+    
+
     #On affiche l'état de la grille
     AfficherGrille(grille)
-    J1 = Joueur('moi',False,1)
+    J1 = Joueur('IA',True,1)
+    J2 = Joueur('Cyprien le naze', False, 2)
     
-    J1.Joue(grille)
-    AfficherGrille(grille)
-    
-    J1.Joue(grille)
-    AfficherGrille(grille)
-    J1.Joue(grille)
-    AfficherGrille(grille)
-    
-    
-    
-    print(J1.TerminalTest(grille, 1))
-    if(J1.TerminalTest(grille, 1) > 0):
-        print("Youhou c'est gagné")
-
+    while(J1.TerminalTest(grille, 1) < 0):
+        grille = J1.Joue(grille, modeJeu)
+        AfficherGrille(grille)
+        
+        grille = J2.Joue(grille, modeJeu)
+        AfficherGrille(grille)
+     
+    if(J1.TerminalTest(grille, 1) == 0):
+        print("Egalité")
+    else:
+        print("Joueur %i a gagné !" %J1.TerminalTest(grille, 1))
     
