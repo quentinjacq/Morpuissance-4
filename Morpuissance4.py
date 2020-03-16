@@ -68,10 +68,10 @@ class Joueur:
         grille[action[0]][action[1]]=action[2]
         return grille
     
-    def TerminalTest(grille, modeJeu):#Test si c'est la fin du jeu, et qui a gagné
+    def TerminalTest(self, grille, modeJeu):#Test si c'est la fin du jeu, et qui a gagné
         
         
-        nombrepourgagner = 3 
+        nombrepourgagner = 3
         
         gagnant = -1#Retourne -1 si la table est complete sans gagnant, 0 si le jeu continue, 1 si le joueur 1 a gagné, 2 si le joueur 2 a gagné
         for i in range(len(grille)):
@@ -80,8 +80,8 @@ class Joueur:
                     gagnant = 0
         
         #Check si gagner par lignes
-        for i in range(len(grille)-1):
-            for j in range(len(grille[i])-nombrepourgagner-1):#On parcourt toutes les cases
+        for i in range(len(grille)):
+            for j in range(len(grille[i])-nombrepourgagner+1):#On parcourt toutes les cases
                 if(grille[i][j]==1 and grille[i][j+1]==1 and grille[i][j+2]==1):#Si une case est égalse à 1, on ajoute la coord au joueur 1
                     if(modeJeu == 2):
                         if(grille[i][j+3]==1):
@@ -129,11 +129,19 @@ if __name__== '__main__':
     #On affiche l'état de la grille
     AfficherGrille(grille)
     J1 = Joueur('moi',False,1)
+    
+    J1.Joue(grille)
+    AfficherGrille(grille)
+    
     J1.Joue(grille)
     AfficherGrille(grille)
     J1.Joue(grille)
     AfficherGrille(grille)
-    J1.Joue(grille)
-    AfficherGrille(grille)
+    
+    
+    
+    print(J1.TerminalTest(grille, 1))
+    if(J1.TerminalTest(grille, 1) > 0):
+        print("Youhou c'est gagné")
 
     
