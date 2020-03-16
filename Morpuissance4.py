@@ -24,23 +24,24 @@ class Joueur:
         else:
             actionJoueurReel = [[],[]]
             print("C'est le tour du Joueur %i" %self.numJoueur) 
-            listeactions = self.Action(grille,modeJeu)
+            listeactions = self.Action(grille, modeJeu)
+            print('La/les case(s) ', end ="")
             for i in range (len(listeactions)):
                 for j in range(len(listeactions[i])):
-                    print('La/les case(s) %i,%i' %(i,j), end ="")
+                    print('(%i,%i), ' %(i,j), end ="")
             print(' est/sont jouable.')
             if modeJeu==1:
                 CoordX=(eval(input('Quelle est la coordonnée en X ?')))
                 CoordY=(eval(input('Quelle est la coordonnée en Y ?')))
-                actionJoueurReel=[CoordX,CoordY][self.numJoueur]
-                grille = self.Result(grille,actionJoueurReel)
+                actionJoueurReel=[CoordX,CoordY,self.numJoueur]
+                grille = self.Result(grille, actionJoueurReel)
             else :               
                 CoordX=(eval(input('Dans quelle colonne voulez vous mettre votre pion ?')))
                 for i in range (len(listeactions)):
                     if (listeactions[i][1]==CoordX):
                         CoordY =listeactions[i][0]
-                actionJoueurReel=[CoordX,CoordY][self.numJoueur]
-                grille = self.Result(grille,actionJoueurReel)
+                actionJoueurReel=[CoordX,CoordY,self.numJoueur]
+                grille = self.Result(grille, actionJoueurReel)
             
     
     #def JeuIA(grille):
@@ -48,7 +49,7 @@ class Joueur:
 
         
     
-    def Action(grille, modeJeu):#Va lister les actions que l'IA peut réaliser
+    def Action(self,grille, modeJeu): #Va lister les actions que l'IA peut réaliser
         actionspossible = [] #On intancie une liste vide qui va stocker les coordonnées de la grille dont la valeur est égale à 0
         if (modeJeu==1):
             for i in range(len(grille)):
@@ -63,7 +64,7 @@ class Joueur:
         return actionspossible
 
             
-    def Result(grille, action):#Va appliquer l'action à la grille (action est une liste avec les deux coordonnés puis la valeur)
+    def Result(self, grille, action):#Va appliquer l'action à la grille (action est une liste avec les deux coordonnés puis la valeur)
         grille[action[0]][action[1]]=action[2]
         return grille
     
@@ -130,5 +131,9 @@ if __name__== '__main__':
     J1 = Joueur('moi',False,1)
     J1.Joue(grille)
     AfficherGrille(grille)
-    
+    J1.Joue(grille)
+    AfficherGrille(grille)
+    J1.Joue(grille)
+    AfficherGrille(grille)
+
     
