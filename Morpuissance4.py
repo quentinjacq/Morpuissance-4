@@ -111,3 +111,11 @@ if __name__== '__main__':
     
     #On affiche l'état de la grille
     AfficherGrille(grille,taillegrillex, taillegrilley)
+    
+    
+    
+    
+    
+    
+    ### ca casse les couilles
+    
