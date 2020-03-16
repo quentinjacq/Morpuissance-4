@@ -9,6 +9,7 @@ Created on Fri Mar 13 09:08:49 2020
 
 
 #COUCOULESAMIS
+# il est 11h32 et on a pas avancé
 
 #Cyprien est lent
 
@@ -122,3 +123,11 @@ if __name__== '__main__':
     
     #On affiche l'état de la grille
     AfficherGrille(grille,taillegrillex, taillegrilley)
+    
+    
+    
+    
+    
+    
+    ### ca casse les couilles
+    
