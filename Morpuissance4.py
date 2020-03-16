@@ -70,8 +70,10 @@ class Joueur:
     
     def TerminalTest(self, grille, modeJeu):#Test si c'est la fin du jeu, et qui a gagné
         
-        
-        nombrepourgagner = 3
+        if (modeJeu == 2):
+            nombrepourgagner = 4
+        else:
+            nombrepourgagner = 3
         
         gagnant = -1#Retourne -1 si la table est complete sans gagnant, 0 si le jeu continue, 1 si le joueur 1 a gagné, 2 si le joueur 2 a gagné
         for i in range(len(grille)):
@@ -95,12 +97,65 @@ class Joueur:
                     else:
                         gagnant = 2
          
+        #Check si gagner par colonne
+        for i in range(len(grille)-nombrepourgagner+1):
+            for j in range(len(grille[i])):#On parcourt toutes les cases
+                if(grille[i][j]==1 and grille[i+1][j]==1 and grille[i+2][j]==1):#Si une case est égalse à 1, on ajoute la coord au joueur 1
+                    if(modeJeu == 2):
+                        if(grille[i+3][j]==1):
+                            gagnant = 1
+                    else:
+                        gagnant = 1
+                elif(grille[i][j]==2 and grille[i+1][j]==2 and grille[i+2][j]==2):
+                    if(modeJeu == 2):
+                        if(grille[i+3][j]==2):
+                            gagnant = 2
+                    else:
+                        gagnant = 2
+                        
+        #Check si gagnant par diagonale descendante
+        for i in range(len(grille)-nombrepourgagner+1):
+            for j in range(len(grille[i])-nombrepourgagner+1):#On parcourt toutes les cases
+                if(grille[i][j]==1 and grille[i+1][j+1]==1 and grille[i+2][j+2]==1):#Si une case est égalse à 1, on ajoute la coord au joueur 1
+                    if(modeJeu == 2):
+                        if(grille[i+3][j+3]==1):
+                            gagnant = 1
+                    else:
+                        gagnant = 1
+                elif(grille[i][j]==2 and grille[i+1][j+1]==2 and grille[i+2][j+2]==2):
+                    if(modeJeu == 2):
+                        if(grille[i+3][j+3]==2):
+                            gagnant = 2
+                    else:
+                        gagnant = 2
         
+        #Check si gagnant par diagonale montante
+        for i in range(nombrepourgagner-1,len(grille)):
+            for j in range(len(grille[i])-nombrepourgagner+1):#On parcourt toutes les cases
+                if(grille[i][j]==1 and grille[i-1][j+1]==1 and grille[i-2][j+2]==1):#Si une case est égalse à 1, on ajoute la coord au joueur 1
+                    if(modeJeu == 2):
+                        if(grille[i-3][j+3]==1):
+                            gagnant = 1
+                    else:
+                        gagnant = 1
+                elif(grille[i][j]==2 and grille[i-1][j+1]==2 and grille[i-2][j+2]==2):
+                    if(modeJeu == 2):
+                        if(grille[i-3][j+3]==2):
+                            gagnant = 2
+                    else:
+                        gagnant = 2
         
         return gagnant
         #Ou mettre le for pour les deux joueur test (tableau)
         
-        
+    def Utility(gagnant):#On récupère le gagnant grâce à Terminal
+        if(gagnant==-1):#Cette valeur est retournée si il y a égalitée
+            valeur = 0
+        elif(gagnant==1):
+            valeur = 1
+        elif(gagnant==1):
+            valeur = -1
+        return valeur
         
             
 def AfficherGrille(grille):#Simple méthode pour afficher esthétiquement la grille
