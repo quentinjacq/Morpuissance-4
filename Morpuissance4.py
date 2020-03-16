@@ -53,56 +53,34 @@ class Joueur:
         grille[action[0]][action[1]]=action[2]
         return grille
     
-    def TerminalTest(grille):#Test si c'est la fin du jeu, et qui a gagné
-        nombrepourgagner = 3
+    def TerminalTest(grille, modeJeu):#Test si c'est la fin du jeu, et qui a gagné
+        
+        
+        nombrepourgagner = 3 
+        
         gagnant = -1#Retourne -1 si la table est complete sans gagnant, 0 si le jeu continue, 1 si le joueur 1 a gagné, 2 si le joueur 2 a gagné
         for i in range(len(grille)):
             for j in range(len(grille[i])):#On parcourt toutes les cases
                 if(grille[i][j]==0):#Si une case est égalse à zéro, cela n'est pas fini
                     gagnant = 0
         
-        
-        pionplacementpion = [[],[]]#Liste qui contient en premier, une liste des coord du pion 1, et en 2eme une liste des coord du pion 2
-        
-        for i in range(len(grille)):
-            for j in range(len(grille[i])):#On parcourt toutes les cases
-                
-                if(grille[i][j]==1):#Si une case est égalse à 1, on ajoute la coord au joueur 1
-                    pionplacementpion[0].append([i,j])
-                elif(grille[i][j]==2):#Si une case est égalse à 2,one ajoute la coord au joueur 2
-                    pionplacementpion[0].append([i,j])
-                    
-                    
-            
-        for k in range(2):#On fait le test pour les deux joueurs
-            n=1
-            while(n<len(pionplacementpion[k])-1):
-                m=0
-                suitecontinue=True
-                while(suitecontinue==True and n<len(pionplacementpion[k])-1):
-                    if (pionplacementpion[k][n][0]==pionplacementpion[k][n-1][0]+1):
-                        m=m+1
+        #Check si gagner par lignes
+        for i in range(len(grille)-1):
+            for j in range(len(grille[i])-nombrepourgagner-1):#On parcourt toutes les cases
+                if(grille[i][j]==1 and grille[i][j+1]==1 and grille[i][j+2]==1):#Si une case est égalse à 1, on ajoute la coord au joueur 1
+                    if(modeJeu == 2):
+                        if(grille[i][j+3]==1):
+                            gagnant = 1
                     else:
-                        suitecontinue = False
-                    n=n+1
-                    if (m>=nombrepourgagner):
-                        gagnant = k + 1 #Le joueur k+1 a gagné, +1 car le tableau est 0 puis 1, donc pour joueur 1 est 2 on incrémente de 1
-         
-         for k in range(2):#On fait le test pour les deux joueurs
-            n=1
-            while(n<len(pionplacementpion[k])-1):
-                m=0
-                suitecontinue=True
-                while(suitecontinue==True and n<len(pionplacementpion[k])-1):
-                    if (pionplacementpion[k][n][0]==pionplacementpion[k][n-1][0]+1):
-                        m=m+1
+                        gagnant = 1
+                elif(grille[i][j]==2 and grille[i][j+1]==2 and grille[i][j+2]==2):
+                    if(modeJeu == 2):
+                        if(grille[i][j+3]==2):
+                            gagnant = 2
                     else:
-                        suitecontinue = False
-                    n=n+1
-                    if (m>=nombrepourgagner):
-                        gagnant = k + 1 #Le joueur k+1 a gagné, +1 car le tableau est 0 puis 1, donc pour joueur 1 est 2 on incrémente de 1
+                        gagnant = 2
          
-                        
+        
         
         return gagnant
         #Ou mettre le for pour les deux joueur test (tableau)
