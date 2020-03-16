@@ -62,50 +62,49 @@ class Joueur:
                     gagnant = 0
         
         
-        pionplacementligne = [[],[]]#Liste qui contient en premier, une liste des coord du pion 1, et en 2eme une liste des coord du pion 2
-        pionplacementcolonne = [[],[]]
+        pionplacementpion = [[],[]]#Liste qui contient en premier, une liste des coord du pion 1, et en 2eme une liste des coord du pion 2
+        
         for i in range(len(grille)):
             for j in range(len(grille[i])):#On parcourt toutes les cases
+                
                 if(grille[i][j]==1):#Si une case est égalse à 1, on ajoute la coord au joueur 1
-                    pionplacementligne[0].append(j)
-                    pionplacementcolonne[0].append(j)
+                    pionplacementpion[0].append([i,j])
                 elif(grille[i][j]==2):#Si une case est égalse à 2,one ajoute la coord au joueur 2
-                    pionplacementligne[1].append(j)
-                    pionplacementcolonne[1].append(j)
+                    pionplacementpion[0].append([i,j])
+                    
+                    
             
-            for k in range(2):#On fait le test pour les deux joueurs
-                n=1
-                while(n<len(pionplacementligne[k])-1):
-                    m=0
-                    suitecontinue=True
-                    while(suitecontinue==True and n<len(pionplacementligne[k])-1):
-                        if (pionplacementligne[k][n]==pionplacementligne[k][n-1]+1):
-                            m=m+1
-                        else:
-                            suitecontinue = False
-                        n=n+1
-                        if (m>=nombrepourgagner):
-                            gagnant = k + 1 #Le joueur k+1 a gagné, +1 car le tableau est 0 puis 1, donc pour joueur 1 est 2 on incrémente de 1
-             
-            for k in range(2):#On fait le test pour les deux joueurs
-                n=1
-                while(n<len(pionplacementcolonne[k])-1):
-                    m=0
-                    suitecontinue=True
-                    while(suitecontinue==True and n<len(pionplacementcolonne[k])-1):
-                        if (pionplacementcolonne[k][n]==pionplacementcolonne[k][n-1]+1):
-                            m=m+1
-                        else:
-                            suitecontinue = False
-                        n=n+1
-                        if (m>=nombrepourgagner):
-                            gagnant = k + 1 #Le joueur k+1 a gagné, +1 car le tableau est 0 puis 1, donc pour joueur 1 est 2 on incrémente de 1
-            
-                            
-                        
+        for k in range(2):#On fait le test pour les deux joueurs
+            n=1
+            while(n<len(pionplacementpion[k])-1):
+                m=0
+                suitecontinue=True
+                while(suitecontinue==True and n<len(pionplacementpion[k])-1):
+                    if (pionplacementpion[k][n][0]==pionplacementpion[k][n-1][0]+1):
+                        m=m+1
+                    else:
+                        suitecontinue = False
+                    n=n+1
+                    if (m>=nombrepourgagner):
+                        gagnant = k + 1 #Le joueur k+1 a gagné, +1 car le tableau est 0 puis 1, donc pour joueur 1 est 2 on incrémente de 1
+         
+         for k in range(2):#On fait le test pour les deux joueurs
+            n=1
+            while(n<len(pionplacementpion[k])-1):
+                m=0
+                suitecontinue=True
+                while(suitecontinue==True and n<len(pionplacementpion[k])-1):
+                    if (pionplacementpion[k][n][0]==pionplacementpion[k][n-1][0]+1):
+                        m=m+1
+                    else:
+                        suitecontinue = False
+                    n=n+1
+                    if (m>=nombrepourgagner):
+                        gagnant = k + 1 #Le joueur k+1 a gagné, +1 car le tableau est 0 puis 1, donc pour joueur 1 est 2 on incrémente de 1
+         
                         
         
-        
+        return gagnant
         #Ou mettre le for pour les deux joueur test (tableau)
         
         
