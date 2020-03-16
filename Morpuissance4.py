@@ -11,10 +11,10 @@ import tkinter
 
 
 class Joueur:
-    def __init__(self,pseudo, estuneIA, symbole):
+    def __init__(self,pseudo, estuneIA, numJoueur):
         self.pseudo=pseudo
         self.estuneIA=estuneIA
-        self.symbole=symbole
+        self.numJoueur=numJoueur
         
     
     def Joue(self,grille):
@@ -22,20 +22,18 @@ class Joueur:
             #JeuIA(grille)
             print('')
         else:
-            listeactions = Action(grille)
+            actionJoueurReel = [[],[]]
+            print("C'est le tour du Joueur %i" %self.numJoueur) 
+            listeactions = self.Action(grille)
             for i in range (len(listeactions)):
                 for j in range(len(listeactions[i])):
-                    print('La case %i,%i est jouable.' %(i,j))
-            JeuJoueurReel(self,grille,0,2)
+                    print('La/les case(s) %i,%i' %(i,j), end ="")
+            print(' est/sont jouable.') 
+            CoordX=(eval(input('Quelle est la coordonnée en X ?')))
+            CoordY=(eval(input('Quelle est la coordonnée en Y ?')))
+            actionJoueurReel=[CoordX,CoordY][self.numJoueur]
+            grille = self.Result(grille,actionJoueurReel)
             
-            print('')
-         
-   
-    
-def JeuJoueurReel(self, grille, X, Y):    
-    grille[X][Y]=self.symbole  
-    
-    
     
     #def JeuIA(grille):
         
@@ -43,14 +41,14 @@ def JeuJoueurReel(self, grille, X, Y):
         
         
     
-def Action(grille):#Va lister les actions que l'IA peut réaliser
-    actionspossible = [] #On intancie une liste vide qui va stocker les coordonnées de la grille dont la valeur est égale à 0
-    for i in range(len(grille)):
-        for j in range(len(grille[i])):#On parcourt toutes les cases
-            if(grille[i][j]==0):#On ajoute au tableau si c'est égal à zéro
-                actionspossible.append([i,j])
-    return actionspossible
-        
+    def Action(grille):#Va lister les actions que l'IA peut réaliser
+        actionspossible = [] #On intancie une liste vide qui va stocker les coordonnées de la grille dont la valeur est égale à 0
+        for i in range(len(grille)):
+            for j in range(len(grille[i])):#On parcourt toutes les cases
+                if(grille[i][j]==0):#On ajoute au tableau si c'est égal à zéro
+                    actionspossible.append([i,j])
+        return actionspossible
+            
     def Result(grille, action):#Va appliquer l'action à la grille (action est une liste avec les deux coordonnés puis la valeur)
         grille[action[0]][action[1]]=action[2]
         return grille
@@ -85,6 +83,7 @@ def Action(grille):#Va lister les actions que l'IA peut réaliser
                         n=n+1
                         if (m>=nombrepourgagner):
                             termine = True
+        return termine
             
                             
                         
@@ -103,9 +102,6 @@ def AfficherGrille(grille):#Simple méthode pour afficher esthétiquement la gri
         for j in range(len(grille[i])):
             print(str(grille[i][j])+" | ",end='')
         print("\n -----------")
-        
-
-
 
 
 
@@ -120,7 +116,7 @@ if __name__== '__main__':
     
     #On affiche l'état de la grille
     AfficherGrille(grille)
-    J1 = Joueur('moi',False,'♦')
+    J1 = Joueur('moi',False,1)
     J1.Joue(grille)
     AfficherGrille(grille)
     
