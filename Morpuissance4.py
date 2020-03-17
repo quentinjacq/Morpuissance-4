@@ -29,11 +29,6 @@ class Joueur:
             actionJoueurReel = [[],[]]
             print("C'est le tour du Joueur %i" %self.numJoueur) 
             listeactions = self.Action(grille, modeJeu)
-            print('La/les case(s) ', end ="")
-            for i in range (len(listeactions)):
-                for j in range(len(listeactions[i])):
-                    print('(%i,%i), ' %(i,j), end ="")
-            print(' est/sont jouable.')
             if modeJeu==1:
                 entreevalable = False
                 while(entreevalable == False):
@@ -44,14 +39,14 @@ class Joueur:
                     else:
                         print("Tu peux pas jouer la")
                 
-                grille = self.Result(grille, [CoordX,CoordY])
+                grille = self.Result(grille, [CoordX,CoordY], 2)
             else :               
                 CoordX=(eval(input('Dans quelle colonne voulez vous mettre votre pion ?')))
                 for i in range (len(listeactions)):
                     if (listeactions[i][1]==CoordX):
                         CoordY =listeactions[i][0]
                 actionJoueurReel=[CoordX,CoordY]
-                grille = self.Result(grille, actionJoueurReel)
+                grille = self.Result(grille, actionJoueurReel, 2)
         return grille
             
     
@@ -71,47 +66,50 @@ class Joueur:
     
     
     def AlphaBetaSearch(self, grille, modeJeu):
-        actionspossibles = self.Action(grille, modeJeu)
         grillenv=copy.deepcopy(grille)
-        score = self.MaxValue(grillenv, modeJeu, -10, 10)
-        return (actionspossibles[score])
+        score,  actionspossibles= self.MaxValue(grillenv, modeJeu, -10, 10)
+        return (actionspossibles)
         
     
     def MinValue(self,grille, modeJeu, a, b):
         gagnant = self.TerminalTest(grille, modeJeu)
         if(gagnant >=0):
-            return self.Utility(gagnant)
+            return self.Utility(gagnant), [0,0]
         else:
             scoreMin = 10
             actionspossibles = self.Action(grille, modeJeu)
             for i in range(len(actionspossibles)):
                 grillenv=copy.deepcopy(grille)
                 grillenv[:]=list(self.Result(grillenv, actionspossibles[i], 2))
-                score = self.MaxValue(grillenv, modeJeu, a, b)
+                score, action = self.MaxValue(grillenv, modeJeu, a, b)
                 if (score<scoreMin):
                     scoreMin = score
+                    choix = i
                 if(scoreMin<=a):
-                    return scoreMin
-                b = min(b, scoreMin)
-            return (scoreMin)
+                    return scoreMin, actionspossibles[i]
+                if (scoreMin<b):
+                    b = scoreMin
+            return (scoreMin, actionspossibles[choix])
     
     def MaxValue(self,grille, modeJeu, a, b):
         gagnant = self.TerminalTest(grille, modeJeu)
         if(gagnant >=0):
-            return self.Utility(gagnant)
+            return self.Utility(gagnant), [0,0]
         else:
             scoreMax = -10
             actionspossibles = self.Action(grille, modeJeu)
             for i in range(len(actionspossibles)):
                 grillenv=copy.deepcopy(grille)
                 grillenv[:]=list(self.Result(grillenv, actionspossibles[i]))
-                score = self.MinValue(grillenv, modeJeu, a, b)
+                score, action = self.MinValue(grillenv, modeJeu, a, b)
                 if (score>scoreMax):
                     scoreMax = score
+                    choix = i
                 if(scoreMax>=b):
-                    return scoreMax
-                a = max(a, scoreMax)
-            return (scoreMax)
+                    return scoreMax, actionspossibles[i]
+                if(scoreMax> a):
+                    a = scoreMax
+            return (scoreMax, actionspossibles[choix])
         
         
 
@@ -257,26 +255,28 @@ if __name__== '__main__':
         taillegrilley = 7
     
     #On crée la grille de départ, valable pour n'importe quel jeu avec une grille
-    #grille = [[0 for j in range(taillegrilley)] for i in range(taillegrillex)]
-    grille = [[1,1,2],[0,2,0],[0,0,0]]
+    grille = [[0 for j in range(taillegrilley)] for i in range(taillegrillex)]
+   
     
-    
-    
-
     #On affiche l'état de la grille
-    AfficherGrille(grille)
-    J1 = Joueur('IA',True,1)
-    J2 = Joueur('Cyprien le naze', False, 2)
     
-    while(J1.TerminalTest(grille, 1) < 0):
-        grille = J1.Joue(grille, modeJeu)
-        AfficherGrille(grille)
+    Joueurs = []
+    Joueurs.append(Joueur('IA',True,1))
+    Joueurs.append(Joueur('Cyprien le naze', False, 2))
+    
+    AfficherGrille(grille)
+    n=0
+    gagnant = -1
+    while(J1.gagnant < 0):
         
-        grille = J2.Joue(grille, modeJeu)
+        grille = Joueurs[n].Joue(grille, modeJeu)
         AfficherGrille(grille)
-     
-    if(J1.TerminalTest(grille, 1) == 0):
+        n = n+1
+        n = n%2
+        gagnant = J1.TerminalTest(grille, modeJeu)
+        
+    if(gagnant == 0):
         print("Egalité")
     else:
-        print("Joueur %i a gagné !" %J1.TerminalTest(grille, 1))
+        print("%i a gagné !" %Joueurs[gagnant].pseudo)
     
