@@ -9,6 +9,7 @@ Created on Fri Mar 13 09:08:49 2020
 import tkinter
 #tkinter._test()
 import copy
+from random import choice
 
 
 class Joueur:
@@ -89,6 +90,11 @@ class Joueur:
                 if (score<scoreMin):
                     scoreMin = score
                     choix = i
+                """elif(score==scoreMin):
+                    rnd=choice([1,2])
+                    if(rnd == 1):
+                        scoreMin = score
+                        choix = i"""
                 if(scoreMin<=a):
                     return scoreMin, actionspossibles[i]
                 if (scoreMin<b):
@@ -109,6 +115,11 @@ class Joueur:
                 if (score>scoreMax):
                     scoreMax = score
                     choix = i
+                """elif(score==scoreMax):
+                    rnd=choice([1,2])
+                    if(rnd == 1):
+                        scoreMax = score
+                        choix = i"""
                 if(scoreMax>=b):
                     return scoreMax, actionspossibles[i]
                 if(scoreMax> a):
