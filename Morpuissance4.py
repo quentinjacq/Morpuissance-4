@@ -310,4 +310,4 @@ if __name__== '__main__':
     else:
         print(gagnant)
         print(str(Joueurs[gagnant-1].pseudo) + " a gagné !")
-    
+    #cyprinul
