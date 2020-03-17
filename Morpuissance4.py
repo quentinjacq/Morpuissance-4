@@ -21,7 +21,9 @@ class Joueur:
     def Joue(self,grille, modeJeu):
         if(self.estuneIA==True):
             actionfinal = self.MiniMaxDecision(grille, modeJeu)
-            return self.Result(grille, actionfinal)
+            grillenv=copy.deepcopy(grille)
+            grillenv[:]=list(self.Result(grillenv, actionfinal))
+            return self.Result(grillenv, actionfinal)
         
         else:
             actionJoueurReel = [[],[]]
@@ -66,8 +68,6 @@ class Joueur:
             score = self.MinValue(grillenv, modeJeu)
             print(score)
             
-            
-            
             if (score>scoreMax):
                 scoreMax = score
                 choix = i
@@ -75,27 +75,26 @@ class Joueur:
     
     def MinValue(self,grille, modeJeu):
         gagnant = self.TerminalTest(grille, modeJeu)
-        print(gagnant)
         if(gagnant >=0):
+            print("coucou")
             return self.Utility(gagnant)
-        else :
+        else:
             scoreMin = 10
             actionspossibles = self.Action(grille, modeJeu)
             for i in range(len(actionspossibles)):
                 grillenv=copy.deepcopy(grille)
-                grillenv[:]=list(self.Result(grillenv, actionspossibles[i]))
+                grillenv[:]=list(self.Result(grillenv, actionspossibles[i], 2))
                 score = self.MaxValue(grillenv, modeJeu)
                 if (score<scoreMin):
                     scoreMin = score
-            print("Choix final")
-            print(scoreMin)
             return (scoreMin)
     
     def MaxValue(self,grille, modeJeu):
         gagnant = self.TerminalTest(grille, modeJeu)
         if(gagnant >=0):
+            print("coucou2")
             return self.Utility(gagnant)
-        else :
+        else:
             scoreMax = -10
             actionspossibles = self.Action(grille, modeJeu)
             for i in range(len(actionspossibles)):
@@ -127,9 +126,9 @@ class Joueur:
         return actionspossibles
 
             
-    def Result(self, grille, action):#Va appliquer l'action à la grille (action est une liste avec les deux coordonnés puis la valeur)
+    def Result(self, grille, action, numJoueur=1):#Va appliquer l'action à la grille (action est une liste avec les deux coordonnés puis la valeur)
         grillenv=copy.deepcopy(grille)
-        grillenv[action[0]][action[1]]=self.numJoueur
+        grillenv[action[0]][action[1]]= numJoueur
         return grillenv
     
     def TerminalTest(self, grille, modeJeu):#Test si c'est la fin du jeu, et qui a gagné
@@ -210,7 +209,6 @@ class Joueur:
                         gagnant = 2
         
         return gagnant
-        #Ou mettre le for pour les deux joueur test (tableau)
         
     def Utility(self,gagnant):#On récupère le gagnant grâce à Terminal
         if(gagnant==0):#Cette valeur est retournée si il y a égalitée
