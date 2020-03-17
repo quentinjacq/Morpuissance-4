@@ -20,7 +20,7 @@ class Joueur:
     
     def Joue(self,grille, modeJeu):
         if(self.estuneIA==True):
-            actionfinal = self.MiniMaxDecision(grille, modeJeu)
+            actionfinal = self.AlphaBetaSearch(grille, modeJeu)
             grillenv=copy.deepcopy(grille)
             grillenv[:]=list(self.Result(grillenv, actionfinal))
             return self.Result(grillenv, actionfinal)
@@ -61,19 +61,23 @@ class Joueur:
         scoreMax = -10
         actionspossibles = self.Action(grille, modeJeu)
         for i in range(len(actionspossibles)):
-            print("Coord : ", end='')
-            print(actionspossibles[i])
             grillenv=copy.deepcopy(grille)
             grillenv[:]=list(self.Result(grillenv, actionspossibles[i]))
             score = self.MinValue(grillenv, modeJeu)
-            print(score)
-            
             if (score>scoreMax):
                 scoreMax = score
                 choix = i
         return (actionspossibles[choix])
     
-    def MinValue(self,grille, modeJeu):
+    
+    def AlphaBetaSearch(self, grille, modeJeu):
+        actionspossibles = self.Action(grille, modeJeu)
+        grillenv=copy.deepcopy(grille)
+        score = self.MaxValue(grillenv, modeJeu, -10, 10)
+        return (actionspossibles[score])
+        
+    
+    def MinValue(self,grille, modeJeu, a, b):
         gagnant = self.TerminalTest(grille, modeJeu)
         if(gagnant >=0):
             return self.Utility(gagnant)
@@ -83,12 +87,15 @@ class Joueur:
             for i in range(len(actionspossibles)):
                 grillenv=copy.deepcopy(grille)
                 grillenv[:]=list(self.Result(grillenv, actionspossibles[i], 2))
-                score = self.MaxValue(grillenv, modeJeu)
+                score = self.MaxValue(grillenv, modeJeu, a, b)
                 if (score<scoreMin):
                     scoreMin = score
+                if(scoreMin<=a):
+                    return scoreMin
+                b = min(b, scoreMin)
             return (scoreMin)
     
-    def MaxValue(self,grille, modeJeu):
+    def MaxValue(self,grille, modeJeu, a, b):
         gagnant = self.TerminalTest(grille, modeJeu)
         if(gagnant >=0):
             return self.Utility(gagnant)
@@ -98,9 +105,12 @@ class Joueur:
             for i in range(len(actionspossibles)):
                 grillenv=copy.deepcopy(grille)
                 grillenv[:]=list(self.Result(grillenv, actionspossibles[i]))
-                score = self.MinValue(grillenv, modeJeu)
+                score = self.MinValue(grillenv, modeJeu, a, b)
                 if (score>scoreMax):
                     scoreMax = score
+                if(scoreMax>=b):
+                    return scoreMax
+                a = max(a, scoreMax)
             return (scoreMax)
         
         
