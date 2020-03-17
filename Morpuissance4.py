@@ -76,7 +76,6 @@ class Joueur:
     def MinValue(self,grille, modeJeu):
         gagnant = self.TerminalTest(grille, modeJeu)
         if(gagnant >=0):
-            print("coucou")
             return self.Utility(gagnant)
         else:
             scoreMin = 10
@@ -92,7 +91,6 @@ class Joueur:
     def MaxValue(self,grille, modeJeu):
         gagnant = self.TerminalTest(grille, modeJeu)
         if(gagnant >=0):
-            print("coucou2")
             return self.Utility(gagnant)
         else:
             scoreMax = -10
@@ -231,19 +229,27 @@ def AfficherGrille(grille):#Simple méthode pour afficher esthétiquement la gri
 
 
 if __name__== '__main__':
-    """print("A quel mode voulez vous jouer ?")
-    print (" 1. Tic Tac Toe")
-    print (" 2. Connect 4")
-    modeJeu = eval(input())"""
-    
+    """modeJeuvalide=False
+    while(modeJeuvalde=-False):
+        print("A quel mode voulez vous jouer ?")
+        print (" 1. Tic Tac Toe")
+        print (" 2. Connect 4")
+        modeJeu = eval(input())
+    #PAS FINI"""
     modeJeu = 1
     
     #Initialisation des taille du jeu MORPION
-    taillegrillex = 3
-    taillegrilley = 3
+    if(modeJeu==1):
+        taillegrillex = 3
+        taillegrilley = 3
+    else:
+        taillegrillex = 6
+        taillegrilley = 7
     
     #On crée la grille de départ, valable pour n'importe quel jeu avec une grille
-    grille = [[0 for j in range(taillegrilley)] for i in range(taillegrillex)]
+    #grille = [[0 for j in range(taillegrilley)] for i in range(taillegrillex)]
+    grille = [[1,1,2],[0,2,0],[0,0,0]]
+    
     
     
 
