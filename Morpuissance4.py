@@ -422,10 +422,6 @@ if __name__== '__main__':
             modeJeu=2
         
         
-        print(J2.estuneIA)
-        print(Joueurs[1].estuneIA)
-        
-        
         
         
         def disableIAbutton():        
@@ -433,9 +429,10 @@ if __name__== '__main__':
         
         
         def AffichepasbuttononUsed(button):
-            if (button['text']!='X' or button['text']!='O'):
+            if (button['text']=='X' or button['text']=='O'):
+                button['disabledforeground']='white'
+            else:
                 button['disabledforeground']='gray'
-
 
         def finaldisableAllButton():        
             button1.configure(state=DISABLED)
@@ -464,16 +461,30 @@ if __name__== '__main__':
             buttonIA.configure(state=NORMAL)
             
             
+        def BoutonUsedstayused(button):
+            if (button['text']=='X' or button['text']=='O'):
+                button.configure(state=DISABLED)
+                button['disabledforeground']='white'
+                
         def EnableAllButton():        
             button1.configure(state=NORMAL)
+            BoutonUsedstayused(button1)
             button2.configure(state=NORMAL)
+            BoutonUsedstayused(button2)
             button3.configure(state=NORMAL)
+            BoutonUsedstayused(button3)
             button4.configure(state=NORMAL)
+            BoutonUsedstayused(button4)
             button5.configure(state=NORMAL)
+            BoutonUsedstayused(button5)
             button6.configure(state=NORMAL)
+            BoutonUsedstayused(button6)
             button7.configure(state=NORMAL)
+            BoutonUsedstayused(button7)
             button8.configure(state=NORMAL)
+            BoutonUsedstayused(button8)
             button9.configure(state=NORMAL)
+            BoutonUsedstayused(button9)
             
             
         def disableButton(buttons):
@@ -484,8 +495,9 @@ if __name__== '__main__':
         def btnClickIA(buttons):
             global tourjoueur, modeJeu, estuneIA, grille, Joueurs
             if(Joueurs[0].estuneIA == True and tourjoueur==True):
-                Joueurs[0].Joue(grille, modeJeu)
+                grille = Joueurs[0].Joue(grille, modeJeu)
                 tourjoueur = False
+                AfficherGrille(grille)
                 
                 if (Joueurs[1].estuneIA == False):
                     EnableAllButton()
@@ -498,10 +510,13 @@ if __name__== '__main__':
                     tkinter.messagebox.showinfo("Tic-Tac-Toe", 'Il y a une égalité.')
     
             elif(Joueurs[0].estuneIA == True and tourjoueur==False):
-                Joueurs[0].Joue(grille, modeJeu)
+                grille = Joueurs[0].Joue(grille, modeJeu)
                 tourjoueur = True
-                EnableAllButton()
-                disableIAbutton()
+                AfficherGrille(grille)
+                
+                if (Joueurs[0].estuneIA == False):
+                    EnableAllButton()
+                    disableIAbutton()
                 
                 if (J2.TerminalTest(grille, modeJeu)==2):
                     tkinter.messagebox.showinfo("Tic-Tac-Toe", "Le Joueur "+ J2.pseudo + " gagne.")
@@ -516,16 +531,18 @@ if __name__== '__main__':
                 grille[int(buttons['text'][0])][int(buttons['text'][1])]=1
                 AfficherGrille(grille)
                 print(J1.TerminalTest(grille, 1))
-                buttons['text']='X'
-                buttons['fg']='white'
-                disableButton(buttons)
-                tourjoueur = False
+                
                 
                 if (Joueurs[1].estuneIA == True):
                     finaldisableAllButton()
                     EnableIAButton()
-                
-                
+                    
+                    
+                buttons['text']='X'
+                buttons['fg']='white'
+                tourjoueur = False
+                buttons['disabledforeground']='white'
+                disableButton(buttons)
                 
                 if (J1.TerminalTest(grille, modeJeu)==1):
                     tkinter.messagebox.showinfo("Tic-Tac-Toe", "Le Joueur "+ J1.pseudo + " gagne.") 
@@ -537,13 +554,17 @@ if __name__== '__main__':
                 grille[int(buttons['text'][0])][int(buttons['text'][1])] = 2  
                 AfficherGrille(grille)
                 print(J2.TerminalTest(grille, 1))
-                buttons['text']='O'
-                buttons['fg']='white'
                 tourjoueur = True
-                finaldisableAllButton()
-                EnableIAButton()
                 
+                if (Joueurs[0].estuneIA == True):
+                    finaldisableAllButton()
+                    EnableIAButton()
+                
+                buttons['text']='O'
+                buttons['fg']='black'
+                buttons['disabledforeground']='white'
                 disableButton(buttons)
+                
                 if (J2.TerminalTest(grille, modeJeu)==2):
                     tkinter.messagebox.showinfo("Tic-Tac-Toe", "Le Joueur "+ J2.pseudo + " gagne.")
                     finaldisableAllButton()
