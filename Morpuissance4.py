@@ -9,7 +9,7 @@ Created on Fri Mar 13 09:08:49 2020
 from tkinter import *
 import tkinter.messagebox
 import copy
-
+from random import choice
 
 class Joueur:
     def __init__(self,pseudo, estuneIA, numJoueur):
@@ -71,49 +71,79 @@ class Joueur:
     
     def AlphaBetaSearch(self, grille, modeJeu):
         grillenv=copy.deepcopy(grille)
-        score,  actionspossibles= self.MaxValue(grillenv, modeJeu, -10, 10)
+        score,  actionspossibles, prof= self.MaxValue(grillenv, modeJeu, -50, 50, 1)
         return (actionspossibles)
         
     
-    def MinValue(self,grille, modeJeu, a, b):
+    def MinValue(self,grille, modeJeu, a, b, prof):
         gagnant = self.TerminalTest(grille, modeJeu)
         if(gagnant >=0):
-            return self.Utility(gagnant), [0,0]
+            return self.Utility(gagnant), [0,0], prof
         else:
             scoreMin = 10
+            profmin = 10
             actionspossibles = self.Action(grille, modeJeu)
             for i in range(len(actionspossibles)):
                 grillenv=copy.deepcopy(grille)
+                if prof ==2:
+                    print("   "*prof, end="")
+                    print("Coord : ")
+                    print("   "*prof, end="")
+                    print(actionspossibles[i])
                 grillenv[:]=list(self.Result(grillenv, actionspossibles[i], ((self.numJoueur%2)+1)))
-                score, action = self.MaxValue(grillenv, modeJeu, a, b)
-                if (score<scoreMin):
+                score, action, profcoupwin = self.MaxValue(grillenv, modeJeu, a, b, prof+1)
+                
+                if (score<scoreMin or (score==scoreMin and profcoupwin<profmin)):
+                    profmin = profcoupwin
                     scoreMin = score
                     choix = i
-                if(scoreMin<=a):
-                    return scoreMin, actionspossibles[i]
+                if prof ==2:
+                    print("   "*prof, end="")
+                    print("score final " + str(scoreMin))
+                """if(scoreMin<=a):
+                    if prof ==2:
+                        print("                     Choisi au final" + str(scoreMin))
+                    return scoreMin, actionspossibles[i], prof
                 if (scoreMin<b):
-                    b = scoreMin
-            return (scoreMin, actionspossibles[choix])
+                    b = scoreMin"""
+            if prof ==2:
+                print("                     Choisi au final" + str(scoreMin))
+            return (scoreMin, actionspossibles[choix], prof)
     
-    def MaxValue(self,grille, modeJeu, a, b):
+    def MaxValue(self,grille, modeJeu, a, b, prof):
         gagnant = self.TerminalTest(grille, modeJeu)
         if(gagnant >=0):
-            return self.Utility(gagnant), [0,0]
+            return self.Utility(gagnant), [0,0], prof
         else:
             scoreMax = -10
+            profmin = 10
             actionspossibles = self.Action(grille, modeJeu)
             for i in range(len(actionspossibles)):
                 grillenv=copy.deepcopy(grille)
                 grillenv[:]=list(self.Result(grillenv, actionspossibles[i], self.numJoueur))
-                score, action = self.MinValue(grillenv, modeJeu, a, b)
-                if (score>scoreMax):
+                if prof==1:
+                    print("Coord : ")
+                    print(actionspossibles[i])
+                score, action, profcoupwin = self.MinValue(grillenv, modeJeu, a, b, prof+1)
+                if (score>=scoreMax or (score==scoreMax and profcoupwin<profmin)or (score != -1 and score==scoreMax and profcoupwin == profmin and prof == 1 and choice([1,2])==1)):
+                    profmin = profcoupwin
                     scoreMax = score
                     choix = i
-                if(scoreMax>=b):
-                    return scoreMax, actionspossibles[i]
+                    if prof ==1:
+                        print("                                 Je vais choisir lui")
+                    
+                #if prof==1:
+                    #print("Score choisi : ")
+                    #print(scoreMax)
+                    #print("Coord choisi : ")
+                    #print(actionspossibles[choix])
+                """if(scoreMax>=b):
+                    if prof ==2:
+                        print("                     Choisi au final" + str(scoreMin))
+                    return scoreMax, actionspossibles[i], prof
                 if(scoreMax> a):
-                    a = scoreMax
-            return (scoreMax, actionspossibles[choix])
+                    a = scoreMax"""
+            return (scoreMax, actionspossibles[choix], prof)
         
         
 
@@ -160,15 +190,15 @@ class Joueur:
                 if(grille[i][j]==self.numJoueur and grille[i][j+1]==self.numJoueur and grille[i][j+2]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
                     if(modeJeu == 2):
                         if(grille[i][j+3]==self.numJoueur):
-                            gagnant = 1
+                            gagnant = self.numJoueur
                     else:
-                        gagnant = 1
+                        gagnant = self.numJoueur
                 elif(grille[i][j]==((self.numJoueur%2)+1) and grille[i][j+1]==((self.numJoueur%2)+1) and grille[i][j+2]==((self.numJoueur%2)+1)):
                     if(modeJeu == 2):
                         if(grille[i][j+3]==((self.numJoueur%2)+1)):
-                            gagnant = 2
+                            gagnant = ((self.numJoueur%2)+1)
                     else:
-                        gagnant = 2
+                        gagnant = ((self.numJoueur%2)+1)
          
         #Check si gagner par colonne
         for i in range(len(grille)-nombrepourgagner+1):
@@ -176,15 +206,15 @@ class Joueur:
                 if(grille[i][j]==self.numJoueur and grille[i+1][j]==self.numJoueur and grille[i+2][j]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
                     if(modeJeu == 2):
                         if(grille[i+3][j]==self.numJoueur):
-                            gagnant = 1
+                            gagnant = self.numJoueur
                     else:
-                        gagnant = 1
+                        gagnant = self.numJoueur
                 elif(grille[i][j]==((self.numJoueur%2)+1) and grille[i+1][j]==((self.numJoueur%2)+1) and grille[i+2][j]==((self.numJoueur%2)+1)):
                     if(modeJeu == 2):
                         if(grille[i+3][j]==((self.numJoueur%2)+1)):
-                            gagnant = 2
+                            gagnant = ((self.numJoueur%2)+1)
                     else:
-                        gagnant = 2
+                        gagnant = ((self.numJoueur%2)+1)
                         
         #Check si gagnant par diagonale descendante
         for i in range(len(grille)-nombrepourgagner+1):
@@ -192,15 +222,15 @@ class Joueur:
                 if(grille[i][j]==self.numJoueur and grille[i+1][j+1]==self.numJoueur and grille[i+2][j+2]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
                     if(modeJeu == 2):
                         if(grille[i+3][j+3]==self.numJoueur):
-                            gagnant = 1
+                            gagnant = self.numJoueur
                     else:
-                        gagnant = 1
+                        gagnant = self.numJoueur
                 elif(grille[i][j]==((self.numJoueur%2)+1) and grille[i+1][j+1]==((self.numJoueur%2)+1) and grille[i+2][j+2]==((self.numJoueur%2)+1)):
                     if(modeJeu == 2):
                         if(grille[i+3][j+3]==((self.numJoueur%2)+1)):
-                            gagnant = 2
+                            gagnant = ((self.numJoueur%2)+1)
                     else:
-                        gagnant = 2
+                        gagnant = ((self.numJoueur%2)+1)
         
         #Check si gagnant par diagonale montante
         for i in range(nombrepourgagner-1,len(grille)):
@@ -208,24 +238,24 @@ class Joueur:
                 if(grille[i][j]==self.numJoueur and grille[i-1][j+1]==self.numJoueur and grille[i-2][j+2]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
                     if(modeJeu == 2):
                         if(grille[i-3][j+3]==self.numJoueur):
-                            gagnant = 1
+                            gagnant = self.numJoueur
                     else:
-                        gagnant = 1
+                        gagnant = self.numJoueur
                 elif(grille[i][j]==((self.numJoueur%2)+1) and grille[i-1][j+1]==((self.numJoueur%2)+1) and grille[i-2][j+2]==((self.numJoueur%2)+1)):
                     if(modeJeu == 2):
                         if(grille[i-3][j+3]==((self.numJoueur%2)+1)):
-                            gagnant = 2
+                            gagnant = ((self.numJoueur%2)+1)
                     else:
-                        gagnant = 2
+                        gagnant = ((self.numJoueur%2)+1)
         
         return gagnant
         
     def Utility(self,gagnant):#On récupère le gagnant grâce à Terminal
         if(gagnant==0):#Cette valeur est retournée si il y a égalitée
             valeur = 0
-        elif(gagnant==1):
+        elif(gagnant==self.numJoueur):
             valeur = 1
-        elif(gagnant==2):
+        elif(gagnant==((self.numJoueur%2)+1)):
             valeur = -1
         return valeur
         
@@ -669,7 +699,7 @@ if __name__== '__main__':
         
         buttons = StringVar()
         #Allbuttons=[]
-
+        
         buttonIA = Button(tk, text='IA', font='Times 20 bold', bg='gray', fg='black', activeforeground='gray',activebackground='gray', disabledforeground='black', command=lambda: btnClickIA(btnClickIA))
         buttonIA.grid(row=4, column=0)
         
