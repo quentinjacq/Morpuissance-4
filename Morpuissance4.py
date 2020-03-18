@@ -6,8 +6,8 @@ Created on Fri Mar 13 09:08:49 2020
 @author: MOsmoz_
 """
 
-import tkinter
-#tkinter._test()
+from tkinter import *
+import tkinter.messagebox
 import copy
 
 
@@ -245,6 +245,7 @@ def AfficherGrille(grille):#Simple méthode pour afficher esthétiquement la gri
 
 
 if __name__== '__main__':
+    '''
     modeJeuvalide=False
     while(modeJeuvalide==False):
         
@@ -310,4 +311,293 @@ if __name__== '__main__':
     else:
         print(gagnant)
         print(str(Joueurs[gagnant-1].pseudo) + " a gagné !")
-    #cyprinul
+        '''
+        
+        
+        
+    #Initialisation des taille du jeu MORPION
+    #On crée la grille de départ, valable pour n'importe quel jeu avec une grille
+    grille = [[0 for j in range(3)] for i in range(3)]
+    
+    #On affiche l'état de la grille
+    AfficherGrille(grille)
+        
+    
+    tk2 =Tk()
+    p1 = StringVar()
+    p2 = StringVar()
+    tourjoueur = True
+    Joueurs = []
+    n=0
+    gagnant = -1    
+    estuneIA = False
+    modeJeu=1
+    
+    
+    player1_name = Entry(tk2, textvariable=p1, bd=5)
+    player1_name.grid(row=1, column=1, columnspan=8)
+    player2_name = Entry(tk2, textvariable=p2, bd=5)
+    player2_name.grid(row=2, column=1, columnspan=8)
+    
+    
+    
+
+    buttons = StringVar()
+
+    label = Label( tk2, text="Player 1:", font='Times 20 bold', bg='white', fg='black', height=1, width=8)
+    label.grid(row=1, column=0)
+    
+    label = Label( tk2, text="Player 2:", font='Times 20 bold', bg='white', fg='black', height=1, width=8)
+    label.grid(row=2, column=0) 
+  
+    
+    var1 = IntVar()
+    checkIA1 = Checkbutton(tk2, text="Player 1 is an IA", variable=var1)
+    checkIA1.grid(row=3, column=0)
+    var1.get()
+
+    var2 = IntVar()
+    checkIA2 = Checkbutton(tk2, text="Player 2 is an IA", variable=var2)
+    checkIA2.grid(row=3, column=1)
+    var2.get()
+    
+    
+    variable = StringVar(tk2)
+    variable.set("Tic Tac Toe") # default value  
+    w = OptionMenu(tk2, variable, "Tic Tac Toe", "Connect 4")
+    w.grid(row=4, column=0)
+    
+    
+    
+    
+    button_quitter = Button(tk2, text='Play', font='Times 20 bold', command = lambda: jeu())
+    button_quitter.grid(row=5, column=1)
+    
+
+    
+    def jeu():
+        global grille, estuneIA
+        button_quitter.configure(state=DISABLED)
+        
+        checkIA1.configure(state=DISABLED)
+        var2.get()
+        checkIA2.configure(state=DISABLED)
+        p1.get()
+        player1_name.configure(state=DISABLED)
+        p2.get()
+        player2_name.configure(state=DISABLED)
+        variable.get()
+        w.configure(state=DISABLED)
+        
+        tk = Tk()
+        tk.title("Tic Tac Toe")
+        
+        print(var1.get())
+        print(var2.get())
+        
+        if (var1.get()==0):
+            J1=Joueur(p1.get(),estuneIA,1)
+            Joueurs.append(J1)
+        elif(var1.get()==1):
+            estuneIA= True
+            J1=Joueur(p1.get(),estuneIA,1)    
+            Joueurs.append(J1)
+            
+            
+            
+        if(var2.get()==0):
+            estuneIA= False
+            J2=Joueur(p2.get(),estuneIA,2)
+            Joueurs.append(J2)
+        elif(var2.get()==1):
+            estuneIA= True
+            J2=Joueur(p2.get(),estuneIA,2)
+            Joueurs.append(J2)
+       
+        
+        
+        if(variable.get()=='Tic Tac Toe'):
+            modeJeu=1
+        else:
+            modeJeu=2
+        
+        
+        print(J2.estuneIA)
+        print(Joueurs[1].estuneIA)
+        
+        
+        
+        
+        def disableIAbutton():        
+            buttonIA.configure(state=DISABLED)
+        
+        
+        def AffichepasbuttononUsed(button):
+            if (button['text']!='X' or button['text']!='O'):
+                button['disabledforeground']='gray'
+
+
+        def finaldisableAllButton():        
+            button1.configure(state=DISABLED)
+            AffichepasbuttononUsed(button1)
+            button2.configure(state=DISABLED)
+            AffichepasbuttononUsed(button2)
+            button3.configure(state=DISABLED)
+            AffichepasbuttononUsed(button3)
+            button4.configure(state=DISABLED)
+            AffichepasbuttononUsed(button4)
+            button5.configure(state=DISABLED)
+            AffichepasbuttononUsed(button5)
+            button6.configure(state=DISABLED)
+            AffichepasbuttononUsed(button6)
+            button7.configure(state=DISABLED)
+            AffichepasbuttononUsed(button7)
+            button8.configure(state=DISABLED)
+            AffichepasbuttononUsed(button8)
+            button9.configure(state=DISABLED)
+            AffichepasbuttononUsed(button9)
+
+         
+            
+            
+        def EnableIAButton():        
+            buttonIA.configure(state=NORMAL)
+            
+            
+        def EnableAllButton():        
+            button1.configure(state=NORMAL)
+            button2.configure(state=NORMAL)
+            button3.configure(state=NORMAL)
+            button4.configure(state=NORMAL)
+            button5.configure(state=NORMAL)
+            button6.configure(state=NORMAL)
+            button7.configure(state=NORMAL)
+            button8.configure(state=NORMAL)
+            button9.configure(state=NORMAL)
+            
+            
+        def disableButton(buttons):
+            buttons.configure(state=DISABLED)
+    
+    
+    
+        def btnClickIA(buttons):
+            global tourjoueur, modeJeu, estuneIA, grille, Joueurs
+            if(Joueurs[0].estuneIA == True and tourjoueur==True):
+                Joueurs[0].Joue(grille, modeJeu)
+                tourjoueur = False
+                
+                if (Joueurs[1].estuneIA == False):
+                    EnableAllButton()
+                    disableIAbutton()
+                    
+                if (J1.TerminalTest(grille, modeJeu)==1):
+                    tkinter.messagebox.showinfo("Tic-Tac-Toe", "Le Joueur "+ J1.pseudo + " gagne.") 
+                    finaldisableAllButton()
+                elif (J1.TerminalTest(grille, modeJeu)==0):
+                    tkinter.messagebox.showinfo("Tic-Tac-Toe", 'Il y a une égalité.')
+    
+            elif(Joueurs[0].estuneIA == True and tourjoueur==False):
+                Joueurs[0].Joue(grille, modeJeu)
+                tourjoueur = True
+                EnableAllButton()
+                disableIAbutton()
+                
+                if (J2.TerminalTest(grille, modeJeu)==2):
+                    tkinter.messagebox.showinfo("Tic-Tac-Toe", "Le Joueur "+ J2.pseudo + " gagne.")
+                    finaldisableAllButton()
+                elif (J2.TerminalTest(grille, modeJeu)==0):
+                    tkinter.messagebox.showinfo("Tic-Tac-Toe", 'Il y a une égalité.')
+    
+    
+        def btnClick(buttons):
+            global tourjoueur, modeJeu, estuneIA, grille
+            if grille[int(buttons['text'][0])][int(buttons['text'][1])] ==0 and tourjoueur==True and Joueurs[0].estuneIA == False: 
+                grille[int(buttons['text'][0])][int(buttons['text'][1])]=1
+                AfficherGrille(grille)
+                print(J1.TerminalTest(grille, 1))
+                buttons['text']='X'
+                buttons['fg']='white'
+                disableButton(buttons)
+                tourjoueur = False
+                
+                if (Joueurs[1].estuneIA == True):
+                    finaldisableAllButton()
+                    EnableIAButton()
+                
+                
+                
+                if (J1.TerminalTest(grille, modeJeu)==1):
+                    tkinter.messagebox.showinfo("Tic-Tac-Toe", "Le Joueur "+ J1.pseudo + " gagne.") 
+                    finaldisableAllButton()
+                elif (J1.TerminalTest(grille, modeJeu)==0):
+                    tkinter.messagebox.showinfo("Tic-Tac-Toe", 'Il y a une égalité.')
+                     
+            elif (grille[int(buttons['text'][0])][int(buttons['text'][1])] == 0 and tourjoueur == False and Joueurs[1].estuneIA == False):
+                grille[int(buttons['text'][0])][int(buttons['text'][1])] = 2  
+                AfficherGrille(grille)
+                print(J2.TerminalTest(grille, 1))
+                buttons['text']='O'
+                buttons['fg']='white'
+                tourjoueur = True
+                finaldisableAllButton()
+                EnableIAButton()
+                
+                disableButton(buttons)
+                if (J2.TerminalTest(grille, modeJeu)==2):
+                    tkinter.messagebox.showinfo("Tic-Tac-Toe", "Le Joueur "+ J2.pseudo + " gagne.")
+                    finaldisableAllButton()
+                elif (J2.TerminalTest(grille, modeJeu)==0):
+                    tkinter.messagebox.showinfo("Tic-Tac-Toe", 'Il y a une égalité.')
+            
+
+        
+        buttons = StringVar()
+        
+
+        buttonIA = Button(tk, text='IA', font='Times 20 bold', bg='gray', fg='black', activeforeground='gray',activebackground='gray', disabledforeground='black', command=lambda: btnClickIA(btnClickIA))
+        buttonIA.grid(row=4, column=0)
+        
+      
+        button1 = Button(tk, text='00', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(button1))
+        button1.grid(row=5, column=0)
+        
+        button2 = Button(tk, text='01', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray',disabledforeground='white', height=4, width=8, command=lambda: btnClick(button2))
+        button2.grid(row=5, column=1)
+        
+        button3 = Button(tk, text='02', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray',disabledforeground='white', height=4, width=8, command=lambda: btnClick(button3))
+        button3.grid(row=5, column=2)
+        
+        button4 = Button(tk, text='10', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray',disabledforeground='white', height=4, width=8, command=lambda: btnClick(button4))
+        button4.grid(row=6, column=0)
+        
+        button5 = Button(tk, text='11', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray',disabledforeground='white', height=4, width=8, command=lambda: btnClick(button5))
+        button5.grid(row=6, column=1)
+        
+        button6 = Button(tk, text='12', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray',disabledforeground='white', height=4, width=8, command=lambda: btnClick(button6))
+        button6.grid(row=6, column=2)
+        
+        button7 = Button(tk, text='20', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray',disabledforeground='white', height=4, width=8, command=lambda: btnClick(button7))
+        button7.grid(row=7, column=0)
+        
+        button8 = Button(tk, text='21', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray',disabledforeground='white', height=4, width=8, command=lambda: btnClick(button8))
+        button8.grid(row=7, column=1)
+        
+        button9 = Button(tk, text='22', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray',disabledforeground='white', height=4, width=8, command=lambda: btnClick(button9))
+        button9.grid(row=7, column=2)        
+        
+        
+        if(Joueurs[0].estuneIA == True):
+            finaldisableAllButton()
+        elif(Joueurs[0].estuneIA == False):
+            disableIAbutton()
+ 
+        tk.mainloop()
+    
+    
+    
+    
+    tk2.mainloop()
+        
+    
+    
