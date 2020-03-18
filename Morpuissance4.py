@@ -28,7 +28,7 @@ class Joueur:
             grillenv=copy.deepcopy(grille)
             #grillenv[:]=list(self.Result(grillenv, actionfinal, self.numJoueur))
             print(self.numJoueur)
-            return self.Result(grillenv, actionfinal, self.numJoueur)
+            return self.Result(grillenv, actionfinal, self.numJoueur), actionfinal
         
         else:
             actionJoueurReel = [[],[]]
@@ -51,7 +51,7 @@ class Joueur:
                         CoordY =listeactions[i][0]
                 actionJoueurReel=[CoordX,CoordY]
                 grille = self.Result(grille, actionJoueurReel, self.numJoueur)
-        return grille
+        return grille, actionfinal
             
     
 
@@ -495,7 +495,7 @@ if __name__== '__main__':
         def btnClickIA(buttons):
             global tourjoueur, modeJeu, estuneIA, grille, Joueurs
             if(Joueurs[0].estuneIA == True and tourjoueur==True):
-                grille = Joueurs[0].Joue(grille, modeJeu)
+                grille, coord = Joueurs[0].Joue(grille, modeJeu)
                 tourjoueur = False
                 AfficherGrille(grille)
                 
@@ -510,7 +510,7 @@ if __name__== '__main__':
                     tkinter.messagebox.showinfo("Tic-Tac-Toe", 'Il y a une égalité.')
     
             elif(Joueurs[1].estuneIA == True and tourjoueur==False):
-                grille = Joueurs[1].Joue(grille, modeJeu)
+                grille, coord = Joueurs[1].Joue(grille, modeJeu)
                 tourjoueur = True
                 AfficherGrille(grille)
                 
