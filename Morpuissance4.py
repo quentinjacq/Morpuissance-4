@@ -509,8 +509,8 @@ if __name__== '__main__':
                 elif (J1.TerminalTest(grille, modeJeu)==0):
                     tkinter.messagebox.showinfo("Tic-Tac-Toe", 'Il y a une égalité.')
     
-            elif(Joueurs[0].estuneIA == True and tourjoueur==False):
-                grille = Joueurs[0].Joue(grille, modeJeu)
+            elif(Joueurs[1].estuneIA == True and tourjoueur==False):
+                grille = Joueurs[1].Joue(grille, modeJeu)
                 tourjoueur = True
                 AfficherGrille(grille)
                 
