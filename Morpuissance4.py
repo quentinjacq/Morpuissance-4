@@ -490,12 +490,104 @@ if __name__== '__main__':
         def disableButton(buttons):
             buttons.configure(state=DISABLED)
     
-    
+        def ModifieButton(coord, tourjoueur):
+            if(coord[0]==0):
+                numerobutton=coord[1]+1
+            elif(coord[0]==1):
+                numerobutton=coord[1]+4
+            else:
+                numerobutton=coord[1]+7
+            print(numerobutton)
+            
+            if (numerobutton == 1):
+                if (tourjoueur==True):
+                    button1['text']='X'
+                    button1['fg']='white'
+                    button1['disabledforeground']='white'
+                else:
+                    button1['text']='O'
+                    button1['fg']='white'
+                    button1['disabledforeground']='white'
+            elif (numerobutton == 2):
+                if (tourjoueur==True):
+                    button2['text']='X'
+                    button2['fg']='white'
+                    button2['disabledforeground']='white'
+                else:
+                    button2['text']='O'
+                    button2['fg']='white'
+                    button2['disabledforeground']='white'
+            elif (numerobutton == 3):
+                if (tourjoueur==True):
+                    button3['text']='X'
+                    button3['fg']='white'
+                    button3['disabledforeground']='white'
+                else:
+                    button3['text']='O'
+                    button3['fg']='white'
+                    button3['disabledforeground']='white'
+            elif (numerobutton == 4):
+                if (tourjoueur==True):
+                    button4['text']='X'
+                    button4['fg']='white'
+                    button4['disabledforeground']='white'
+                else:
+                    button4['text']='O'
+                    button4['fg']='white'
+                    button4['disabledforeground']='white'
+            elif (numerobutton == 5):
+                if (tourjoueur==True):
+                    button5['text']='X'
+                    button5['fg']='white'
+                    button5['disabledforeground']='white'
+                else:
+                    button5['text']='O'
+                    button5['fg']='white'
+                    button5['disabledforeground']='white'                   
+            elif (numerobutton == 6):
+                if (tourjoueur==True):
+                    button6['text']='X'
+                    button6['fg']='white'
+                    button6['disabledforeground']='white'
+                else:
+                    button6['text']='O'
+                    button6['fg']='white'
+                    button6['disabledforeground']='white'                    
+            elif (numerobutton == 7):
+                if (tourjoueur==True):
+                    button7['text']='X'
+                    button7['fg']='white'
+                    button7['disabledforeground']='white'
+                else:
+                    button7['text']='O'
+                    button7['fg']='white'
+                    button7['disabledforeground']='white'
+            elif (numerobutton == 8):
+                if (tourjoueur==True):
+                    button8['text']='X'
+                    button8['fg']='white'
+                    button8['disabledforeground']='white'
+                else:
+                    button8['text']='O'
+                    button8['fg']='white'
+                    button8['disabledforeground']='white'
+            elif (numerobutton == 9):
+                if (tourjoueur==True):
+                    button9['text']='X'
+                    button9['fg']='white'
+                    button9['disabledforeground']='white'
+                else:
+                    button9['text']='O'
+                    button9['fg']='white'
+                    button9['disabledforeground']='white'
     
         def btnClickIA(buttons):
             global tourjoueur, modeJeu, estuneIA, grille, Joueurs
             if(Joueurs[0].estuneIA == True and tourjoueur==True):
                 grille, coord = Joueurs[0].Joue(grille, modeJeu)
+                
+                
+                ModifieButton(coord, tourjoueur)
                 tourjoueur = False
                 AfficherGrille(grille)
                 
@@ -511,6 +603,8 @@ if __name__== '__main__':
     
             elif(Joueurs[1].estuneIA == True and tourjoueur==False):
                 grille, coord = Joueurs[1].Joue(grille, modeJeu)
+                
+                ModifieButton(coord, tourjoueur)
                 tourjoueur = True
                 AfficherGrille(grille)
                 
@@ -574,7 +668,7 @@ if __name__== '__main__':
 
         
         buttons = StringVar()
-        
+        #Allbuttons=[]
 
         buttonIA = Button(tk, text='IA', font='Times 20 bold', bg='gray', fg='black', activeforeground='gray',activebackground='gray', disabledforeground='black', command=lambda: btnClickIA(btnClickIA))
         buttonIA.grid(row=4, column=0)
