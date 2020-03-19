@@ -70,7 +70,7 @@ class Joueur:
                 if prof==1: #Au choix final, si il y a plusieurs possibilités équivalentes, on choisir aléatoirement entre celles-ci
                     random = choice([1,2,3,4])
                 score, action, profcoupwin = self.MinValue(grillenv, modeJeu, a, b, prof+1, niveau)
-                if (score>scoreMax or (score==scoreMax and profcoupwin<profmin)or (score != -1 and score==scoreMax and profcoupwin == profmin and prof == 1 and random==1)):
+                if (score>scoreMax or (score==scoreMax and profcoupwin<profmin)or (score != -1 and score==scoreMax and profcoupwin == profmin and prof == 1 and random==1)):#Si les choix sont équivalent, on en prend un au hasard (pour varier le jeu)
                     profmin = profcoupwin
                     scoreMax = score
                     choix = i
@@ -81,14 +81,14 @@ class Joueur:
             return (scoreMax, actionspossibles[choix], prof)
         
     def Action(self,grille, modeJeu): #Va lister les actions que l'IA peut réaliser
-        actionspossibles = [] #On intancie une liste vide qui va stocker les coordonnées de la grille dont la valeur est égale à 0
+        actionspossibles = [] #On intancie une liste vide qui va stocker les coordonnées de la grille jouable
         
-        if (modeJeu==1):
+        if (modeJeu==1):#Toutes les cases egales à 0
             for i in range(len(grille)):
                 for j in range(len(grille[i])):#On parcourt toutes les cases
                     if(grille[i][j]==0):#On ajoute au tableau si c'est égal à zéro
                         actionspossibles.append([i,j])
-        else:
+        else:#On prend en compte la "gravité"
             for j in range(len(grille[0])):
                 caseremplie = False
                 for i in range(len(grille)):#On parcourt toutes les cases
@@ -98,21 +98,19 @@ class Joueur:
                     elif(i == len(grille)-1 and caseremplie==False):
                         actionspossibles.append([i,j])
                         caseremplie = True
-                        
         return actionspossibles
-
             
     def Result(self, grille, action, numJoueur):#Va appliquer l'action à la grille (action est une liste avec les deux coordonnés puis la valeur)
-        grillenv=copy.deepcopy(grille)
-        grillenv[action[0]][action[1]]= numJoueur
+        grillenv=copy.deepcopy(grille)#On copie la grille initiale pour ne pas modifier l'originale
+        grillenv[action[0]][action[1]]= numJoueur#On change selon les informations de action
         return grillenv
     
     def TerminalTest(self, grille, modeJeu):#Test si c'est la fin du jeu, et qui a gagné
         
         if (modeJeu == 2):
-            nombrepourgagner = 4
+            nombrepourgagner = 4#Il faut 4 pions alignés pour gagner au puissance 4
         else:
-            nombrepourgagner = 3
+            nombrepourgagner = 3#Il faut 3 pions alignés pour gagner au morpion
         
         gagnant = 0#Retourne 0 si la table est complete sans gagnant, -1 si le jeu continue, 1 si le joueur 1 a gagné, 2 si le joueur 2 a gagné
         for i in range(len(grille)):
@@ -123,13 +121,13 @@ class Joueur:
         #Check si gagner par lignes
         for i in range(len(grille)):
             for j in range(len(grille[i])-nombrepourgagner+1):#On parcourt toutes les cases
-                if(grille[i][j]==self.numJoueur and grille[i][j+1]==self.numJoueur and grille[i][j+2]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
+                if(grille[i][j]==self.numJoueur and grille[i][j+1]==self.numJoueur and grille[i][j+2]==self.numJoueur):#Si 3 jetons du joueur sont alignés, alors il est le gagnant
                     if(modeJeu == 2):
-                        if(grille[i][j+3]==self.numJoueur):
+                        if(grille[i][j+3]==self.numJoueur):#+1 si on est au puissance 4
                             gagnant = self.numJoueur
                     else:
                         gagnant = self.numJoueur
-                elif(grille[i][j]==((self.numJoueur%2)+1) and grille[i][j+1]==((self.numJoueur%2)+1) and grille[i][j+2]==((self.numJoueur%2)+1)):
+                elif(grille[i][j]==((self.numJoueur%2)+1) and grille[i][j+1]==((self.numJoueur%2)+1) and grille[i][j+2]==((self.numJoueur%2)+1)):#idem que ci dessus mais pour son adversaire
                     if(modeJeu == 2):
                         if(grille[i][j+3]==((self.numJoueur%2)+1)):
                             gagnant = ((self.numJoueur%2)+1)
@@ -139,13 +137,13 @@ class Joueur:
         #Check si gagner par colonne
         for i in range(len(grille)-nombrepourgagner+1):
             for j in range(len(grille[i])):#On parcourt toutes les cases
-                if(grille[i][j]==self.numJoueur and grille[i+1][j]==self.numJoueur and grille[i+2][j]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
+                if(grille[i][j]==self.numJoueur and grille[i+1][j]==self.numJoueur and grille[i+2][j]==self.numJoueur):#Si 3 jetons du joueur sont alignés, alors il est le gagnant
                     if(modeJeu == 2):
-                        if(grille[i+3][j]==self.numJoueur):
+                        if(grille[i+3][j]==self.numJoueur):#+1 si on est au puissance 4
                             gagnant = self.numJoueur
                     else:
                         gagnant = self.numJoueur
-                elif(grille[i][j]==((self.numJoueur%2)+1) and grille[i+1][j]==((self.numJoueur%2)+1) and grille[i+2][j]==((self.numJoueur%2)+1)):
+                elif(grille[i][j]==((self.numJoueur%2)+1) and grille[i+1][j]==((self.numJoueur%2)+1) and grille[i+2][j]==((self.numJoueur%2)+1)):#idem que ci dessus mais pour son adversaire
                     if(modeJeu == 2):
                         if(grille[i+3][j]==((self.numJoueur%2)+1)):
                             gagnant = ((self.numJoueur%2)+1)
@@ -155,13 +153,13 @@ class Joueur:
         #Check si gagnant par diagonale descendante
         for i in range(len(grille)-nombrepourgagner+1):
             for j in range(len(grille[i])-nombrepourgagner+1):#On parcourt toutes les cases
-                if(grille[i][j]==self.numJoueur and grille[i+1][j+1]==self.numJoueur and grille[i+2][j+2]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
+                if(grille[i][j]==self.numJoueur and grille[i+1][j+1]==self.numJoueur and grille[i+2][j+2]==self.numJoueur):#Si 3 jetons du joueur sont alignés, alors il est le gagnant
                     if(modeJeu == 2):
-                        if(grille[i+3][j+3]==self.numJoueur):
+                        if(grille[i+3][j+3]==self.numJoueur):#+1 si on est au puissance 4
                             gagnant = self.numJoueur
                     else:
                         gagnant = self.numJoueur
-                elif(grille[i][j]==((self.numJoueur%2)+1) and grille[i+1][j+1]==((self.numJoueur%2)+1) and grille[i+2][j+2]==((self.numJoueur%2)+1)):
+                elif(grille[i][j]==((self.numJoueur%2)+1) and grille[i+1][j+1]==((self.numJoueur%2)+1) and grille[i+2][j+2]==((self.numJoueur%2)+1)):#idem que ci dessus mais pour son adversaire
                     if(modeJeu == 2):
                         if(grille[i+3][j+3]==((self.numJoueur%2)+1)):
                             gagnant = ((self.numJoueur%2)+1)
@@ -171,22 +169,22 @@ class Joueur:
         #Check si gagnant par diagonale montante
         for i in range(nombrepourgagner-1,len(grille)):
             for j in range(len(grille[i])-nombrepourgagner+1):#On parcourt toutes les cases
-                if(grille[i][j]==self.numJoueur and grille[i-1][j+1]==self.numJoueur and grille[i-2][j+2]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
+                if(grille[i][j]==self.numJoueur and grille[i-1][j+1]==self.numJoueur and grille[i-2][j+2]==self.numJoueur):#Si 3 jetons du joueur sont alignés, alors il est le gagnant
                     if(modeJeu == 2):
-                        if(grille[i-3][j+3]==self.numJoueur):
+                        if(grille[i-3][j+3]==self.numJoueur):#+1 si on est au puissance 4
                             gagnant = self.numJoueur
                     else:
                         gagnant = self.numJoueur
-                elif(grille[i][j]==((self.numJoueur%2)+1) and grille[i-1][j+1]==((self.numJoueur%2)+1) and grille[i-2][j+2]==((self.numJoueur%2)+1)):
+                elif(grille[i][j]==((self.numJoueur%2)+1) and grille[i-1][j+1]==((self.numJoueur%2)+1) and grille[i-2][j+2]==((self.numJoueur%2)+1)):#idem que ci dessus mais pour son adversaire
                     if(modeJeu == 2):
                         if(grille[i-3][j+3]==((self.numJoueur%2)+1)):
                             gagnant = ((self.numJoueur%2)+1)
                     else:
                         gagnant = ((self.numJoueur%2)+1)
         
-        return gagnant
+        return gagnant #On retourne le numéro du joueur gagnant (0 si la table est complete sans gagnant, -1 si le jeu continue, 1 si le joueur 1 a gagné, 2 si le joueur 2 a gagné)
     
-    def Etatjeu(self, grille, modeJeu):#Test si c'est la fin du jeu, et qui a gagné
+    def Etatjeu(self, grille, modeJeu):#Reçois une grille non-finie et estime qui est en train de gagner
         
         if (modeJeu == 2):
             nombrepourgagner = 4
