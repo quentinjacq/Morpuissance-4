@@ -38,13 +38,13 @@ class Joueur:
             return self.Etatjeu(grille, modeJeu), [0,0], prof
         else:
             scoreMin = 5000#valeur arbitraire qui va être changée dès la première occurence (+infin dans l'énoncé)
-            profmin = 10#Idem
+            profmin = -100#Idem
             actionspossibles = self.Action(grille, modeJeu)#On liste les actions pouvant être jouée
             for i in range(len(actionspossibles)):#pour chacun de ces actions
                 grillenv=copy.deepcopy(grille)#On crée une nouvelle grille pour ne pas modifier l'originale
                 grillenv[:]=list(self.Result(grillenv, actionspossibles[i], ((self.numJoueur%2)+1)))#On lui applique l'action
                 score, action, profcoupwin = self.MaxValue(grillenv, modeJeu, a, b, prof+1, niveau)#On regarde le score de l'action que va choisir max selon notre action
-                if (score<scoreMin or (score==scoreMin and profcoupwin<profmin)):#Si ce score est plus petit que le plus néfaste actuellement stockée dans scoreMin, alors il est mieux et on le choisi
+                if (score<scoreMin or (score==scoreMin and profcoupwin>profmin)):#Si ce score est plus petit que le plus néfaste actuellement stockée dans scoreMin, alors il est mieux et on le choisi
                     profmin = profcoupwin
                     scoreMin = score
                     choix = i
@@ -62,7 +62,7 @@ class Joueur:
             return self.Etatjeu(grille, modeJeu), [0,0], prof
         else:
             scoreMax = -5000
-            profmin = 10
+            profmin = 100
             actionspossibles = self.Action(grille, modeJeu)
             for i in range(len(actionspossibles)):
                 grillenv=copy.deepcopy(grille)
