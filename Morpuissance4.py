@@ -253,13 +253,16 @@ if __name__== '__main__':
     variable = StringVar(tk2)
     variable.set("Tic Tac Toe") # default value  
     w = OptionMenu(tk2, variable, "Tic Tac Toe", "Connect 4")
-    w.grid(row=4, column=4)
+    w.grid(row=4, column=1, columnspan=4)
     
-    
+    variable2 = StringVar(tk2)
+    variable2.set("Pour les Quentin #nuls") # default value  
+    w2 = OptionMenu(tk2, variable2, "Pour les Quentin #nuls", "Medium", "Hardcore")
+    w2.grid(row=4, column=5, columnspan=8)
     
     
     button_play = Button(tk2, text='Play', font='Times 20 bold', command = lambda: jeu())
-    button_play.grid(row=5, column=4)
+    button_play.grid(row=5, column=2, columnspan=3)
     
 
     
@@ -276,6 +279,8 @@ if __name__== '__main__':
         player2_name.configure(state=DISABLED)
         variable.get()
         w.configure(state=DISABLED)
+        variable2.get()
+        w2.configure(state=DISABLED)
         
         tk = Tk()
         tk.title("Tic Tac Toe/ Connect 4")
