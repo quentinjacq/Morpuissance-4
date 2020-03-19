@@ -6,111 +6,53 @@ Created on Fri Mar 13 09:08:49 2020
 @author: MOsmoz_
 """
 
-from tkinter import *
-import tkinter.messagebox
-import copy
-from random import choice
+from tkinter import * #Bibliothèque du GUI
+import tkinter.messagebox #Permet d'afficher le résultat
+import copy #Pour copier les grilles afin de les modifier dans différentes profondeur sans changer l'originale
+from random import choice #Permet d'insérer de l'aléatoire dans le choix de l'IA
 
 class Joueur:
-    def __init__(self,pseudo, estuneIA, numJoueur):
+    def __init__(self,pseudo, estuneIA, numJoueur):#Initialisation des joueurs avec leur numéro, leur pseudo, et estuneIA est True si c'est une IA et false sinon
         self.pseudo=pseudo
         self.estuneIA=estuneIA
         self.numJoueur=numJoueur
         
-    def getitem(self, coord):
+    def getitem(self, coord):#Permet de récupérer les infos dans le Main
         if (coord=='pseudo'):
             return self.pseudo
+        elif (coord=='estuneIA'):
+            return self.estuneIA
+        elif (coord=='numJoueur'):
+            return self.numJoueur
     
-    def Joue(self,grille, modeJeu):
-        print("Au tour de " + str(self.pseudo)) 
-        if(self.estuneIA==True):
-            actionfinal = self.AlphaBetaSearch(grille, modeJeu)
-            grillenv=copy.deepcopy(grille)
-            #grillenv[:]=list(self.Result(grillenv, actionfinal, self.numJoueur))
-            print(self.numJoueur)
-            return self.Result(grillenv, actionfinal, self.numJoueur), actionfinal
-        
-        else:
-            actionJoueurReel = [[],[]]
-            listeactions = self.Action(grille, modeJeu)
-            if modeJeu==1:
-                entreevalable = False
-                while(entreevalable == False):
-                    CoordX=(eval(input('En quelle coord X voulez-vous jouer ?')))
-                    CoordY=(eval(input('En quelle coord Y voulez-vous jouer ?')))
-                    if(grille[CoordX][CoordY]==0):
-                        entreevalable = True
-                    else:
-                        print("Tu peux pas jouer la")
-                
-                grille = self.Result(grille, [CoordX,CoordY], self.numJoueur)
-            else :               
-                CoordX=(eval(input('Dans quelle colonne voulez vous mettre votre pion ?')))
-                for i in range (len(listeactions)):
-                    if (listeactions[i][1]==CoordX):
-                        CoordY =listeactions[i][0]
-                actionJoueurReel=[CoordX,CoordY]
-                grille = self.Result(grille, actionJoueurReel, self.numJoueur)
-        return grille, actionfinal
-            
-    
+    def Joue(self,grille, modeJeu):#Début du tour de l'IA, appelé AlphaBetaSearch dans le TD
+        grillenv=copy.deepcopy(grille)#On crée une nouvelle matrice pour ne pas modifier l'originale dans nos test à venir dans le min max
+        score,  actionfinal, prof= self.MaxValue(grillenv, modeJeu, -50, 50, 1)#score et prof ne sont pas utilie ici mais le sont lorsque Min et Max s'appellent entre eux
+        return self.Result(grille, actionfinal, self.numJoueur), actionfinal#On retourne la grille modifiée avec l'action finale
 
-    
-    def MiniMaxDecision(self, grille, modeJeu):
-        scoreMax = -10
-        actionspossibles = self.Action(grille, modeJeu)
-        for i in range(len(actionspossibles)):
-            grillenv=copy.deepcopy(grille)
-            grillenv[:]=list(self.Result(grillenv, actionspossibles[i]), self.numJoueur)
-            score = self.MinValue(grillenv, modeJeu)
-            if (score>scoreMax):
-                scoreMax = score
-                choix = i
-        return (actionspossibles[choix])
-    
-    
-    def AlphaBetaSearch(self, grille, modeJeu):
-        grillenv=copy.deepcopy(grille)
-        score,  actionspossibles, prof= self.MaxValue(grillenv, modeJeu, -50, 50, 1)
-        return (actionspossibles)
-        
-    
-    def MinValue(self,grille, modeJeu, a, b, prof):
-        gagnant = self.TerminalTest(grille, modeJeu)
+    def MinValue(self,grille, modeJeu, a, b, prof):#On considère ici que c'est l'adversaire qui joue, donc qu'il va choisir l'action la plus néfaste pour nous (qui à un score/utility la plus faible)
+        gagnant = self.TerminalTest(grille, modeJeu)#On test si c'est la fin du jeu (gagnany = -1 : contine / = 0 égalité finie / = numJoueur C'est le joueur actuel qui gagne / = (numJoueur%2)+1 C'est l'adversaire qui gagne)
         if(gagnant >=0):
-            return self.Utility(gagnant), [0,0], prof
+            return self.Utility(gagnant), [0,0], prof #Retourne une valeur selon le gagnant : 0 si égalité, 1 si joueur actuel gagne, -1 si il perd
         else:
-            scoreMin = 10
-            profmin = 10
-            actionspossibles = self.Action(grille, modeJeu)
-            for i in range(len(actionspossibles)):
-                grillenv=copy.deepcopy(grille)
-                if prof ==2:
-                    print("   "*prof, end="")
-                    print("Coord : ")
-                    print("   "*prof, end="")
-                    print(actionspossibles[i])
-                grillenv[:]=list(self.Result(grillenv, actionspossibles[i], ((self.numJoueur%2)+1)))
-                score, action, profcoupwin = self.MaxValue(grillenv, modeJeu, a, b, prof+1)
-                
-                if (score<scoreMin or (score==scoreMin and profcoupwin<profmin)):
+            scoreMin = 10#valeur arbitraire qui va être changée dès la première occurence (+infin dans l'énoncé)
+            profmin = 10#Idem
+            actionspossibles = self.Action(grille, modeJeu)#On liste les actions pouvant être jouée
+            for i in range(len(actionspossibles)):#pour chacun de ces actions
+                grillenv=copy.deepcopy(grille)#On crée une nouvelle grille pour ne pas modifier l'originale
+                grillenv[:]=list(self.Result(grillenv, actionspossibles[i], ((self.numJoueur%2)+1)))#On lui applique l'action
+                score, action, profcoupwin = self.MaxValue(grillenv, modeJeu, a, b, prof+1)#On regarde le score de l'action que va choisir max selon notre action
+                if (score<scoreMin or (score==scoreMin and profcoupwin<profmin)):#Si ce score est plus petit que le plus néfaste actuellement stockée dans scoreMin, alors il est mieux et on le choisi
                     profmin = profcoupwin
                     scoreMin = score
                     choix = i
-                if prof ==2:
-                    print("   "*prof, end="")
-                    print("score final " + str(scoreMin))
-                if(scoreMin<a):
-                    if prof ==2:
-                        print("                     Choisi au final" + str(scoreMin))
+                if(scoreMin<a):#Si il est déja plus petit que alpha, pas besoin de continuer sur cette branche (élagage)
                     return scoreMin, actionspossibles[i], prof
-                if (scoreMin<b):
+                if (scoreMin<b):#Sinon on remplace beta
                     b = scoreMin
-            if prof ==2:
-                print("                     Choisi au final" + str(scoreMin))
             return (scoreMin, actionspossibles[choix], prof)
     
-    def MaxValue(self,grille, modeJeu, a, b, prof):
+    def MaxValue(self,grille, modeJeu, a, b, prof):#Idem que MIN VALUE
         gagnant = self.TerminalTest(grille, modeJeu)
         if(gagnant >=0):
             return self.Utility(gagnant), [0,0], prof
@@ -121,36 +63,19 @@ class Joueur:
             for i in range(len(actionspossibles)):
                 grillenv=copy.deepcopy(grille)
                 grillenv[:]=list(self.Result(grillenv, actionspossibles[i], self.numJoueur))
-                if prof==1:
-                    print("Coord : ")
-                    print(actionspossibles[i])
-                    random = choice([1,2])
-                    print("random : ")
-                    print(random)
+                if prof==1: #Au choix final, si il y a plusieurs possibilités équivalentes, on choisir aléatoirement entre celles-ci
+                    random = choice([1,2,3,4])
                 score, action, profcoupwin = self.MinValue(grillenv, modeJeu, a, b, prof+1)
                 if (score>scoreMax or (score==scoreMax and profcoupwin<profmin)or (score != -1 and score==scoreMax and profcoupwin == profmin and prof == 1 and random==1)):
                     profmin = profcoupwin
                     scoreMax = score
                     choix = i
-                    if prof ==1:
-                        print("                                 Je vais choisir lui")
-                    
-                #if prof==1:
-                    #print("Score choisi : ")
-                    #print(scoreMax)
-                    #print("Coord choisi : ")
-                    #print(actionspossibles[choix])
                 if(scoreMax>b):
-                    if prof ==2:
-                        print("                     Choisi au final" + str(scoreMin))
                     return scoreMax, actionspossibles[i], prof
                 if(scoreMax> a):
                     a = scoreMax
             return (scoreMax, actionspossibles[choix], prof)
         
-        
-
-    
     def Action(self,grille, modeJeu): #Va lister les actions que l'IA peut réaliser
         actionspossibles = [] #On intancie une liste vide qui va stocker les coordonnées de la grille dont la valeur est égale à 0
         if (modeJeu==1):
