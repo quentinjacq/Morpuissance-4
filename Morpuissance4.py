@@ -27,17 +27,17 @@ class Joueur:
     
     def Joue(self,grille, modeJeu):#Début du tour de l'IA, appelé AlphaBetaSearch dans le TD
         grillenv=copy.deepcopy(grille)#On crée une nouvelle matrice pour ne pas modifier l'originale dans nos test à venir dans le min max
-        score,  actionfinal, prof= self.MaxValue(grillenv, modeJeu, -50, 50, 1)#score et prof ne sont pas utilie ici mais le sont lorsque Min et Max s'appellent entre eux
+        score,  actionfinal, prof= self.MaxValue(grillenv, modeJeu, -5000, 5000, 1)#score et prof ne sont pas utilie ici mais le sont lorsque Min et Max s'appellent entre eux
         return self.Result(grille, actionfinal, self.numJoueur), actionfinal#On retourne la grille modifiée avec l'action finale
 
     def MinValue(self,grille, modeJeu, a, b, prof):#On considère ici que c'est l'adversaire qui joue, donc qu'il va choisir l'action la plus néfaste pour nous (qui à un score/utility la plus faible)
         gagnant = self.TerminalTest(grille, modeJeu)#On test si c'est la fin du jeu (gagnany = -1 : contine / = 0 égalité finie / = numJoueur C'est le joueur actuel qui gagne / = (numJoueur%2)+1 C'est l'adversaire qui gagne)
-        """elif(prof >= 3 and modeJeu == 2):#Si on arrive a une profondeur de 2 au Puissance 4,on établit dès maintenant une estimation de qui est en train de gagner (car sinon il y a trop de récureences)
-            return self.Utility(2), [0,0], prof"""
         if(gagnant >=0):
             return self.Utility(gagnant), [0,0], prof #Retourne une valeur selon le gagnant : 0 si égalité, 1 si joueur actuel gagne, -1 si il perd
+        elif(prof >= 3 and modeJeu == 2):#Si on arrive a une profondeur de 2 au Puissance 4,on établit dès maintenant une estimation de qui est en train de gagner (car sinon il y a trop de récureences)
+            return self.Etatjeu(grille, modeJeu), [0,0], prof
         else:
-            scoreMin = 10#valeur arbitraire qui va être changée dès la première occurence (+infin dans l'énoncé)
+            scoreMin = 5000#valeur arbitraire qui va être changée dès la première occurence (+infin dans l'énoncé)
             profmin = 10#Idem
             actionspossibles = self.Action(grille, modeJeu)#On liste les actions pouvant être jouée
             for i in range(len(actionspossibles)):#pour chacun de ces actions
@@ -60,8 +60,10 @@ class Joueur:
             return self.Utility(2), [0,0], prof"""
         if(gagnant >=0):
             return self.Utility(gagnant), [0,0], prof
+        elif(prof >= 3 and modeJeu == 2):#Si on arrive a une profondeur de 2 au Puissance 4,on établit dès maintenant une estimation de qui est en train de gagner (car sinon il y a trop de récureences)
+            return self.Etatjeu(grille, modeJeu), [0,0], prof
         else:
-            scoreMax = -10
+            scoreMax = -5000
             profmin = 10
             actionspossibles = self.Action(grille, modeJeu)
             for i in range(len(actionspossibles)):
@@ -181,14 +183,114 @@ class Joueur:
                         gagnant = ((self.numJoueur%2)+1)
         
         return gagnant
+    
+    def Etatjeu(self, grille, modeJeu):#Test si c'est la fin du jeu, et qui a gagné
+        
+        if (modeJeu == 2):
+            nombrepourgagner = 4
+        else:
+            nombrepourgagner = 3
+        
+        score = 0#Retourne 0 si la table est complete sans gagnant, -1 si le jeu continue, 1 si le joueur 1 a gagné, 2 si le joueur 2 a gagné
+        selfpion = 0
+        pionautre = 0
+        
+        #Check si gagner par lignes
+        for i in range(len(grille)):
+            for j in range(len(grille[i])-nombrepourgagner+1):#On parcourt toutes les cases
+                if(grille[i][j]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
+                    selfpion = selfpion+1
+                    for k in range(1,4):
+                        if grille[i][j+k]==self.numJoueur:
+                            selfpion = selfpion+1
+                        elif grille[i][j+k]==(self.numJoueur%2)+1:
+                            pionautre = pionautre + 1
+                    
+                    if pionautre==0:
+                        if(selfpion==1):
+                            score = score + 10
+                        elif (selfpion==2):
+                            score = score + 30
+                        elif (selfpion==3 and modeJeu == 2):
+                            score = score + 60
+                            
+                elif(grille[i][j]==(self.numJoueur%2)+1):
+                    pionautre = pionautre + 1
+                    for k in range(1,4):
+                        if grille[i][j+k]==self.numJoueur:
+                            selfpion = selfpion+1
+                        elif grille[i][j+k]==(self.numJoueur%2)+1:
+                            pionautre = pionautre + 1
+                    
+                    if selfpion==0:
+                        if(pionautre==1):
+                            score = score - 10
+                        elif (pionautre==2):
+                            score = score - 30
+                        elif (pionautre==3 and modeJeu == 2):
+                            score = score - 60
+
+
+
+
+
+        #Check si gagner par colonne
+        for i in range(len(grille)-nombrepourgagner+1):
+            for j in range(len(grille[i])):#On parcourt toutes les cases
+                if(grille[i][j]==self.numJoueur and grille[i+1][j]==self.numJoueur and grille[i+2][j]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
+                    if(modeJeu == 2):
+                        if(grille[i+3][j]==self.numJoueur):
+                            gagnant = self.numJoueur
+                    else:
+                        gagnant = self.numJoueur
+                elif(grille[i][j]==((self.numJoueur%2)+1) and grille[i+1][j]==((self.numJoueur%2)+1) and grille[i+2][j]==((self.numJoueur%2)+1)):
+                    if(modeJeu == 2):
+                        if(grille[i+3][j]==((self.numJoueur%2)+1)):
+                            gagnant = ((self.numJoueur%2)+1)
+                    else:
+                        gagnant = ((self.numJoueur%2)+1)
+                        
+        #Check si gagnant par diagonale descendante
+        for i in range(len(grille)-nombrepourgagner+1):
+            for j in range(len(grille[i])-nombrepourgagner+1):#On parcourt toutes les cases
+                if(grille[i][j]==self.numJoueur and grille[i+1][j+1]==self.numJoueur and grille[i+2][j+2]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
+                    if(modeJeu == 2):
+                        if(grille[i+3][j+3]==self.numJoueur):
+                            gagnant = self.numJoueur
+                    else:
+                        gagnant = self.numJoueur
+                elif(grille[i][j]==((self.numJoueur%2)+1) and grille[i+1][j+1]==((self.numJoueur%2)+1) and grille[i+2][j+2]==((self.numJoueur%2)+1)):
+                    if(modeJeu == 2):
+                        if(grille[i+3][j+3]==((self.numJoueur%2)+1)):
+                            gagnant = ((self.numJoueur%2)+1)
+                    else:
+                        gagnant = ((self.numJoueur%2)+1)
+        
+        #Check si gagnant par diagonale montante
+        for i in range(nombrepourgagner-1,len(grille)):
+            for j in range(len(grille[i])-nombrepourgagner+1):#On parcourt toutes les cases
+                if(grille[i][j]==self.numJoueur and grille[i-1][j+1]==self.numJoueur and grille[i-2][j+2]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
+                    if(modeJeu == 2):
+                        if(grille[i-3][j+3]==self.numJoueur):
+                            gagnant = self.numJoueur
+                    else:
+                        gagnant = self.numJoueur
+                elif(grille[i][j]==((self.numJoueur%2)+1) and grille[i-1][j+1]==((self.numJoueur%2)+1) and grille[i-2][j+2]==((self.numJoueur%2)+1)):
+                    if(modeJeu == 2):
+                        if(grille[i-3][j+3]==((self.numJoueur%2)+1)):
+                            gagnant = ((self.numJoueur%2)+1)
+                    else:
+                        gagnant = ((self.numJoueur%2)+1)
+        
+        return gagnant
         
     def Utility(self,gagnant):#On récupère le gagnant grâce à Terminal
         if(gagnant==0):#Cette valeur est retournée si il y a égalitée
             valeur = 0
         elif(gagnant==self.numJoueur):
-            valeur = 1
+            valeur = 5000
         elif(gagnant==((self.numJoueur%2)+1)):
-            valeur = -1
+            valeur = -5000
         return valeur
         
             
