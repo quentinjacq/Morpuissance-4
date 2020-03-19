@@ -64,6 +64,8 @@ class Joueur:
             scoreMax = -5000
             profmin = 100
             actionspossibles = self.Action(grille, modeJeu)
+            if prof==1:
+                print(actionspossibles)
             for i in range(len(actionspossibles)):
                 grillenv=copy.deepcopy(grille)
                 grillenv[:]=list(self.Result(grillenv, actionspossibles[i], self.numJoueur))
@@ -78,6 +80,7 @@ class Joueur:
                     return scoreMax, actionspossibles[i], prof
                 if(scoreMax> a):
                     a = scoreMax
+            
             return (scoreMax, actionspossibles[choix], prof)
         
     def Action(self,grille, modeJeu): #Va lister les actions que l'IA peut réaliser
@@ -91,13 +94,18 @@ class Joueur:
         else:#On prend en compte la "gravité"
             for j in range(len(grille[0])):
                 caseremplie = False
-                for i in range(len(grille)):#On parcourt toutes les cases
-                    if (grille[i][j]!=0 and caseremplie==False):
+                colonneremplie= False
+                for i in range(len(grille)):#On parcourt toutes les cases   
+                    if (grille[i][j]!=0 and caseremplie==False and i==0):
+                        colonneremplie= True
+                    elif (grille[i][j]!=0 and caseremplie==False and i!=0 and colonneremplie== False):
                         actionspossibles.append([i-1,j])
                         caseremplie = True
-                    elif(i == len(grille)-1 and caseremplie==False):
+                        
+                    elif(i == len(grille)-1 and caseremplie==False and grille[i][j]==0):
                         actionspossibles.append([i,j])
                         caseremplie = True
+                    
         return actionspossibles
             
     def Result(self, grille, action, numJoueur):#Va appliquer l'action à la grille (action est une liste avec les deux coordonnés puis la valeur)
@@ -542,7 +550,7 @@ if __name__== '__main__':
             if(modeJeu==1):
                 niveau1=9
             else:
-                niveau1=7
+                niveau1=6
         elif(variable2.get()=='Medium'):
             if(modeJeu==1):
                 niveau1=6
@@ -553,7 +561,7 @@ if __name__== '__main__':
             if(modeJeu==1):
                 niveau2=9
             else:
-                niveau2=7
+                niveau2=6
         elif(variable3.get()=='Medium'):
             if(modeJeu==1):
                 niveau2=6
