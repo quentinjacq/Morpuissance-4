@@ -64,14 +64,17 @@ class Joueur:
             scoreMax = -5000
             profmin = 100
             actionspossibles = self.Action(grille, modeJeu)
-            if prof==1:
-                print(actionspossibles)
             for i in range(len(actionspossibles)):
                 grillenv=copy.deepcopy(grille)
                 grillenv[:]=list(self.Result(grillenv, actionspossibles[i], self.numJoueur))
                 if prof==1: #Au choix final, si il y a plusieurs possibilités équivalentes, on choisir aléatoirement entre celles-ci
                     random = choice([1,2,3,4])
                 score, action, profcoupwin = self.MinValue(grillenv, modeJeu, a, b, prof+1, niveau)
+                if prof==1:
+                    print("Coord :")
+                    print(actionspossibles[i])
+                    print("   Score : \n", end='')
+                    print(score)
                 if (score>scoreMax or (score==scoreMax and profcoupwin<profmin)or (score != -1 and score==scoreMax and profcoupwin == profmin and prof == 1 and random==1)):#Si les choix sont équivalent, on en prend un au hasard (pour varier le jeu)
                     profmin = profcoupwin
                     scoreMax = score
@@ -248,7 +251,6 @@ class Joueur:
                         elif (pionautre==3 and modeJeu == 2):
                             score = score - 60
 
-
         selfpion = 0#On reset les pions
         pionautre = 0
 
@@ -297,7 +299,9 @@ class Joueur:
                         elif (pionautre==3 and modeJeu == 2):
                             score = score - 60
 
-                        
+        selfpion = 0#On reset les pions
+        pionautre = 0
+        
         #Check le potentiel de victoire sur les diagonales descendantes, idem que sur les lignes mais on change l'incrémentation lors du parcours de la grille
         for i in range(len(grille)-nombrepourgagner+1):
             for j in range(len(grille[i])-nombrepourgagner+1):#On parcourt toutes les cases
@@ -343,6 +347,8 @@ class Joueur:
                         elif (pionautre==3 and modeJeu == 2):
                             score = score - 60
 
+        selfpion = 0#On reset les pions
+        pionautre = 0
         
         #Check le potentiel de victoire sur les diagonales montante, idem que sur les lignes mais on change l'incrémentation lors du parcours de la grille
         for i in range(nombrepourgagner-1,len(grille)):
@@ -401,8 +407,9 @@ class Joueur:
         return valeur
         
             
-def AfficherGrille(grille):#Simple méthode pour afficher esthétiquement la grille
-    print("\n -----------")
+def AfficherGrille(grille):#Simple méthode pour afficher esthétiquement la grille dans la console
+    print()
+    print(" ---"*len(grille[0]))
     for i in range(len(grille)):
         print("| ",end='')
         for j in range(len(grille[i])):
@@ -412,7 +419,8 @@ def AfficherGrille(grille):#Simple méthode pour afficher esthétiquement la gri
                 print("O | ",end='')
             else:
                 print("  | ",end='')
-        print("\n -----------")
+        print()
+        print(" ---"*len(grille[0]))
 
 if __name__== '__main__':
     
@@ -433,9 +441,6 @@ if __name__== '__main__':
     player2_name = Entry(tk2, textvariable=p2, bd=5)
     player2_name.grid(row=2, column=1, columnspan=8)
     
-    
-   
-
     buttons = StringVar() #la variable buttons qui sera utilisé lorsqu'un bouton est utilisé
 
     #ici on affiche les 2 textes Player 1 et 2 avec des couleurs, polices et dimensions précises.
@@ -475,13 +480,10 @@ if __name__== '__main__':
     w3 = OptionMenu(tk2, variable3, "Beginner", "Medium", "Hardcore")
     w3.grid(row=2, column=13, columnspan=8)
     
-    
-    
     #le boutton lance la grille du jeu choisi, attention le bouton verrouille vos choix
     button_play = Button(tk2, text='Play', font='Times 20 bold', command = lambda: jeu())
     button_play.grid(row=6, column=3, columnspan=6)
     
-
     #le bouton play lance cette méthode
     def jeu():
         global grille, estuneIA, modeJeu, niveau1, niveau2
@@ -505,13 +507,9 @@ if __name__== '__main__':
         variable3.get()
         w3.configure(state=DISABLED)
         
-     
         #on crée une nouvelle fenetre
         tk = Tk()
         tk.title("Tic Tac Toe/ Connect 4")
-        
-        
-        
         
         #selon le choix de la case cochée ou non, on initialise les joueurs comme étant une IA ou non
         if (var1.get()==0):
@@ -523,8 +521,6 @@ if __name__== '__main__':
             J1=Joueur(p1.get(),estuneIA,1)    
             Joueurs.append(J1)
             
-            
-            
         if(var2.get()==0):
             estuneIA= False
             J2=Joueur(p2.get(),estuneIA,2)
@@ -534,7 +530,6 @@ if __name__== '__main__':
             J2=Joueur(p2.get(),estuneIA,2)
             Joueurs.append(J2)
        
-        
         #on définit le mode de jeu, et la taille de la grille correspondante
         if(variable.get()=='Tic Tac Toe'):
             modeJeu=1
@@ -571,17 +566,12 @@ if __name__== '__main__':
             else:
                 niveau2=5
          
-            
-            
         #Initialisation des taille du jeu MORPION
         #On crée la grille de départ, valable pour n'importe quel jeu avec une grille
         grille = [[0 for j in range(taillegrillex)] for i in range(taillegrilley)]
         
         #On affiche l'état de la grille
         AfficherGrille(grille)
-            
-            
-
             
         # on désactive les boutons IA
         def disableIAbutton():        
@@ -599,8 +589,6 @@ if __name__== '__main__':
             for i in range (len(Allbuttons)):
                 Allbuttons[i].configure(state=DISABLED)
                 AffichepasbuttononUsed(Allbuttons[i])
-            
-         
             
         #on réactive tous les boutons IA
         def EnableIAButton():        
@@ -664,7 +652,6 @@ if __name__== '__main__':
                     #on active les boutons du vrai Joueurs
                     disableIAbutton()
                
-    
             elif(Joueurs[1].estuneIA == True and tourjoueur==False):
                 #meme case mais pour le joueur 2
                 grille, coord = Joueurs[1].Joue(grille, modeJeu, niveau2)
@@ -693,7 +680,6 @@ if __name__== '__main__':
                 tkinter.messagebox.showinfo("Tic-Tac-Toe", 'There is a Tie.')
     
     
-    
         def btnClick(buttons):
             global tourjoueur, modeJeu, estuneIA, grille
             #le cas d'un bouton si le joueur est humain
@@ -715,8 +701,7 @@ if __name__== '__main__':
                     if (Joueurs[1].Action(grille, modeJeu)[i][1]==listcouppossible[1]):
                         listcouppossible=Joueurs[1].Action(grille, modeJeu)[i]
                         buttons = Allbuttons[ModifieOnlyButton(listcouppossible, tourjoueur)-1]
-                    
-            
+              
             #on vérifie que le bouton n'est pas deja utilisé
             if(grille[int(buttons['text'][0])][int(buttons['text'][1])]==0):
                 
@@ -753,9 +738,6 @@ if __name__== '__main__':
                         finaldisableAllButton()
                         EnableIAButton()
              
-            
-            
-            
             #meme verification que lors de la methode IA
             if (J2.TerminalTest(grille, modeJeu)==2):
                 finaldisableAllButton()
@@ -768,12 +750,7 @@ if __name__== '__main__':
             elif (J1.TerminalTest(grille, modeJeu)==1):
                 finaldisableAllButton()
                 tkinter.messagebox.showinfo("Tic-Tac-Toe", J1.pseudo + " wins.")
-                
             
- 
-        
-        
-        
         #variable bouton qui est appelée lors de la methode BtnClick
         buttons = StringVar()
 
@@ -799,10 +776,6 @@ if __name__== '__main__':
             Allbuttons.append(Button(tk, text='22', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(Allbuttons[8])))
             #chaque bouton s'appelle lui meme en tant que variable, c'est obligatoire pour pouvoit faire varier les valeurs du bouton
             
-            
-        
-        
-        
         elif (modeJeu==2):
             Allbuttons.append(Button(tk, text='00', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[0])))
             Allbuttons.append(Button(tk, text='01', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[1])))   
@@ -847,10 +820,6 @@ if __name__== '__main__':
             Allbuttons.append(Button(tk, text='55', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[40])))
             Allbuttons.append(Button(tk, text='56', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[41])))
 
-           
-
-            
-            
         index=0
         #on crée la grille pour chaque élément de notre tableau de Bouton
         for i in range (taillegrilley):   
@@ -865,8 +834,5 @@ if __name__== '__main__':
             disableIAbutton()
  
         tk.mainloop()
-    
-    
-    
     
     tk2.mainloop()
