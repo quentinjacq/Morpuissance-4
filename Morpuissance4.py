@@ -84,6 +84,7 @@ class Joueur:
         
     def Action(self,grille, modeJeu): #Va lister les actions que l'IA peut réaliser
         actionspossibles = [] #On intancie une liste vide qui va stocker les coordonnées de la grille dont la valeur est égale à 0
+        
         if (modeJeu==1):
             for i in range(len(grille)):
                 for j in range(len(grille[i])):#On parcourt toutes les cases
@@ -91,11 +92,14 @@ class Joueur:
                         actionspossibles.append([i,j])
         else:
             for j in range(len(grille[0])):
+                caseremplie = False
                 for i in range(len(grille)):#On parcourt toutes les cases
-                    if (grille[i][j]!=0):
+                    if (grille[i][j]!=0 and caseremplie==False):
                         actionspossibles.append([i-1,j])
-                    elif(i == len(grille)-1):
+                        caseremplie = True
+                    elif(i == len(grille)-1 and caseremplie==False):
                         actionspossibles.append([i,j])
+                        caseremplie = True
                         
         return actionspossibles
 
@@ -460,6 +464,15 @@ if __name__== '__main__':
         def disableButton(buttons):
             buttons.configure(state=DISABLED)
     
+    
+        def ModifieOnlyButton(coord, tourjoueur):            
+            if(modeJeu==1):
+                numerobutton=coord[1]+coord[0]*3 + 1
+            elif(modeJeu==2):
+                numerobutton=coord[1]+coord[0]*7 + 1
+            return numerobutton
+    
+    
         def ModifieButton(coord, tourjoueur):            
             if(modeJeu==1):
                 numerobutton=coord[1]+coord[0]*3 + 1
@@ -498,13 +511,16 @@ if __name__== '__main__':
             
             
             if (J1.TerminalTest(grille, modeJeu)==1):
+                finaldisableAllButton()
                 tkinter.messagebox.showinfo("Tic-Tac-Toe", J1.pseudo + " wins.") 
-                finaldisableAllButton()
+                
             elif (J2.TerminalTest(grille, modeJeu)==2):
-                tkinter.messagebox.showinfo("Tic-Tac-Toe", J2.pseudo + " wins.")
                 finaldisableAllButton()
+                tkinter.messagebox.showinfo("Tic-Tac-Toe", J2.pseudo + " wins.")
+                
             elif (J2.TerminalTest(grille, modeJeu)==0):
-                    tkinter.messagebox.showinfo("Tic-Tac-Toe", 'There is a Tie.')
+                finaldisableAllButton()
+                tkinter.messagebox.showinfo("Tic-Tac-Toe", 'There is a Tie.')
     
     
     
@@ -513,6 +529,25 @@ if __name__== '__main__':
 
             couple =str(buttons['text'])
             listcouppossible = [int(couple[0]),int(couple[1])]
+            print(listcouppossible)
+            print(listcouppossible[1])
+            print(Joueurs[0].Action(grille, modeJeu))
+            print(Joueurs[0].Action(grille, modeJeu)[0][1])
+            
+            if (tourjoueur==True):
+                for i in range (len(Joueurs[0].Action(grille, modeJeu))):
+                    if (Joueurs[0].Action(grille, modeJeu)[i][1]==listcouppossible[1]):
+                        listcouppossible=Joueurs[0].Action(grille, modeJeu)[i]
+                        buttons = Allbuttons[ModifieOnlyButton(listcouppossible, tourjoueur)-1]
+            else: 
+                for i in range (len(Joueurs[1].Action(grille, modeJeu))):
+                    if (Joueurs[1].Action(grille, modeJeu)[i][1]==listcouppossible[1]):
+                        listcouppossible=Joueurs[1].Action(grille, modeJeu)[i]
+                        buttons = Allbuttons[ModifieOnlyButton(listcouppossible, tourjoueur)-1]
+                        
+            print(listcouppossible)            
+            print(buttons['text'])           
+            
             
             if(grille[int(buttons['text'][0])][int(buttons['text'][1])]==0):
                 
@@ -550,14 +585,17 @@ if __name__== '__main__':
             
             
             if (J2.TerminalTest(grille, modeJeu)==2):
+                finaldisableAllButton()
                 tkinter.messagebox.showinfo("Tic-Tac-Toe", J2.pseudo + " wins.")
-                finaldisableAllButton()
+                
             elif (J2.TerminalTest(grille, modeJeu)==0):
+                finaldisableAllButton()
                 tkinter.messagebox.showinfo("Tic-Tac-Toe", 'There is a Tie.')
-                finaldisableAllButton()
+                
             elif (J1.TerminalTest(grille, modeJeu)==1):
-                tkinter.messagebox.showinfo("Tic-Tac-Toe", J1.pseudo + " wins.")
                 finaldisableAllButton()
+                tkinter.messagebox.showinfo("Tic-Tac-Toe", J1.pseudo + " wins.")
+                
             
  
         
