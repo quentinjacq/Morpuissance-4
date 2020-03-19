@@ -43,7 +43,7 @@ class Joueur:
             for i in range(len(actionspossibles)):#pour chacun de ces actions
                 grillenv=copy.deepcopy(grille)#On crée une nouvelle grille pour ne pas modifier l'originale
                 grillenv[:]=list(self.Result(grillenv, actionspossibles[i], ((self.numJoueur%2)+1)))#On lui applique l'action
-                score, action, profcoupwin = self.MaxValue(grillenv, modeJeu, a, b, prof+1)#On regarde le score de l'action que va choisir max selon notre action
+                score, action, profcoupwin = self.MaxValue(grillenv, modeJeu, a, b, prof+1, niveau)#On regarde le score de l'action que va choisir max selon notre action
                 if (score<scoreMin or (score==scoreMin and profcoupwin<profmin)):#Si ce score est plus petit que le plus néfaste actuellement stockée dans scoreMin, alors il est mieux et on le choisi
                     profmin = profcoupwin
                     scoreMin = score
@@ -69,7 +69,7 @@ class Joueur:
                 grillenv[:]=list(self.Result(grillenv, actionspossibles[i], self.numJoueur))
                 if prof==1: #Au choix final, si il y a plusieurs possibilités équivalentes, on choisir aléatoirement entre celles-ci
                     random = choice([1,2,3,4])
-                score, action, profcoupwin = self.MinValue(grillenv, modeJeu, a, b, prof+1)
+                score, action, profcoupwin = self.MinValue(grillenv, modeJeu, a, b, prof+1, niveau)
                 if (score>scoreMax or (score==scoreMax and profcoupwin<profmin)or (score != -1 and score==scoreMax and profcoupwin == profmin and prof == 1 and random==1)):
                     profmin = profcoupwin
                     scoreMax = score
