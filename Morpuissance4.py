@@ -199,37 +199,37 @@ class Joueur:
         else:
             nombrepourgagner = 3
         
-        score = 0#Retourne 0 si la table est complete sans gagnant, -1 si le jeu continue, 1 si le joueur 1 a gagné, 2 si le joueur 2 a gagné
-        selfpion = 0
-        pionautre = 0
+        score = 0#Les différents points des joueurs vont s'addtionner pour attribuer un score à la table en cours
+        selfpion = 0#Comptage des pions du joueur actuel
+        pionautre = 0#Comptage des pions de son adversaire
         
-        #Check si gagner par lignes
+        #Check le potentiel de victoire sur les lignes
         for i in range(len(grille)):
             for j in range(len(grille[i])-nombrepourgagner+1):#On parcourt toutes les cases
-                if(grille[i][j]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
-                    selfpion = selfpion+1
-                    for k in range(1,3):
-                        if grille[i][j+k]==self.numJoueur:
-                            selfpion = selfpion+1
-                        elif grille[i][j+k]==(self.numJoueur%2)+1:
-                            pionautre = pionautre + 1
-                    if (modeJeu==2):
+                if(grille[i][j]==self.numJoueur):#Si on tombe sur une case du joueur
+                    selfpion = selfpion+1#On rajoute 1 au compte de ses pions
+                    for k in range(1,3):#On parcours les 3 prochaines cases de la ligne
+                        if grille[i][j+k]==self.numJoueur:#Si cest un pion du joueur 
+                            selfpion = selfpion+1#On lui ajoute # à son compteur de pions
+                        elif grille[i][j+k]==(self.numJoueur%2)+1:#Si c'est a son adversaire
+                            pionautre = pionautre + 1#On ajoute à ce dernier 1 à son compteur
+                    if (modeJeu==2):#Si on est dans un puissance 4, on vérifie une case de plus
                         if grille[i][j+3]==self.numJoueur:
                             selfpion = selfpion+1
                         elif grille[i][j+3]==(self.numJoueur%2)+1:
                             pionautre = pionautre + 1
                     
-                    if pionautre==0:
-                        if(selfpion==1):
+                    if pionautre==0:#Ensuite, on regarde le potentiel de victoire grace à ce combo. Si il y a un pion de l'adversaire c'est déjà mort
+                        if(selfpion==1):#Ensuite on attribue un nombre de points selon le nombre de pion qu'on a
                             score = score + 10
                         elif (selfpion==2):
                             score = score + 30
                         elif (selfpion==3 and modeJeu == 2):
                             score = score + 60
                             
-                elif(grille[i][j]==(self.numJoueur%2)+1):
+                elif(grille[i][j]==(self.numJoueur%2)+1):#On fait la même chose que ci-dessus mais si on tombe sur une case de l'adversaire
                     pionautre = pionautre + 1
-                    for k in range(1,3):
+                    for k in range(1,3):#Même méthode de comptage de pion
                         if grille[i][j+k]==self.numJoueur:
                             selfpion = selfpion+1
                         elif grille[i][j+k]==(self.numJoueur%2)+1:
@@ -240,7 +240,7 @@ class Joueur:
                         elif grille[i][j+3]==(self.numJoueur%2)+1:
                             pionautre = pionautre + 1
                     
-                    if selfpion==0:
+                    if selfpion==0:#Si il y a un de nos pions, il ne peut pas gagner, sinon on attribue un score négatif
                         if(pionautre==1):
                             score = score - 10
                         elif (pionautre==2):
@@ -249,10 +249,13 @@ class Joueur:
                             score = score - 60
 
 
-        #Check si gagner par colonne
+        selfpion = 0#On reset les pions
+        pionautre = 0
+
+        #Check le potentiel de victoire sur les colonnes, idem que sur les lignes mais on change l'incrémentation lors du parcours de la grille
         for i in range(len(grille)-nombrepourgagner+1):
-            for j in range(len(grille[i])):#On parcourt toutes les cases
-                if(grille[i][j]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
+            for j in range(len(grille[i])):
+                if(grille[i][j]==self.numJoueur):
                     selfpion = selfpion+1
                     for k in range(1,3):
                         if grille[i+k][j]==self.numJoueur:
@@ -273,7 +276,7 @@ class Joueur:
                         elif (selfpion==3 and modeJeu == 2):
                             score = score + 60
                 
-                elif(grille[i][j]==(self.numJoueur%2)+1):#Si une case est égalse à 1, on ajoute la coord au joueur 1
+                elif(grille[i][j]==(self.numJoueur%2)+1):
                     pionautre = pionautre + 1
                     for k in range(1,3):
                         if grille[i+k][j]==self.numJoueur:
@@ -295,7 +298,7 @@ class Joueur:
                             score = score - 60
 
                         
-        #Check si gagnant par diagonale descendante
+        #Check le potentiel de victoire sur les diagonales descendantes, idem que sur les lignes mais on change l'incrémentation lors du parcours de la grille
         for i in range(len(grille)-nombrepourgagner+1):
             for j in range(len(grille[i])-nombrepourgagner+1):#On parcourt toutes les cases
                 if(grille[i][j]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
@@ -341,10 +344,10 @@ class Joueur:
                             score = score - 60
 
         
-        #Check si gagnant par diagonale montante
+        #Check le potentiel de victoire sur les diagonales montante, idem que sur les lignes mais on change l'incrémentation lors du parcours de la grille
         for i in range(nombrepourgagner-1,len(grille)):
-            for j in range(len(grille[i])-nombrepourgagner+1):#On parcourt toutes les cases
-                if(grille[i][j]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
+            for j in range(len(grille[i])-nombrepourgagner+1):
+                if(grille[i][j]==self.numJoueur):
                     selfpion = selfpion+1
                     for k in range(1,3):
                         if grille[i-k][j+k]==self.numJoueur:
@@ -365,7 +368,7 @@ class Joueur:
                         elif (selfpion==3 and modeJeu == 2):
                             score = score + 60
                 
-                elif(grille[i][j]==(self.numJoueur%2)+1):#Si une case est égalse à 1, on ajoute la coord au joueur 1
+                elif(grille[i][j]==(self.numJoueur%2)+1):
                     pionautre = pionautre + 1
                     for k in range(1,3):
                         if grille[i-k][j+k]==self.numJoueur:
@@ -386,15 +389,15 @@ class Joueur:
                         elif (pionautre==3 and modeJeu == 2):
                             score = score - 60
         
-        return score
+        return score #On retourne le total score de la table donnée
         
-    def Utility(self,gagnant):#On récupère le gagnant grâce à Terminal
+    def Utility(self,gagnant):#On récupère le gagnant grâce à Terminal, et on applique simplement un score
         if(gagnant==0):#Cette valeur est retournée si il y a égalitée
             valeur = 0
-        elif(gagnant==self.numJoueur):
+        elif(gagnant==self.numJoueur):#Si on gagne, on met une grosse valeur pour le viser absolument
             valeur = 5000
         elif(gagnant==((self.numJoueur%2)+1)):
-            valeur = -5000
+            valeur = -5000#Si on perd, on met une très faible valeur pour l'éviter absolument
         return valeur
         
             
