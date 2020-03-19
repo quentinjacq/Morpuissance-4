@@ -407,86 +407,107 @@ def AfficherGrille(grille):#Simple méthode pour afficher esthétiquement la gri
 
 if __name__== '__main__':
     
-    tk2 =Tk()
-    p1 = StringVar()
+    tk2 =Tk() #on initialise une premiere fenetre qui nous permettra de prendre les infos sur les joueurs, le jeu, la difficulté etc
+    p1 = StringVar()#variables pour le pseudo des joueurs
     p2 = StringVar()
-    tourjoueur = True
-    Joueurs = []
+    tourjoueur = True# variable qui permet de savoir a qui est le tour
+    Joueurs = []# tableau de classe
     n=0
     gagnant = -1    
-    estuneIA = False
-    modeJeu=1
-    niveau=3
-    
+    estuneIA = False    # booleen qui nous permet de savoir si un joueur un est une IA ou non
+    modeJeu=1   # le mode de Jeu
+    niveau1=3    # le niveau de diff
+    niveau2=3 
+    #cette partie crée les boxes dans lesquelles on peut rentrer les pseudos des joueurs
     player1_name = Entry(tk2, textvariable=p1, bd=5)
-    player1_name.grid(row=1, column=1, columnspan=8)
+    player1_name.grid(row=1, column=1, columnspan=8)    # .grid permet de faire l'affichage selon un quadrillage prédéfini par Tkinter
     player2_name = Entry(tk2, textvariable=p2, bd=5)
     player2_name.grid(row=2, column=1, columnspan=8)
     
     
    
 
-    buttons = StringVar()
+    buttons = StringVar() #la variable buttons qui sera utilisé lorsqu'un bouton est utilisé
 
+    #ici on affiche les 2 textes Player 1 et 2 avec des couleurs, polices et dimensions précises.
     label = Label( tk2, text="Player 1:", font='Helvetica 20 bold', bg='white', fg='black', height=1, width=8,)
     label.grid(row=1, column=0)
     
     label = Label( tk2, text="Player 2:", font='Helvetica 20 bold', bg='white', fg='black', height=1, width=8)
     label.grid(row=2, column=0) 
   
-    
+    #ici on crée une selection, ou l'on peut choisir si le joueur est une IA, il suffit de cliquer pour cocher la case
     var1 = IntVar()
     checkIA1 = Checkbutton(tk2, text="Player 1 is an AI", variable=var1)
     checkIA1.grid(row=1, column=12)
     var1.get()
-
+    
+    #ici on fait la meme chose mais avec le 2eme joueur
     var2 = IntVar()
     checkIA2 = Checkbutton(tk2, text="Player 2 is an AI", variable=var2)
     checkIA2.grid(row=2, column=12)
     var2.get()
     
-    
+    # ici on va crée une liste de selection, cad que le joueur peut choisir entre Tic tac toe et Connect 4, la valeur par défaut est Tic tac toe
     variable = StringVar(tk2)
     variable.set("Tic Tac Toe") # default value  
     w = OptionMenu(tk2, variable, "Tic Tac Toe", "Connect 4")
-    w.grid(row=4, column=1, columnspan=4)
+    w.grid(row=4, column=3, columnspan=6)
     
+    # pareil ici avec le niveau de difficulté
     variable2 = StringVar(tk2)
     variable2.set("Beginner") # default value  
     w2 = OptionMenu(tk2, variable2, "Beginner", "Medium", "Hardcore")
-    w2.grid(row=4, column=5, columnspan=8)
+    w2.grid(row=1, column=13, columnspan=8)
+    
+    # pareil ici avec le niveau de difficulté
+    variable3 = StringVar(tk2)
+    variable3.set("Beginner") # default value  
+    w3 = OptionMenu(tk2, variable3, "Beginner", "Medium", "Hardcore")
+    w3.grid(row=2, column=13, columnspan=8)
     
     
+    
+    #le boutton lance la grille du jeu choisi, attention le bouton verrouille vos choix
     button_play = Button(tk2, text='Play', font='Times 20 bold', command = lambda: jeu())
-    button_play.grid(row=5, column=2, columnspan=3)
+    button_play.grid(row=6, column=3, columnspan=6)
     
 
-    
+    #le bouton play lance cette méthode
     def jeu():
-        global grille, estuneIA, modeJeu, niveau
+        global grille, estuneIA, modeJeu, niveau1, niveau2
         button_play.configure(state=DISABLED)
-        
+        #global permet de récupérer les valeurs initialisées précédemment
+        #on va mettre tout les butons en DISABLED, on ne peut plus les utiliser
         checkIA1.configure(state=DISABLED)
         var2.get()
+        #.get() permet de prendre la valeur de la case, 0 si elle n'est pas cochée, 1 autrement
         checkIA2.configure(state=DISABLED)
         p1.get()
+        # on récupere le pseudo du J1
         player1_name.configure(state=DISABLED)
-        p2.get()
+        p2.get()        
         player2_name.configure(state=DISABLED)
         variable.get()
+        #on récupère le nom du jeu 
         w.configure(state=DISABLED)
         variable2.get()
         w2.configure(state=DISABLED)
+        variable3.get()
+        w3.configure(state=DISABLED)
         
+     
+        #on crée une nouvelle fenetre
         tk = Tk()
         tk.title("Tic Tac Toe/ Connect 4")
         
         
         
         
-        
+        #selon le choix de la case cochée ou non, on initialise les joueurs comme étant une IA ou non
         if (var1.get()==0):
             J1=Joueur(p1.get(),estuneIA,1)
+            #p1.get() est le pseudo du joueur 1
             Joueurs.append(J1)
         elif(var1.get()==1):
             estuneIA= True
@@ -505,7 +526,7 @@ if __name__== '__main__':
             Joueurs.append(J2)
        
         
-        
+        #on définit le mode de jeu, et la taille de la grille correspondante
         if(variable.get()=='Tic Tac Toe'):
             modeJeu=1
         else:
@@ -520,10 +541,26 @@ if __name__== '__main__':
             
             
         if(variable2.get()=='Hardcore'):
-            niveau=9
+            if(modeJeu==1):
+                niveau1=9
+            else:
+                niveau1=7
         elif(variable2.get()=='Medium'):
-            niveau=6
-        
+            if(modeJeu==1):
+                niveau1=6
+            else:
+                niveau1=5
+                
+        if(variable3.get()=='Hardcore'):
+            if(modeJeu==1):
+                niveau2=9
+            else:
+                niveau2=7
+        elif(variable3.get()=='Medium'):
+            if(modeJeu==1):
+                niveau2=6
+            else:
+                niveau2=5
          
             
             
@@ -594,10 +631,10 @@ if __name__== '__main__':
             Allbuttons[numerobutton-1]['disabledforeground']='white'
     
         def btnClickIA(buttons):
-            global tourjoueur, modeJeu, estuneIA, grille, Joueurs,niveau
+            global tourjoueur, modeJeu, estuneIA, grille, Joueurs,niveau1, niveau2
             
             if(Joueurs[0].estuneIA == True and tourjoueur==True):
-                grille, coord = Joueurs[0].Joue(grille, modeJeu, niveau)
+                grille, coord = Joueurs[0].Joue(grille, modeJeu, niveau1)
                 
                 ModifieButton(coord, tourjoueur)
                 tourjoueur = False
@@ -609,7 +646,7 @@ if __name__== '__main__':
                
     
             elif(Joueurs[1].estuneIA == True and tourjoueur==False):
-                grille, coord = Joueurs[1].Joue(grille, modeJeu, niveau)
+                grille, coord = Joueurs[1].Joue(grille, modeJeu, niveau2)
                 
                 ModifieButton(coord, tourjoueur)
                 tourjoueur = True
