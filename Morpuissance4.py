@@ -162,9 +162,9 @@ class Joueur:
             for j in range(len(grille[0])):
                 for i in range(len(grille)):#On parcourt toutes les cases
                     if (grille[i][j]!=0):
-                        actionspossibles.append(i-1,j)
+                        actionspossibles.append([i-1,j])
                     elif(i == len(grille)-1):
-                        actionspossibles.append(i,j)
+                        actionspossibles.append([i,j])
                         
         return actionspossibles
 
@@ -331,7 +331,7 @@ if __name__== '__main__':
 
     
     def jeu():
-        global grille, estuneIA
+        global grille, estuneIA, modeJeu
         button_quitter.configure(state=DISABLED)
         
         checkIA1.configure(state=DISABLED)
@@ -432,13 +432,11 @@ if __name__== '__main__':
         def disableButton(buttons):
             buttons.configure(state=DISABLED)
     
-        def ModifieButton(coord, tourjoueur):
-            if(coord[0]==0):
-                numerobutton=coord[1]+1
-            elif(coord[0]==1):
-                numerobutton=coord[1]+4
-            else:
-                numerobutton=coord[1]+7
+        def ModifieButton(coord, tourjoueur):            
+            if(modeJeu==1):
+                numerobutton=coord[1]+coord[0]*3 + 1
+            elif(modeJeu==2):
+                numerobutton=coord[1]+coord[0]*7 + 1
             
             Allbuttons[numerobutton-1]['text']='X' if (tourjoueur== True) else 'O'
             Allbuttons[numerobutton-1]['fg']='white'
@@ -446,6 +444,7 @@ if __name__== '__main__':
     
         def btnClickIA(buttons):
             global tourjoueur, modeJeu, estuneIA, grille, Joueurs
+            
             if(Joueurs[0].estuneIA == True and tourjoueur==True):
                 grille, coord = Joueurs[0].Joue(grille, modeJeu)
                 print ("terminal test ia")
@@ -487,8 +486,12 @@ if __name__== '__main__':
     
         def btnClick(buttons):
             global tourjoueur, modeJeu, estuneIA, grille
+
+            couple =str(buttons['text'])
+            listcouppossible = [int(couple[0]),int(couple[1])]
             
-            if grille[int(buttons['text'][0])][int(buttons['text'][1])]==0 and tourjoueur==True and Joueurs[0].estuneIA == False: 
+
+            if grille[int(buttons['text'][0])][int(buttons['text'][1])]==0 and tourjoueur==True and Joueurs[0].estuneIA == False and listcouppossible in Joueurs[0].Action(grille, modeJeu): 
                 grille[int(buttons['text'][0])][int(buttons['text'][1])]=1
                 AfficherGrille(grille)
                 print ("terminal test joeuru")
@@ -512,7 +515,7 @@ if __name__== '__main__':
                 elif (J1.TerminalTest(grille, modeJeu)==0):
                     tkinter.messagebox.showinfo("Tic-Tac-Toe", 'Il y a une égalité.')
                      
-            elif (grille[int(buttons['text'][0])][int(buttons['text'][1])] == 0 and tourjoueur == False and Joueurs[1].estuneIA == False):
+            elif (grille[int(buttons['text'][0])][int(buttons['text'][1])] == 0 and tourjoueur == False and Joueurs[1].estuneIA == False and listcouppossible in Joueurs[1].Action(grille, modeJeu)):
                 grille[int(buttons['text'][0])][int(buttons['text'][1])] = 2  
                 AfficherGrille(grille)
                 print ("terminal test joeuru")
@@ -537,7 +540,6 @@ if __name__== '__main__':
 
         
         buttons = StringVar()
-        textbutton = StringVar()
 
         buttonIA = Button(tk, text='IA', font='Times 20 bold', bg='gray', fg='black', activeforeground='gray',activebackground='gray', disabledforeground='black', command=lambda: btnClickIA(btnClickIA))
         buttonIA.grid(row=4, column=0)
@@ -611,7 +613,7 @@ if __name__== '__main__':
             Allbuttons.append(Button(tk, text='56', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[41])))
 
            
-            print(len(Allbuttons))
+
             
             
             index=0
@@ -619,8 +621,6 @@ if __name__== '__main__':
                 for j in range (taillegrillex): 
                    Allbuttons[index].grid(row=i+5, column=j)
                    index = index+1
-               
-        
 
         
         if(Joueurs[0].estuneIA == True):
