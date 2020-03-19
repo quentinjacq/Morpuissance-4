@@ -220,7 +220,7 @@ if __name__== '__main__':
     gagnant = -1    
     estuneIA = False
     modeJeu=1
-    
+    niveau=3
     
     player1_name = Entry(tk2, textvariable=p1, bd=5)
     player1_name.grid(row=1, column=1, columnspan=8)
@@ -257,7 +257,7 @@ if __name__== '__main__':
     
     variable2 = StringVar(tk2)
     variable2.set("Pour les Quentin #nuls") # default value  
-    w2 = OptionMenu(tk2, variable2, "Pour les Quentin #nuls", "Medium", "Hardcore")
+    w2 = OptionMenu(tk2, variable2, "Beginner", "Medium", "Hardcore")
     w2.grid(row=4, column=5, columnspan=8)
     
     
@@ -284,6 +284,9 @@ if __name__== '__main__':
         
         tk = Tk()
         tk.title("Tic Tac Toe/ Connect 4")
+        
+        
+        
         
         
         if (var1.get()==0):
@@ -318,6 +321,14 @@ if __name__== '__main__':
         else:
             taillegrillex = 7
             taillegrilley = 6
+            
+            
+        if(variable2.get()=='Hardcore'):
+            niveau=9
+        elif(variable2.get()=='Medium'):
+            niveau=6
+        
+         
             
             
         #Initialisation des taille du jeu MORPION
@@ -390,7 +401,7 @@ if __name__== '__main__':
             global tourjoueur, modeJeu, estuneIA, grille, Joueurs
             
             if(Joueurs[0].estuneIA == True and tourjoueur==True):
-                grille, coord = Joueurs[0].Joue(grille, modeJeu)
+                grille, coord = Joueurs[0].Joue(grille, modeJeu, niveau)
                 
                 ModifieButton(coord, tourjoueur)
                 tourjoueur = False
@@ -402,7 +413,7 @@ if __name__== '__main__':
                
     
             elif(Joueurs[1].estuneIA == True and tourjoueur==False):
-                grille, coord = Joueurs[1].Joue(grille, modeJeu)
+                grille, coord = Joueurs[1].Joue(grille, modeJeu, niveau)
                 
                 ModifieButton(coord, tourjoueur)
                 tourjoueur = True
