@@ -703,12 +703,13 @@ if __name__== '__main__':
             listcouppossible = [int(couple[0]),int(couple[1])]
             
             #dans le cas du puissance 4, cette méthode modélise la gravité
-            #
+            #si les coord j sont pareils, alors le coup a jouer devient celui présent dans actionspossibles
             if (tourjoueur==True and modeJeu==2):
                 for i in range (len(Joueurs[0].Action(grille, modeJeu))):
                     if (Joueurs[0].Action(grille, modeJeu)[i][1]==listcouppossible[1]):
                         listcouppossible=Joueurs[0].Action(grille, modeJeu)[i]
                         buttons = Allbuttons[ModifieOnlyButton(listcouppossible, tourjoueur)-1]
+            #meme chose pour le joueur au tour false
             elif(tourjoueur==False and modeJeu==2): 
                 for i in range (len(Joueurs[1].Action(grille, modeJeu))):
                     if (Joueurs[1].Action(grille, modeJeu)[i][1]==listcouppossible[1]):
@@ -716,24 +717,28 @@ if __name__== '__main__':
                         buttons = Allbuttons[ModifieOnlyButton(listcouppossible, tourjoueur)-1]
                     
             
-            
+            #on vérifie que le bouton n'est pas deja utilisé
             if(grille[int(buttons['text'][0])][int(buttons['text'][1])]==0):
                 
+                # on verifie le tour du joueur, que le coup joué fait partie de ceux possible, et que ce n'est pas une IA
                 if(tourjoueur==True and Joueurs[0].estuneIA == False and listcouppossible in Joueurs[0].Action(grille, modeJeu)):
+                    # on change la valeur dans la grille
                     grille[int(buttons['text'][0])][int(buttons['text'][1])]=1
                     AfficherGrille(grille)
                     tourjoueur = False
-                    
+                    #on change la valeur dans le texte du bouton, le fg definit la couleur du texte, le disabledforeground, la couleur du texte quand le bouton est désactivé (meme couleur que le fond de base)
                     buttons['text']='X'
                     buttons['fg']='white'                    
                     buttons['disabledforeground']='white'
+                    #on désactive le bouton
                     disableButton(buttons)
                     
+                    #désactive les bouton du joueur et active celui de l'IA
                     if (Joueurs[1].estuneIA == True):
                         finaldisableAllButton()
                         EnableIAButton()
                     
-            
+                #meme chose mais pour le J1
                 elif(tourjoueur==False and Joueurs[1].estuneIA == False and listcouppossible in Joueurs[1].Action(grille, modeJeu)):
                     grille[int(buttons['text'][0])][int(buttons['text'][1])] = 2  
                     AfficherGrille(grille)            
@@ -751,7 +756,7 @@ if __name__== '__main__':
             
             
             
-            
+            #meme verification que lors de la methode IA
             if (J2.TerminalTest(grille, modeJeu)==2):
                 finaldisableAllButton()
                 tkinter.messagebox.showinfo("Tic-Tac-Toe", J2.pseudo + " wins.")
@@ -769,17 +774,19 @@ if __name__== '__main__':
         
         
         
-        
+        #variable bouton qui est appelée lors de la methode BtnClick
         buttons = StringVar()
 
+        #le bouton de l'IA
         buttonIA = Button(tk, text='IA', font='Times 20 bold', bg='gray', fg='black', activeforeground='gray',activebackground='gray', disabledforeground='black', command=lambda: btnClickIA(btnClickIA))
         buttonIA.grid(row=4, column=2)
         
+        #le texte qui explique comment se servir du bouton de l'IA
         label = Label( tk, text="When it is the AI turn, press the button :", font='Helvetica 10 bold', bg='white', fg='black',anchor='w', height=1, width=32,)
         label.grid(row=4, column=0, columnspan=2)
         Allbuttons=[]
         
-        
+        #on initialise manuellement, les boutons de la grille car si l'on fait une boucle for, l'index depasse les limites 
         if (modeJeu==1):
             Allbuttons.append(Button(tk, text='00', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(Allbuttons[0])))
             Allbuttons.append(Button(tk, text='01', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(Allbuttons[1])))   
@@ -790,13 +797,8 @@ if __name__== '__main__':
             Allbuttons.append(Button(tk, text='20', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(Allbuttons[6])))
             Allbuttons.append(Button(tk, text='21', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(Allbuttons[7])))
             Allbuttons.append(Button(tk, text='22', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(Allbuttons[8])))
+            #chaque bouton s'appelle lui meme en tant que variable, c'est obligatoire pour pouvoit faire varier les valeurs du bouton
             
-            
-            index=0
-            for i in range (taillegrillex):   
-                for j in range (taillegrilley): 
-                   Allbuttons[index].grid(row=i+5, column=j)
-                   index = index+1
             
         
         
@@ -849,13 +851,14 @@ if __name__== '__main__':
 
             
             
-            index=0
-            for i in range (taillegrilley):   
-                for j in range (taillegrillex): 
-                   Allbuttons[index].grid(row=i+5, column=j)
-                   index = index+1
-
+        index=0
+        #on crée la grille pour chaque élément de notre tableau de Bouton
+        for i in range (taillegrilley):   
+            for j in range (taillegrillex): 
+               Allbuttons[index].grid(row=i+5, column=j)
+               index = index+1
         
+        #désactive les boutons du second joueur pour eviter que celui ci triche
         if(Joueurs[0].estuneIA == True):
             finaldisableAllButton()
         elif(Joueurs[0].estuneIA == False):
