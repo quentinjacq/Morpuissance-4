@@ -32,6 +32,8 @@ class Joueur:
 
     def MinValue(self,grille, modeJeu, a, b, prof):#On considère ici que c'est l'adversaire qui joue, donc qu'il va choisir l'action la plus néfaste pour nous (qui à un score/utility la plus faible)
         gagnant = self.TerminalTest(grille, modeJeu)#On test si c'est la fin du jeu (gagnany = -1 : contine / = 0 égalité finie / = numJoueur C'est le joueur actuel qui gagne / = (numJoueur%2)+1 C'est l'adversaire qui gagne)
+        """elif(prof >= 3 and modeJeu == 2):#Si on arrive a une profondeur de 2 au Puissance 4,on établit dès maintenant une estimation de qui est en train de gagner (car sinon il y a trop de récureences)
+            return self.Utility(2), [0,0], prof"""
         if(gagnant >=0):
             return self.Utility(gagnant), [0,0], prof #Retourne une valeur selon le gagnant : 0 si égalité, 1 si joueur actuel gagne, -1 si il perd
         else:
@@ -46,7 +48,7 @@ class Joueur:
                     profmin = profcoupwin
                     scoreMin = score
                     choix = i
-                if(scoreMin<a):#Si il est déja plus petit que alpha, pas besoin de continuer sur cette branche (élagage)
+                if(scoreMin<=a):#Si il est déja plus petit que alpha, pas besoin de continuer sur cette branche (élagage)
                     return scoreMin, actionspossibles[i], prof
                 if (scoreMin<b):#Sinon on remplace beta
                     b = scoreMin
@@ -54,6 +56,8 @@ class Joueur:
     
     def MaxValue(self,grille, modeJeu, a, b, prof):#Idem que MIN VALUE
         gagnant = self.TerminalTest(grille, modeJeu)
+        """elif(prof >= 3 and modeJeu == 2):#Si on arrive a une profondeur de 2 au Puissance 4,on établit dès maintenant une estimation de qui est en train de gagner (car sinon il y a trop de récureences)
+            return self.Utility(2), [0,0], prof"""
         if(gagnant >=0):
             return self.Utility(gagnant), [0,0], prof
         else:
@@ -70,7 +74,7 @@ class Joueur:
                     profmin = profcoupwin
                     scoreMax = score
                     choix = i
-                if(scoreMax>b):
+                if(scoreMax>=b):
                     return scoreMax, actionspossibles[i], prof
                 if(scoreMax> a):
                     a = scoreMax
