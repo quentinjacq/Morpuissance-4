@@ -73,7 +73,7 @@ class Joueur:
                 if prof==1:
                     print("Coord :")
                     print(actionspossibles[i])
-                    print("   Score : \n", end='')
+                    print("   Score : ", end='')
                     print(score)
                 if (score>scoreMax or (score==scoreMax and profcoupwin<profmin)or (score != -1 and score==scoreMax and profcoupwin == profmin and prof == 1 and random==1)):#Si les choix sont équivalent, on en prend un au hasard (pour varier le jeu)
                     profmin = profcoupwin
