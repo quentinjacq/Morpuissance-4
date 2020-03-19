@@ -604,12 +604,12 @@ if __name__== '__main__':
             print(Joueurs[0].Action(grille, modeJeu))
             print(Joueurs[0].Action(grille, modeJeu)[0][1])
             
-            if (tourjoueur==True):
+            if (tourjoueur==True and modeJeu==2):
                 for i in range (len(Joueurs[0].Action(grille, modeJeu))):
                     if (Joueurs[0].Action(grille, modeJeu)[i][1]==listcouppossible[1]):
                         listcouppossible=Joueurs[0].Action(grille, modeJeu)[i]
                         buttons = Allbuttons[ModifieOnlyButton(listcouppossible, tourjoueur)-1]
-            else: 
+            elif(tourjoueur==False and modeJeu==2): 
                 for i in range (len(Joueurs[1].Action(grille, modeJeu))):
                     if (Joueurs[1].Action(grille, modeJeu)[i][1]==listcouppossible[1]):
                         listcouppossible=Joueurs[1].Action(grille, modeJeu)[i]
