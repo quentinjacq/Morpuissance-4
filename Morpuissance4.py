@@ -465,8 +465,10 @@ if __name__== '__main__':
         buttons = StringVar()
 
         buttonIA = Button(tk, text='IA', font='Times 20 bold', bg='gray', fg='black', activeforeground='gray',activebackground='gray', disabledforeground='black', command=lambda: btnClickIA(btnClickIA))
-        buttonIA.grid(row=4, column=0)
+        buttonIA.grid(row=4, column=2)
         
+        label = Label( tk, text="When it is the AI turn, press the button :", font='Helvetica 10 bold', bg='white', fg='black',anchor='w', height=1, width=32,)
+        label.grid(row=4, column=0, columnspan=2)
         Allbuttons=[]
         
         
