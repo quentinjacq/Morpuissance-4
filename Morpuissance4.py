@@ -354,6 +354,15 @@ if __name__== '__main__':
         def disableButton(buttons):
             buttons.configure(state=DISABLED)
     
+    
+        def ModifieOnlyButton(coord, tourjoueur):            
+            if(modeJeu==1):
+                numerobutton=coord[1]+coord[0]*3 + 1
+            elif(modeJeu==2):
+                numerobutton=coord[1]+coord[0]*7 + 1
+            return numerobutton
+    
+    
         def ModifieButton(coord, tourjoueur):            
             if(modeJeu==1):
                 numerobutton=coord[1]+coord[0]*3 + 1
@@ -407,6 +416,25 @@ if __name__== '__main__':
 
             couple =str(buttons['text'])
             listcouppossible = [int(couple[0]),int(couple[1])]
+            print(listcouppossible)
+            print(listcouppossible[1])
+            print(Joueurs[0].Action(grille, modeJeu))
+            print(Joueurs[0].Action(grille, modeJeu)[0][1])
+            
+            if (tourjoueur==True):
+                for i in range (len(Joueurs[0].Action(grille, modeJeu))):
+                    if (Joueurs[0].Action(grille, modeJeu)[i][1]==listcouppossible[1]):
+                        listcouppossible=Joueurs[0].Action(grille, modeJeu)[i]
+                        buttons = Allbuttons[ModifieOnlyButton(listcouppossible, tourjoueur)-1]
+            else: 
+                for i in range (len(Joueurs[1].Action(grille, modeJeu))):
+                    if (Joueurs[1].Action(grille, modeJeu)[i][1]==listcouppossible[1]):
+                        listcouppossible=Joueurs[1].Action(grille, modeJeu)[i]
+                        buttons = Allbuttons[ModifieOnlyButton(listcouppossible, tourjoueur)-1]
+                        
+            print(listcouppossible)            
+            print(buttons['text'])           
+            
             
             if(grille[int(buttons['text'][0])][int(buttons['text'][1])]==0):
                 
