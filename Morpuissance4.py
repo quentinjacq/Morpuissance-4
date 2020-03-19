@@ -482,6 +482,9 @@ if __name__== '__main__':
         tk.title("Tic Tac Toe/ Connect 4")
         
         
+        
+        
+        
         if (var1.get()==0):
             J1=Joueur(p1.get(),estuneIA,1)
             Joueurs.append(J1)
@@ -521,6 +524,8 @@ if __name__== '__main__':
         elif(variable2.get()=='Medium'):
             niveau=6
         
+         
+            
             
         #Initialisation des taille du jeu MORPION
         #On crée la grille de départ, valable pour n'importe quel jeu avec une grille
@@ -528,7 +533,10 @@ if __name__== '__main__':
         
         #On affiche l'état de la grille
         AfficherGrille(grille)
-                     
+            
+            
+
+            
         
         def disableIAbutton():        
             buttonIA.configure(state=DISABLED)
@@ -538,30 +546,30 @@ if __name__== '__main__':
             if (button['text']=='X' or button['text']=='O'):
                 button['disabledforeground']='white'
             else:
-                button['disabledforeground']='gray'             
-                
+                button['disabledforeground']='gray'
 
         def finaldisableAllButton():  
             for i in range (len(Allbuttons)):
                 Allbuttons[i].configure(state=DISABLED)
                 AffichepasbuttononUsed(Allbuttons[i])
-                   
+            
+         
+            
             
         def EnableIAButton():        
             buttonIA.configure(state=NORMAL)
             
-                   
+            
         def BoutonUsedstayused(button):
             if (button['text']=='X' or button['text']=='O'):
                 button.configure(state=DISABLED)
                 button['disabledforeground']='white'
-                              
                 
         def EnableAllButton():        
             for i in range (len(Allbuttons)):
                 Allbuttons[i].configure(state=NORMAL)
                 BoutonUsedstayused(Allbuttons[i])
-                               
+            
             
         def disableButton(buttons):
             buttons.configure(state=DISABLED)
@@ -574,7 +582,7 @@ if __name__== '__main__':
                 numerobutton=coord[1]+coord[0]*7 + 1
             return numerobutton
     
-        
+    
         def ModifieButton(coord, tourjoueur):            
             if(modeJeu==1):
                 numerobutton=coord[1]+coord[0]*3 + 1
@@ -584,7 +592,6 @@ if __name__== '__main__':
             Allbuttons[numerobutton-1]['text']='X' if (tourjoueur== True) else 'O'
             Allbuttons[numerobutton-1]['fg']='white'
             Allbuttons[numerobutton-1]['disabledforeground']='white'
-    
     
         def btnClickIA(buttons):
             global tourjoueur, modeJeu, estuneIA, grille, Joueurs,niveau
@@ -624,6 +631,7 @@ if __name__== '__main__':
             elif (J2.TerminalTest(grille, modeJeu)==0):
                 finaldisableAllButton()
                 tkinter.messagebox.showinfo("Tic-Tac-Toe", 'There is a Tie.')
+    
     
     
         def btnClick(buttons):
@@ -681,7 +689,10 @@ if __name__== '__main__':
                     if (Joueurs[0].estuneIA == True):
                         finaldisableAllButton()
                         EnableIAButton()
-                       
+             
+            
+            
+            
             
             if (J2.TerminalTest(grille, modeJeu)==2):
                 finaldisableAllButton()
@@ -695,9 +706,12 @@ if __name__== '__main__':
                 finaldisableAllButton()
                 tkinter.messagebox.showinfo("Tic-Tac-Toe", J1.pseudo + " wins.")
                 
-
-
-  
+            
+ 
+        
+        
+        
+        
         buttons = StringVar()
 
         buttonIA = Button(tk, text='IA', font='Times 20 bold', bg='gray', fg='black', activeforeground='gray',activebackground='gray', disabledforeground='black', command=lambda: btnClickIA(btnClickIA))
@@ -705,9 +719,8 @@ if __name__== '__main__':
         
         label = Label( tk, text="When it is the AI turn, press the button :", font='Helvetica 10 bold', bg='white', fg='black',anchor='w', height=1, width=32,)
         label.grid(row=4, column=0, columnspan=2)
-  
         Allbuttons=[]
-               
+        
         
         if (modeJeu==1):
             Allbuttons.append(Button(tk, text='00', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(Allbuttons[0])))
@@ -719,14 +732,17 @@ if __name__== '__main__':
             Allbuttons.append(Button(tk, text='20', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(Allbuttons[6])))
             Allbuttons.append(Button(tk, text='21', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(Allbuttons[7])))
             Allbuttons.append(Button(tk, text='22', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(Allbuttons[8])))
-           
+            
+            
             index=0
             for i in range (taillegrillex):   
                 for j in range (taillegrilley): 
                    Allbuttons[index].grid(row=i+5, column=j)
                    index = index+1
             
-    
+        
+        
+        
         elif (modeJeu==2):
             Allbuttons.append(Button(tk, text='00', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[0])))
             Allbuttons.append(Button(tk, text='01', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[1])))   
@@ -770,14 +786,18 @@ if __name__== '__main__':
             Allbuttons.append(Button(tk, text='54', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[39])))
             Allbuttons.append(Button(tk, text='55', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[40])))
             Allbuttons.append(Button(tk, text='56', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[41])))
-  
+
+           
+
+            
+            
             index=0
             for i in range (taillegrilley):   
                 for j in range (taillegrillex): 
                    Allbuttons[index].grid(row=i+5, column=j)
                    index = index+1
 
-       
+        
         if(Joueurs[0].estuneIA == True):
             finaldisableAllButton()
         elif(Joueurs[0].estuneIA == False):
