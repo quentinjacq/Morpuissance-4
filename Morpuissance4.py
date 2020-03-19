@@ -539,7 +539,7 @@ if __name__== '__main__':
             taillegrillex = 7
             taillegrilley = 6
             
-            
+        #on définit chacun des niveaux des IAs  
         if(variable2.get()=='Hardcore'):
             if(modeJeu==1):
                 niveau1=9
@@ -574,17 +574,18 @@ if __name__== '__main__':
             
 
             
-        
+        # on désactive les boutons IA
         def disableIAbutton():        
             buttonIA.configure(state=DISABLED)
         
-        
+        # les boutons sur lesquelles on a pas cliquer ne seront pas affichés grace a cette méthode
         def AffichepasbuttononUsed(button):
             if (button['text']=='X' or button['text']=='O'):
                 button['disabledforeground']='white'
             else:
                 button['disabledforeground']='gray'
 
+        # on désactive tous les boutons
         def finaldisableAllButton():  
             for i in range (len(Allbuttons)):
                 Allbuttons[i].configure(state=DISABLED)
@@ -592,26 +593,27 @@ if __name__== '__main__':
             
          
             
-            
+        #on réactive tous les boutons IA
         def EnableIAButton():        
             buttonIA.configure(state=NORMAL)
             
-            
+        #on fait en sorte que les boutons deja utilisés reste affichés   
         def BoutonUsedstayused(button):
             if (button['text']=='X' or button['text']=='O'):
                 button.configure(state=DISABLED)
                 button['disabledforeground']='white'
                 
+        #on réactive tous les boutons         
         def EnableAllButton():        
             for i in range (len(Allbuttons)):
                 Allbuttons[i].configure(state=NORMAL)
                 BoutonUsedstayused(Allbuttons[i])
             
-            
+        #on désactive un bouton   
         def disableButton(buttons):
             buttons.configure(state=DISABLED)
     
-    
+        #on modifie la valeur d'u bouton a partir de la grille et de ses coords
         def ModifieOnlyButton(coord, tourjoueur):            
             if(modeJeu==1):
                 numerobutton=coord[1]+coord[0]*3 + 1
@@ -619,7 +621,8 @@ if __name__== '__main__':
                 numerobutton=coord[1]+coord[0]*7 + 1
             return numerobutton
     
-    
+        #on modifie la valeur d'u bouton a partir de la grille et de ses coords
+        #on modifie aussi la valeur de ce bouton
         def ModifieButton(coord, tourjoueur):            
             if(modeJeu==1):
                 numerobutton=coord[1]+coord[0]*3 + 1
@@ -630,22 +633,31 @@ if __name__== '__main__':
             Allbuttons[numerobutton-1]['fg']='white'
             Allbuttons[numerobutton-1]['disabledforeground']='white'
     
+        # on definit ici ce qu'il se passe lorsque l'on appuie sur un bouton
         def btnClickIA(buttons):
             global tourjoueur, modeJeu, estuneIA, grille, Joueurs,niveau1, niveau2
             
+            #il faut que le joueur est une IA et que ce soit a son tour
             if(Joueurs[0].estuneIA == True and tourjoueur==True):
+                #on récupère les coord de la case jouée par l'IA
                 grille, coord = Joueurs[0].Joue(grille, modeJeu, niveau1)
-                
+                #on modifie nos boutons a l'aide des coords
                 ModifieButton(coord, tourjoueur)
+                #on change le tour
                 tourjoueur = False
+                #on réafiche la grille
                 AfficherGrille(grille)
                 
+                #ce qui suit est a faire que quand le J2 est un vrai joueur
                 if (Joueurs[1].estuneIA == False):
+                    #on désactive les boutons IA pour éviter que l'on puisse la faire jouer tout seule
                     EnableAllButton()
+                    #on active les boutons du vrai Joueurs
                     disableIAbutton()
                
     
             elif(Joueurs[1].estuneIA == True and tourjoueur==False):
+                #meme case mais pour le joueur 2
                 grille, coord = Joueurs[1].Joue(grille, modeJeu, niveau2)
                 
                 ModifieButton(coord, tourjoueur)
@@ -656,9 +668,11 @@ if __name__== '__main__':
                     EnableAllButton()
                     disableIAbutton()
             
-            
+            # ces cas permettent d'afficher un message dans le cas d'une fin de partie
             if (J1.TerminalTest(grille, modeJeu)==1):
+                #on désactive tous les boutons
                 finaldisableAllButton()
+                #on affiche le message dans une fenetre Tkinter avec le nom du gagnant
                 tkinter.messagebox.showinfo("Tic-Tac-Toe", J1.pseudo + " wins.") 
                 
             elif (J2.TerminalTest(grille, modeJeu)==2):
@@ -673,14 +687,14 @@ if __name__== '__main__':
     
         def btnClick(buttons):
             global tourjoueur, modeJeu, estuneIA, grille
-
+            #le cas d'un bouton si le joueur est humain
+            #on récupère la valeur du bouton
             couple =str(buttons['text'])
+            #on met ses valeurs sous la forme d'une liste
             listcouppossible = [int(couple[0]),int(couple[1])]
-            print(listcouppossible)
-            print(listcouppossible[1])
-            print(Joueurs[0].Action(grille, modeJeu))
-            print(Joueurs[0].Action(grille, modeJeu)[0][1])
             
+            #dans le cas du puissance 4, cette méthode modélise la gravité
+            #
             if (tourjoueur==True and modeJeu==2):
                 for i in range (len(Joueurs[0].Action(grille, modeJeu))):
                     if (Joueurs[0].Action(grille, modeJeu)[i][1]==listcouppossible[1]):
@@ -691,9 +705,7 @@ if __name__== '__main__':
                     if (Joueurs[1].Action(grille, modeJeu)[i][1]==listcouppossible[1]):
                         listcouppossible=Joueurs[1].Action(grille, modeJeu)[i]
                         buttons = Allbuttons[ModifieOnlyButton(listcouppossible, tourjoueur)-1]
-                        
-            print(listcouppossible)            
-            print(buttons['text'])           
+                    
             
             
             if(grille[int(buttons['text'][0])][int(buttons['text'][1])]==0):
