@@ -38,13 +38,13 @@ class Joueur:
             return self.Etatjeu(grille, modeJeu), [0,0], prof
         else:
             scoreMin = 5000#valeur arbitraire qui va être changée dès la première occurence (+infin dans l'énoncé)
-            profmin = 10#Idem
+            profmin = -100#Idem
             actionspossibles = self.Action(grille, modeJeu)#On liste les actions pouvant être jouée
             for i in range(len(actionspossibles)):#pour chacun de ces actions
                 grillenv=copy.deepcopy(grille)#On crée une nouvelle grille pour ne pas modifier l'originale
                 grillenv[:]=list(self.Result(grillenv, actionspossibles[i], ((self.numJoueur%2)+1)))#On lui applique l'action
                 score, action, profcoupwin = self.MaxValue(grillenv, modeJeu, a, b, prof+1, niveau)#On regarde le score de l'action que va choisir max selon notre action
-                if (score<scoreMin or (score==scoreMin and profcoupwin<profmin)):#Si ce score est plus petit que le plus néfaste actuellement stockée dans scoreMin, alors il est mieux et on le choisi
+                if (score<scoreMin or (score==scoreMin and profcoupwin>profmin)):#Si ce score est plus petit que le plus néfaste actuellement stockée dans scoreMin, alors il est mieux et on le choisi
                     profmin = profcoupwin
                     scoreMin = score
                     choix = i
@@ -62,7 +62,7 @@ class Joueur:
             return self.Etatjeu(grille, modeJeu), [0,0], prof
         else:
             scoreMax = -5000
-            profmin = 10
+            profmin = 100
             actionspossibles = self.Action(grille, modeJeu)
             for i in range(len(actionspossibles)):
                 grillenv=copy.deepcopy(grille)
@@ -202,10 +202,15 @@ class Joueur:
             for j in range(len(grille[i])-nombrepourgagner+1):#On parcourt toutes les cases
                 if(grille[i][j]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
                     selfpion = selfpion+1
-                    for k in range(1,4):
+                    for k in range(1,3):
                         if grille[i][j+k]==self.numJoueur:
                             selfpion = selfpion+1
                         elif grille[i][j+k]==(self.numJoueur%2)+1:
+                            pionautre = pionautre + 1
+                    if (modeJeu==2):
+                        if grille[i][j+3]==self.numJoueur:
+                            selfpion = selfpion+1
+                        elif grille[i][j+3]==(self.numJoueur%2)+1:
                             pionautre = pionautre + 1
                     
                     if pionautre==0:
@@ -218,10 +223,15 @@ class Joueur:
                             
                 elif(grille[i][j]==(self.numJoueur%2)+1):
                     pionautre = pionautre + 1
-                    for k in range(1,4):
+                    for k in range(1,3):
                         if grille[i][j+k]==self.numJoueur:
                             selfpion = selfpion+1
                         elif grille[i][j+k]==(self.numJoueur%2)+1:
+                            pionautre = pionautre + 1
+                    if (modeJeu==2):
+                        if grille[i][j+3]==self.numJoueur:
+                            selfpion = selfpion+1
+                        elif grille[i][j+3]==(self.numJoueur%2)+1:
                             pionautre = pionautre + 1
                     
                     if selfpion==0:
@@ -238,10 +248,15 @@ class Joueur:
             for j in range(len(grille[i])):#On parcourt toutes les cases
                 if(grille[i][j]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
                     selfpion = selfpion+1
-                    for k in range(1,4):
+                    for k in range(1,3):
                         if grille[i+k][j]==self.numJoueur:
                             selfpion = selfpion+1
                         elif grille[i+k][j]==(self.numJoueur%2)+1:
+                            pionautre = pionautre + 1
+                    if (modeJeu==2):
+                        if grille[i+3][j]==self.numJoueur:
+                            selfpion = selfpion+1
+                        elif grille[i+3][j]==(self.numJoueur%2)+1:
                             pionautre = pionautre + 1
                     
                     if pionautre==0:
@@ -254,10 +269,15 @@ class Joueur:
                 
                 elif(grille[i][j]==(self.numJoueur%2)+1):#Si une case est égalse à 1, on ajoute la coord au joueur 1
                     pionautre = pionautre + 1
-                    for k in range(1,4):
+                    for k in range(1,3):
                         if grille[i+k][j]==self.numJoueur:
                             selfpion = selfpion+1
                         elif grille[i+k][j]==(self.numJoueur%2)+1:
+                            pionautre = pionautre + 1
+                    if (modeJeu==2):
+                        if grille[i+3][j]==self.numJoueur:
+                            selfpion = selfpion+1
+                        elif grille[i+3][j]==(self.numJoueur%2)+1:
                             pionautre = pionautre + 1
                     
                     if selfpion==0:
@@ -274,10 +294,15 @@ class Joueur:
             for j in range(len(grille[i])-nombrepourgagner+1):#On parcourt toutes les cases
                 if(grille[i][j]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
                     selfpion = selfpion+1
-                    for k in range(1,4):
+                    for k in range(1,3):
                         if grille[i+k][j+k]==self.numJoueur:
                             selfpion = selfpion+1
                         elif grille[i+k][j+k]==(self.numJoueur%2)+1:
+                            pionautre = pionautre + 1
+                    if (modeJeu==2):
+                        if grille[i+3][j+3]==self.numJoueur:
+                            selfpion = selfpion+1
+                        elif grille[i+3][j+3]==(self.numJoueur%2)+1:
                             pionautre = pionautre + 1
                     
                     if pionautre==0:
@@ -290,10 +315,15 @@ class Joueur:
                 
                 elif(grille[i][j]==(self.numJoueur%2)+1):#Si une case est égalse à 1, on ajoute la coord au joueur 1
                     pionautre = pionautre + 1
-                    for k in range(1,4):
+                    for k in range(1,3):
                         if grille[i+k][j+k]==self.numJoueur:
                             selfpion = selfpion+1
                         elif grille[i+k][j+k]==(self.numJoueur%2)+1:
+                            pionautre = pionautre + 1
+                    if (modeJeu==2):
+                        if grille[i+3][j+3]==self.numJoueur:
+                            selfpion = selfpion+1
+                        elif grille[i+3][j+3]==(self.numJoueur%2)+1:
                             pionautre = pionautre + 1
                     
                     if selfpion==0:
@@ -310,10 +340,15 @@ class Joueur:
             for j in range(len(grille[i])-nombrepourgagner+1):#On parcourt toutes les cases
                 if(grille[i][j]==self.numJoueur):#Si une case est égalse à 1, on ajoute la coord au joueur 1
                     selfpion = selfpion+1
-                    for k in range(1,4):
+                    for k in range(1,3):
                         if grille[i-k][j+k]==self.numJoueur:
                             selfpion = selfpion+1
                         elif grille[i-k][j+k]==(self.numJoueur%2)+1:
+                            pionautre = pionautre + 1
+                    if (modeJeu==2):
+                        if grille[i-3][j+3]==self.numJoueur:
+                            selfpion = selfpion+1
+                        elif grille[i-3][j+3]==(self.numJoueur%2)+1:
                             pionautre = pionautre + 1
                     
                     if pionautre==0:
@@ -326,10 +361,15 @@ class Joueur:
                 
                 elif(grille[i][j]==(self.numJoueur%2)+1):#Si une case est égalse à 1, on ajoute la coord au joueur 1
                     pionautre = pionautre + 1
-                    for k in range(1,4):
+                    for k in range(1,3):
                         if grille[i-k][j+k]==self.numJoueur:
                             selfpion = selfpion+1
                         elif grille[i-k][j+k]==(self.numJoueur%2)+1:
+                            pionautre = pionautre + 1
+                    if (modeJeu==2):
+                        if grille[i-3][j+3]==self.numJoueur:
+                            selfpion = selfpion+1
+                        elif grille[i-3][j+3]==(self.numJoueur%2)+1:
                             pionautre = pionautre + 1
                     
                     if selfpion==0:
