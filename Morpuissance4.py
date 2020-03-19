@@ -412,7 +412,7 @@ if __name__== '__main__':
     w.grid(row=4, column=1, columnspan=4)
     
     variable2 = StringVar(tk2)
-    variable2.set("Pour les Quentin #nuls") # default value  
+    variable2.set("Beginner") # default value  
     w2 = OptionMenu(tk2, variable2, "Beginner", "Medium", "Hardcore")
     w2.grid(row=4, column=5, columnspan=8)
     
