@@ -232,12 +232,12 @@ if __name__== '__main__':
   
     
     var1 = IntVar()
-    checkIA1 = Checkbutton(tk2, text="Player 1 is an IA", variable=var1)
+    checkIA1 = Checkbutton(tk2, text="Player 1 is an AI", variable=var1)
     checkIA1.grid(row=1, column=12)
     var1.get()
 
     var2 = IntVar()
-    checkIA2 = Checkbutton(tk2, text="Player 2 is an IA", variable=var2)
+    checkIA2 = Checkbutton(tk2, text="Player 2 is an AI", variable=var2)
     checkIA2.grid(row=2, column=12)
     var2.get()
     
@@ -392,13 +392,13 @@ if __name__== '__main__':
             
             
             if (J1.TerminalTest(grille, modeJeu)==1):
-                tkinter.messagebox.showinfo("Tic-Tac-Toe", "Le Joueur "+ J1.pseudo + " gagne.") 
+                tkinter.messagebox.showinfo("Tic-Tac-Toe", J1.pseudo + " wins.") 
                 finaldisableAllButton()
             elif (J2.TerminalTest(grille, modeJeu)==2):
-                tkinter.messagebox.showinfo("Tic-Tac-Toe", "Le Joueur "+ J2.pseudo + " gagne.")
+                tkinter.messagebox.showinfo("Tic-Tac-Toe", J2.pseudo + " wins.")
                 finaldisableAllButton()
             elif (J2.TerminalTest(grille, modeJeu)==0):
-                    tkinter.messagebox.showinfo("Tic-Tac-Toe", 'Il y a une égalité.')
+                    tkinter.messagebox.showinfo("Tic-Tac-Toe", 'There is a Tie.')
     
     
     
@@ -444,13 +444,13 @@ if __name__== '__main__':
             
             
             if (J2.TerminalTest(grille, modeJeu)==2):
-                tkinter.messagebox.showinfo("Tic-Tac-Toe", "Le Joueur "+ J2.pseudo + " gagne.")
+                tkinter.messagebox.showinfo("Tic-Tac-Toe", J2.pseudo + " wins.")
                 finaldisableAllButton()
             elif (J2.TerminalTest(grille, modeJeu)==0):
-                tkinter.messagebox.showinfo("Tic-Tac-Toe", 'Il y a une égalité.')
+                tkinter.messagebox.showinfo("Tic-Tac-Toe", 'There is a Tie.')
                 finaldisableAllButton()
             elif (J1.TerminalTest(grille, modeJeu)==1):
-                tkinter.messagebox.showinfo("Tic-Tac-Toe", "Le Joueur "+ J1.pseudo + " gagne.")
+                tkinter.messagebox.showinfo("Tic-Tac-Toe", J1.pseudo + " wins.")
                 finaldisableAllButton()
             
  
