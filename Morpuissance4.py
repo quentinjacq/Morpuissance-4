@@ -48,7 +48,7 @@ class Joueur:
                     profmin = profcoupwin
                     scoreMin = score
                     choix = i
-                if(scoreMin<=a):#Si il est déja plus petit que alpha, pas besoin de continuer sur cette branche (élagage)
+                if(scoreMin<a):#Si il est déja plus petit que alpha, pas besoin de continuer sur cette branche (élagage)
                     return scoreMin, actionspossibles[i], prof
                 if (scoreMin<b):#Sinon on remplace beta
                     b = scoreMin
@@ -74,7 +74,7 @@ class Joueur:
                     profmin = profcoupwin
                     scoreMax = score
                     choix = i
-                if(scoreMax>=b):
+                if(scoreMax>b):
                     return scoreMax, actionspossibles[i], prof
                 if(scoreMax> a):
                     a = scoreMax
