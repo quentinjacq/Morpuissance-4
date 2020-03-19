@@ -100,12 +100,12 @@ class Joueur:
                 if prof ==2:
                     print("   "*prof, end="")
                     print("score final " + str(scoreMin))
-                """if(scoreMin<=a):
+                if(scoreMin<a):
                     if prof ==2:
                         print("                     Choisi au final" + str(scoreMin))
                     return scoreMin, actionspossibles[i], prof
                 if (scoreMin<b):
-                    b = scoreMin"""
+                    b = scoreMin
             if prof ==2:
                 print("                     Choisi au final" + str(scoreMin))
             return (scoreMin, actionspossibles[choix], prof)
@@ -124,8 +124,11 @@ class Joueur:
                 if prof==1:
                     print("Coord : ")
                     print(actionspossibles[i])
+                    random = choice([1,2])
+                    print("random : ")
+                    print(random)
                 score, action, profcoupwin = self.MinValue(grillenv, modeJeu, a, b, prof+1)
-                if (score>=scoreMax or (score==scoreMax and profcoupwin<profmin)or (score != -1 and score==scoreMax and profcoupwin == profmin and prof == 1 and choice([1,2])==1)):
+                if (score>scoreMax or (score==scoreMax and profcoupwin<profmin)or (score != -1 and score==scoreMax and profcoupwin == profmin and prof == 1 and random==1)):
                     profmin = profcoupwin
                     scoreMax = score
                     choix = i
@@ -137,12 +140,12 @@ class Joueur:
                     #print(scoreMax)
                     #print("Coord choisi : ")
                     #print(actionspossibles[choix])
-                """if(scoreMax>=b):
+                if(scoreMax>b):
                     if prof ==2:
                         print("                     Choisi au final" + str(scoreMin))
                     return scoreMax, actionspossibles[i], prof
                 if(scoreMax> a):
-                    a = scoreMax"""
+                    a = scoreMax
             return (scoreMax, actionspossibles[choix], prof)
         
         
@@ -275,76 +278,8 @@ def AfficherGrille(grille):#Simple méthode pour afficher esthétiquement la gri
 
 
 if __name__== '__main__':
-    '''
-    modeJeuvalide=False
-    while(modeJeuvalide==False):
-        
-        print("\nBienvue dans Morpuissance 4 !\nA quel mode voulez-vous jouer ?")
-        print (" 1. Morpion")
-        print (" 2. Puissance 4")
-        modeJeu = eval(input("Saisissez le numéro correspondant : "))
-        if (modeJeu != 1 and modeJeu != 2):
-            print("Erreur : Saisie non prise en compte")
-        else:
-            modeJeuvalide = True
-    
-    
-    #Initialisation des taille du jeu MORPION
-    if(modeJeu==1):
-        taillegrillex = 3
-        taillegrilley = 3
-    else:
-        taillegrillex = 6
-        taillegrilley = 7
-    
-    #On crée la grille de départ, valable pour n'importe quel jeu avec une grille
-    grille = [[0 for j in range(taillegrilley)] for i in range(taillegrillex)]
-   
-    
-    #On affiche l'état de la grille
-    
-    Joueurs = []
-    
-    for i in range(1,3):
-        pseudo = input("Saisissez le pseudo du Joueur %i : " %i)
-        IAvalide=False
-        while(IAvalide==False):
-            print("\nEst-il un IA ?")
-            print (" 1. Oui")
-            print (" 2. Non")
-            IAint = eval(input("Saisissez le numéro correspondant : "))
-            if (IAint != 1 and IAint != 2):
-                print("Erreur : Saisie non prise en compte")
-            else:
-                IAvalide = True
-                if(IAint==1):
-                    IA = True
-                else:
-                    IA = False
-        Joueurs.append(Joueur(pseudo,IA,i))
-        
-    print(Joueurs[0].pseudo)
-    print(Joueurs[1].pseudo)
-    AfficherGrille(grille)
-    n=0
-    gagnant = -1
-    while(gagnant < 0):
-        print("--------------")
-        grille = Joueurs[n].Joue(grille, modeJeu)
-        AfficherGrille(grille)
-        n = n+1
-        n = n%2
-        gagnant = Joueurs[n].TerminalTest(grille, modeJeu)
-        
-    if(gagnant == 0):
-        print("Egalité")
-    else:
-        print(gagnant)
-        print(str(Joueurs[gagnant-1].pseudo) + " a gagné !")
-        '''
-        
-        
-        
+      
+
     #Initialisation des taille du jeu MORPION
     #On crée la grille de départ, valable pour n'importe quel jeu avec une grille
     grille = [[0 for j in range(3)] for i in range(3)]
