@@ -423,7 +423,7 @@ if __name__== '__main__':
 
     
     def jeu():
-        global grille, estuneIA, modeJeu
+        global grille, estuneIA, modeJeu, niveau
         button_play.configure(state=DISABLED)
         
         checkIA1.configure(state=DISABLED)
@@ -554,7 +554,7 @@ if __name__== '__main__':
             Allbuttons[numerobutton-1]['disabledforeground']='white'
     
         def btnClickIA(buttons):
-            global tourjoueur, modeJeu, estuneIA, grille, Joueurs
+            global tourjoueur, modeJeu, estuneIA, grille, Joueurs,niveau
             
             if(Joueurs[0].estuneIA == True and tourjoueur==True):
                 grille, coord = Joueurs[0].Joue(grille, modeJeu, niveau)
