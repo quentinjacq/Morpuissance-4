@@ -34,7 +34,7 @@ class Joueur:
         gagnant = self.TerminalTest(grille, modeJeu)#On test si c'est la fin du jeu (gagnany = -1 : contine / = 0 égalité finie / = numJoueur C'est le joueur actuel qui gagne / = (numJoueur%2)+1 C'est l'adversaire qui gagne)
         if(gagnant >=0):
             return self.Utility(gagnant), [0,0], prof #Retourne une valeur selon le gagnant : 0 si égalité, 1 si joueur actuel gagne, -1 si il perd
-        elif(prof >= niveau and modeJeu == 2):#Si on arrive a une profondeur de 2 au Puissance 4,on établit dès maintenant une estimation de qui est en train de gagner (car sinon il y a trop de récureences)
+        elif(prof >= niveau):#Si on arrive a une profondeur de 2 au Puissance 4,on établit dès maintenant une estimation de qui est en train de gagner (car sinon il y a trop de récureences)
             return self.Etatjeu(grille, modeJeu), [0,0], prof
         else:
             scoreMin = 5000#valeur arbitraire qui va être changée dès la première occurence (+infin dans l'énoncé)
@@ -58,7 +58,7 @@ class Joueur:
         gagnant = self.TerminalTest(grille, modeJeu)
         if(gagnant >=0):
             return self.Utility(gagnant), [0,0], prof
-        elif(prof >= niveau and modeJeu == 2):#Si on arrive a une profondeur de 2 au Puissance 4,on établit dès maintenant une estimation de qui est en train de gagner (car sinon il y a trop de récureences)
+        elif(prof >= niveau):#Si on arrive a une profondeur de 2 au Puissance 4,on établit dès maintenant une estimation de qui est en train de gagner (car sinon il y a trop de récureences)
             return self.Etatjeu(grille, modeJeu), [0,0], prof
         else:
             scoreMax = -5000
