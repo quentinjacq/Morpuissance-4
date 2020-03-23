@@ -425,10 +425,7 @@ def AfficherGrille(grille):#Simple méthode pour afficher esthétiquement la gri
 if __name__== '__main__':
     
     tk2 =Tk() #on initialise une premiere fenetre qui nous permettra de prendre les infos sur les joueurs, le jeu, la difficulté etc
-<<<<<<< HEAD
-    tk2.configure(background='#1E90FF')
-=======
->>>>>>> 84a1cc06b1d400f27788f74fa4bcbe00813d9435
+
     p1 = StringVar()#variables pour le pseudo des joueurs
     p2 = StringVar()
     tourjoueur = True# variable qui permet de savoir a qui est le tour
