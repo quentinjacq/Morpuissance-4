@@ -455,13 +455,14 @@ if __name__== '__main__':
     var1 = IntVar()
     checkIA1 = Checkbutton(tk2, text="Player 1 is an AI", variable=var1, bg='#FFFFFF')
     checkIA1.grid(row=1, column=12)
-    var1.get()
+    
     
     #ici on fait la meme chose mais avec le 2eme joueur
     var2 = IntVar()
     checkIA2 = Checkbutton(tk2, text="Player 2 is an AI", variable=var2, bg='#FFFFFF')
     checkIA2.grid(row=2, column=12)
-    var2.get()
+    
+    
     
     # ici on va crée une liste de selection, cad que le joueur peut choisir entre Tic tac toe et Connect 4, la valeur par défaut est Tic tac toe
     variable = StringVar(tk2)
@@ -498,6 +499,9 @@ if __name__== '__main__':
         #on va mettre tout les butons en DISABLED, on ne peut plus les utiliser
         checkIA1.configure(state=DISABLED)
         var2.get()
+        print(var2.get())
+        var1.get()
+        print(var1.get())
         #.get() permet de prendre la valeur de la case, 0 si elle n'est pas cochée, 1 autrement
         checkIA2.configure(state=DISABLED)
         p1.get()
@@ -516,6 +520,7 @@ if __name__== '__main__':
         #on crée une nouvelle fenetre
         tk = Tk()
         tk.title("Tic Tac Toe/ Connect 4")
+        Joueurs.clear()
         
         #selon le choix de la case cochée ou non, on initialise les joueurs comme étant une IA ou non
         if (var1.get()==0):
@@ -658,13 +663,13 @@ if __name__== '__main__':
                 w.configure(state=NORMAL)
                 w2.configure(state=NORMAL)
                 w3.configure(state=NORMAL)  
-                tk.quit()
-                #tk.quit() est censé fermer la console mais ne fonctionne pas sur mon pc
+                tk.destroy ()
+                #tk.destroy() détruit la fenetre et la reinitialise
                 
             elif result == 'no':
-                tk.close()
-                tk2.quit()
-                #il faut fermer la console manuellement 
+                tk.destroy()
+                tk2.destroy()
+                
                 
     
         # on definit ici ce qu'il se passe lorsque l'on appuie sur un bouton
@@ -705,16 +710,19 @@ if __name__== '__main__':
             if (J1.TerminalTest(grille, modeJeu)==1):
                 #on désactive tous les boutons
                 finaldisableAllButton()
+                disableIAbutton()
                 #on affiche le message dans une fenetre Tkinter avec le nom du gagnant
                 retry(J1.TerminalTest(grille, modeJeu),J1.pseudo)
                 
                 
             elif (J2.TerminalTest(grille, modeJeu)==2):
                 finaldisableAllButton()
+                disableIAbutton()
                 retry(J2.TerminalTest(grille, modeJeu),J2.pseudo)
                 
             elif (J2.TerminalTest(grille, modeJeu)==0):
                 finaldisableAllButton()
+                disableIAbutton()
                 retry(J2.TerminalTest(grille, modeJeu),J2.pseudo)
     
     
@@ -779,14 +787,17 @@ if __name__== '__main__':
             #meme verification que lors de la methode IA
             if (J2.TerminalTest(grille, modeJeu)==2):
                 finaldisableAllButton()
+                disableIAbutton()
                 retry(J2.TerminalTest(grille, modeJeu),J2.pseudo)
                 
             elif (J2.TerminalTest(grille, modeJeu)==0):
                 finaldisableAllButton()
+                disableIAbutton()
                 retry(J2.TerminalTest(grille, modeJeu),J2.pseudo)
                 
             elif (J1.TerminalTest(grille, modeJeu)==1):
                 finaldisableAllButton()
+                disableIAbutton()
                 retry(J1.TerminalTest(grille, modeJeu),J1.pseudo)
                 
         #variable bouton qui est appelée lors de la methode BtnClick
@@ -865,6 +876,7 @@ if __name__== '__main__':
                Allbuttons[index].grid(row=i+5, column=j)
                index = index+1
         
+        print(Joueurs[0].estuneIA)
         #désactive les boutons du second joueur pour eviter que celui ci triche
         if(Joueurs[0].estuneIA == True):
             finaldisableAllButton()
