@@ -520,9 +520,12 @@ if __name__== '__main__':
         #on crée une nouvelle fenetre
         tk = Tk()
         tk.title("Tic Tac Toe/ Connect 4")
-        Joueurs.clear()
         
+        
+        
+
         #selon le choix de la case cochée ou non, on initialise les joueurs comme étant une IA ou non
+        estuneIA = False
         if (var1.get()==0):
             J1=Joueur(p1.get(),estuneIA,1)
             #p1.get() est le pseudo du joueur 1
@@ -711,6 +714,7 @@ if __name__== '__main__':
                 #on désactive tous les boutons
                 finaldisableAllButton()
                 disableIAbutton()
+                tourjoueur=True
                 #on affiche le message dans une fenetre Tkinter avec le nom du gagnant
                 retry(J1.TerminalTest(grille, modeJeu),J1.pseudo)
                 
@@ -718,11 +722,13 @@ if __name__== '__main__':
             elif (J2.TerminalTest(grille, modeJeu)==2):
                 finaldisableAllButton()
                 disableIAbutton()
+                tourjoueur=True
                 retry(J2.TerminalTest(grille, modeJeu),J2.pseudo)
                 
             elif (J2.TerminalTest(grille, modeJeu)==0):
                 finaldisableAllButton()
                 disableIAbutton()
+                tourjoueur=True
                 retry(J2.TerminalTest(grille, modeJeu),J2.pseudo)
     
     
@@ -731,6 +737,7 @@ if __name__== '__main__':
             #le cas d'un bouton si le joueur est humain
             #on récupère la valeur du bouton
             couple =str(buttons['text'])
+            
             #on met ses valeurs sous la forme d'une liste
             listcouppossible = [int(couple[0]),int(couple[1])]
             
@@ -750,7 +757,7 @@ if __name__== '__main__':
               
             #on vérifie que le bouton n'est pas deja utilisé
             if(grille[int(buttons['text'][0])][int(buttons['text'][1])]==0):
-                
+                               
                 # on verifie le tour du joueur, que le coup joué fait partie de ceux possible, et que ce n'est pas une IA
                 if(tourjoueur==True and Joueurs[0].estuneIA == False and listcouppossible in Joueurs[0].Action(grille, modeJeu)):
                     # on change la valeur dans la grille
@@ -788,16 +795,19 @@ if __name__== '__main__':
             if (J2.TerminalTest(grille, modeJeu)==2):
                 finaldisableAllButton()
                 disableIAbutton()
+                tourjoueur=True
                 retry(J2.TerminalTest(grille, modeJeu),J2.pseudo)
                 
             elif (J2.TerminalTest(grille, modeJeu)==0):
                 finaldisableAllButton()
                 disableIAbutton()
+                tourjoueur=True
                 retry(J2.TerminalTest(grille, modeJeu),J2.pseudo)
                 
             elif (J1.TerminalTest(grille, modeJeu)==1):
                 finaldisableAllButton()
                 disableIAbutton()
+                tourjoueur=True
                 retry(J1.TerminalTest(grille, modeJeu),J1.pseudo)
                 
         #variable bouton qui est appelée lors de la methode BtnClick
@@ -811,6 +821,7 @@ if __name__== '__main__':
         label = Label( tk, text="When it is the AI turn, press the button :", font='Helvetica 10 bold', bg='#FFFFFF', fg='#000000',anchor='w', height=1, width=32,)
         label.grid(row=4, column=0, columnspan=2)
         Allbuttons=[]
+        Allbuttons.clear()
         
         #on initialise manuellement, les boutons de la grille car si l'on fait une boucle for, l'index depasse les limites 
         if (modeJeu==1):
@@ -876,12 +887,14 @@ if __name__== '__main__':
                Allbuttons[index].grid(row=i+5, column=j)
                index = index+1
         
-        print(Joueurs[0].estuneIA)
+        
         #désactive les boutons du second joueur pour eviter que celui ci triche
         if(Joueurs[0].estuneIA == True):
             finaldisableAllButton()
+            EnableIAButton()
         elif(Joueurs[0].estuneIA == False):
             disableIAbutton()
+            EnableAllButton()
  
         tk.mainloop()
         
