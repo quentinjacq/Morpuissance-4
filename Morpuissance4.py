@@ -75,7 +75,7 @@ class Joueur:
                     print(actionspossibles[i])
                     print("   Score : ", end='')
                     print(score)
-                if (score>scoreMax or (score==scoreMax and profcoupwin<profmin)or (score != -1 and score==scoreMax and profcoupwin == profmin and prof == 1 and random==1)):#Si les choix sont équivalent, on en prend un au hasard (pour varier le jeu)
+                if (score>scoreMax or (score!=-1 and score==scoreMax and  profcoupwin<profmin) or (score==-1 and score==scoreMax and profcoupwin>profmin) or (score != -1 and score==scoreMax and profcoupwin == profmin and prof == 1 and random==1)):#Si les choix sont équivalent, on en prend un au hasard (pour varier le jeu)
                     profmin = profcoupwin
                     scoreMax = score
                     choix = i
@@ -445,21 +445,21 @@ if __name__== '__main__':
     buttons = StringVar() #la variable buttons qui sera utilisé lorsqu'un bouton est utilisé
 
     #ici on affiche les 2 textes Player 1 et 2 avec des couleurs, polices et dimensions précises.
-    label = Label( tk2, text="Player 1:", font='Helvetica 20 bold', bg='white', fg='black', height=1, width=8,)
+    label = Label( tk2, text="Player 1:", font='Helvetica 20 bold', bg='#FFFFFF', fg='black', height=1, width=8,)
     label.grid(row=1, column=0)
     
-    label = Label( tk2, text="Player 2:", font='Helvetica 20 bold', bg='white', fg='black', height=1, width=8)
+    label = Label( tk2, text="Player 2:", font='Helvetica 20 bold', bg='#FFFFFF', fg='black', height=1, width=8)
     label.grid(row=2, column=0) 
   
     #ici on crée une selection, ou l'on peut choisir si le joueur est une IA, il suffit de cliquer pour cocher la case
     var1 = IntVar()
-    checkIA1 = Checkbutton(tk2, text="Player 1 is an AI", variable=var1)
+    checkIA1 = Checkbutton(tk2, text="Player 1 is an AI", variable=var1, bg='#FFFFFF')
     checkIA1.grid(row=1, column=12)
     var1.get()
     
     #ici on fait la meme chose mais avec le 2eme joueur
     var2 = IntVar()
-    checkIA2 = Checkbutton(tk2, text="Player 2 is an AI", variable=var2)
+    checkIA2 = Checkbutton(tk2, text="Player 2 is an AI", variable=var2, bg='#FFFFFF')
     checkIA2.grid(row=2, column=12)
     var2.get()
     
@@ -482,7 +482,7 @@ if __name__== '__main__':
     w3.grid(row=2, column=13, columnspan=8)
     
     #le boutton lance la grille du jeu choisi, attention le bouton verrouille vos choix
-    button_play = Button(tk2, text='Play', font='Times 20 bold', command = lambda: jeu())
+    button_play = Button(tk2, text='Play', font='Times 20 bold', command = lambda: jeu(), bg='#B22222')
     button_play.grid(row=6, column=3, columnspan=6)
     
     #le bouton play lance cette méthode
@@ -581,9 +581,9 @@ if __name__== '__main__':
         # les boutons sur lesquelles on a pas cliquer ne seront pas affichés grace a cette méthode
         def AffichepasbuttononUsed(button):
             if (button['text']=='X' or button['text']=='O'):
-                button['disabledforeground']='white'
+                button['disabledforeground']='#FFFFFF'
             else:
-                button['disabledforeground']='gray'
+                button['disabledforeground']='#808080'
 
         # on désactive tous les boutons
         def finaldisableAllButton():  
@@ -599,7 +599,7 @@ if __name__== '__main__':
         def BoutonUsedstayused(button):
             if (button['text']=='X' or button['text']=='O'):
                 button.configure(state=DISABLED)
-                button['disabledforeground']='white'
+                button['disabledforeground']='#FFFFFF'
                 
         #on réactive tous les boutons         
         def EnableAllButton():        
@@ -628,8 +628,8 @@ if __name__== '__main__':
                 numerobutton=coord[1]+coord[0]*7 + 1
             
             Allbuttons[numerobutton-1]['text']='X' if (tourjoueur== True) else 'O'
-            Allbuttons[numerobutton-1]['fg']='white'
-            Allbuttons[numerobutton-1]['disabledforeground']='white'
+            Allbuttons[numerobutton-1]['fg']='#FFFFFF'
+            Allbuttons[numerobutton-1]['disabledforeground']='#FFFFFF'
     
         # on definit ici ce qu'il se passe lorsque l'on appuie sur un bouton
         def btnClickIA(buttons):
@@ -714,8 +714,8 @@ if __name__== '__main__':
                     tourjoueur = False
                     #on change la valeur dans le texte du bouton, le fg definit la couleur du texte, le disabledforeground, la couleur du texte quand le bouton est désactivé (meme couleur que le fond de base)
                     buttons['text']='X'
-                    buttons['fg']='white'                    
-                    buttons['disabledforeground']='white'
+                    buttons['fg']='#FFFFFF'                    
+                    buttons['disabledforeground']='#FFFFFF'
                     #on désactive le bouton
                     disableButton(buttons)
                     
@@ -731,8 +731,8 @@ if __name__== '__main__':
                     tourjoueur = True
                 
                     buttons['text']='O'
-                    buttons['fg']='white'                    
-                    buttons['disabledforeground']='white'
+                    buttons['fg']='#FFFFFF'                    
+                    buttons['disabledforeground']='#FFFFFF'
                     disableButton(buttons)
                     
                     if (Joueurs[0].estuneIA == True):
@@ -756,70 +756,70 @@ if __name__== '__main__':
         buttons = StringVar()
 
         #le bouton de l'IA
-        buttonIA = Button(tk, text='IA', font='Times 20 bold', bg='gray', fg='black', activeforeground='gray',activebackground='gray', disabledforeground='black', command=lambda: btnClickIA(btnClickIA))
+        buttonIA = Button(tk, text='IA', font='Times 20 bold', bg='#808080', fg='#000000', activeforeground='#808080',activebackground='#808080', disabledforeground='#000000', command=lambda: btnClickIA(btnClickIA))
         buttonIA.grid(row=4, column=2)
         
         #le texte qui explique comment se servir du bouton de l'IA
-        label = Label( tk, text="When it is the AI turn, press the button :", font='Helvetica 10 bold', bg='white', fg='black',anchor='w', height=1, width=32,)
+        label = Label( tk, text="When it is the AI turn, press the button :", font='Helvetica 10 bold', bg='#FFFFFF', fg='#000000',anchor='w', height=1, width=32,)
         label.grid(row=4, column=0, columnspan=2)
         Allbuttons=[]
         
         #on initialise manuellement, les boutons de la grille car si l'on fait une boucle for, l'index depasse les limites 
         if (modeJeu==1):
-            Allbuttons.append(Button(tk, text='00', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(Allbuttons[0])))
-            Allbuttons.append(Button(tk, text='01', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(Allbuttons[1])))   
-            Allbuttons.append(Button(tk, text='02', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(Allbuttons[2])))
-            Allbuttons.append(Button(tk, text='10', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(Allbuttons[3])))
-            Allbuttons.append(Button(tk, text='11', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(Allbuttons[4])))
-            Allbuttons.append(Button(tk, text='12', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(Allbuttons[5])))
-            Allbuttons.append(Button(tk, text='20', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(Allbuttons[6])))
-            Allbuttons.append(Button(tk, text='21', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(Allbuttons[7])))
-            Allbuttons.append(Button(tk, text='22', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=4, width=8, command=lambda: btnClick(Allbuttons[8])))
+            Allbuttons.append(Button(tk, text='00', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=4, width=8, command=lambda: btnClick(Allbuttons[0])))
+            Allbuttons.append(Button(tk, text='01', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=4, width=8, command=lambda: btnClick(Allbuttons[1])))   
+            Allbuttons.append(Button(tk, text='02', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=4, width=8, command=lambda: btnClick(Allbuttons[2])))
+            Allbuttons.append(Button(tk, text='10', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=4, width=8, command=lambda: btnClick(Allbuttons[3])))
+            Allbuttons.append(Button(tk, text='11', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=4, width=8, command=lambda: btnClick(Allbuttons[4])))
+            Allbuttons.append(Button(tk, text='12', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=4, width=8, command=lambda: btnClick(Allbuttons[5])))
+            Allbuttons.append(Button(tk, text='20', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=4, width=8, command=lambda: btnClick(Allbuttons[6])))
+            Allbuttons.append(Button(tk, text='21', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=4, width=8, command=lambda: btnClick(Allbuttons[7])))
+            Allbuttons.append(Button(tk, text='22', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=4, width=8, command=lambda: btnClick(Allbuttons[8])))
             #chaque bouton s'appelle lui meme en tant que variable, c'est obligatoire pour pouvoit faire varier les valeurs du bouton
             
         elif (modeJeu==2):
-            Allbuttons.append(Button(tk, text='00', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[0])))
-            Allbuttons.append(Button(tk, text='01', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[1])))   
-            Allbuttons.append(Button(tk, text='02', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[2])))
-            Allbuttons.append(Button(tk, text='03', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[3])))
-            Allbuttons.append(Button(tk, text='04', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[4])))
-            Allbuttons.append(Button(tk, text='05', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[5])))
-            Allbuttons.append(Button(tk, text='06', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[6])))
-            Allbuttons.append(Button(tk, text='10', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[7])))
-            Allbuttons.append(Button(tk, text='11', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[8])))
-            Allbuttons.append(Button(tk, text='12', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[9])))
-            Allbuttons.append(Button(tk, text='13', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[10])))
-            Allbuttons.append(Button(tk, text='14', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[11])))
-            Allbuttons.append(Button(tk, text='15', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[12])))
-            Allbuttons.append(Button(tk, text='16', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[13])))
-            Allbuttons.append(Button(tk, text='20', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[14])))   
-            Allbuttons.append(Button(tk, text='21', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[15])))
-            Allbuttons.append(Button(tk, text='22', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[16])))
-            Allbuttons.append(Button(tk, text='23', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[17])))
-            Allbuttons.append(Button(tk, text='24', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[18])))
-            Allbuttons.append(Button(tk, text='25', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[19])))
-            Allbuttons.append(Button(tk, text='26', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[20])))
-            Allbuttons.append(Button(tk, text='30', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[21])))   
-            Allbuttons.append(Button(tk, text='31', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[22])))
-            Allbuttons.append(Button(tk, text='32', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[23])))
-            Allbuttons.append(Button(tk, text='33', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[24])))
-            Allbuttons.append(Button(tk, text='34', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[25])))
-            Allbuttons.append(Button(tk, text='35', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[26])))
-            Allbuttons.append(Button(tk, text='36', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[27])))
-            Allbuttons.append(Button(tk, text='40', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[28])))   
-            Allbuttons.append(Button(tk, text='41', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[29])))
-            Allbuttons.append(Button(tk, text='42', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[30])))
-            Allbuttons.append(Button(tk, text='43', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[31])))
-            Allbuttons.append(Button(tk, text='44', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[32])))
-            Allbuttons.append(Button(tk, text='45', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[33])))
-            Allbuttons.append(Button(tk, text='46', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[34])))
-            Allbuttons.append(Button(tk, text='50', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[35])))
-            Allbuttons.append(Button(tk, text='51', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[36])))
-            Allbuttons.append(Button(tk, text='52', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[37])))
-            Allbuttons.append(Button(tk, text='53', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[38])))
-            Allbuttons.append(Button(tk, text='54', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[39])))
-            Allbuttons.append(Button(tk, text='55', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[40])))
-            Allbuttons.append(Button(tk, text='56', font='Times 20 bold', bg='gray', fg='gray', activeforeground='gray',activebackground='gray', disabledforeground='white', height=3, width=8, command=lambda: btnClick(Allbuttons[41])))
+            Allbuttons.append(Button(tk, text='00', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[0])))
+            Allbuttons.append(Button(tk, text='01', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[1])))   
+            Allbuttons.append(Button(tk, text='02', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[2])))
+            Allbuttons.append(Button(tk, text='03', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[3])))
+            Allbuttons.append(Button(tk, text='04', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[4])))
+            Allbuttons.append(Button(tk, text='05', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[5])))
+            Allbuttons.append(Button(tk, text='06', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[6])))
+            Allbuttons.append(Button(tk, text='10', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[7])))
+            Allbuttons.append(Button(tk, text='11', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[8])))
+            Allbuttons.append(Button(tk, text='12', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[9])))
+            Allbuttons.append(Button(tk, text='13', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[10])))
+            Allbuttons.append(Button(tk, text='14', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[11])))
+            Allbuttons.append(Button(tk, text='15', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[12])))
+            Allbuttons.append(Button(tk, text='16', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[13])))
+            Allbuttons.append(Button(tk, text='20', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[14])))   
+            Allbuttons.append(Button(tk, text='21', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[15])))
+            Allbuttons.append(Button(tk, text='22', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[16])))
+            Allbuttons.append(Button(tk, text='23', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[17])))
+            Allbuttons.append(Button(tk, text='24', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[18])))
+            Allbuttons.append(Button(tk, text='25', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[19])))
+            Allbuttons.append(Button(tk, text='26', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[20])))
+            Allbuttons.append(Button(tk, text='30', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[21])))   
+            Allbuttons.append(Button(tk, text='31', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[22])))
+            Allbuttons.append(Button(tk, text='32', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[23])))
+            Allbuttons.append(Button(tk, text='33', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[24])))
+            Allbuttons.append(Button(tk, text='34', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[25])))
+            Allbuttons.append(Button(tk, text='35', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[26])))
+            Allbuttons.append(Button(tk, text='36', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[27])))
+            Allbuttons.append(Button(tk, text='40', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[28])))   
+            Allbuttons.append(Button(tk, text='41', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[29])))
+            Allbuttons.append(Button(tk, text='42', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[30])))
+            Allbuttons.append(Button(tk, text='43', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[31])))
+            Allbuttons.append(Button(tk, text='44', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[32])))
+            Allbuttons.append(Button(tk, text='45', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[33])))
+            Allbuttons.append(Button(tk, text='46', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[34])))
+            Allbuttons.append(Button(tk, text='50', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[35])))
+            Allbuttons.append(Button(tk, text='51', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[36])))
+            Allbuttons.append(Button(tk, text='52', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[37])))
+            Allbuttons.append(Button(tk, text='53', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[38])))
+            Allbuttons.append(Button(tk, text='54', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[39])))
+            Allbuttons.append(Button(tk, text='55', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[40])))
+            Allbuttons.append(Button(tk, text='56', font='Times 20 bold', bg='#808080', fg='#808080', activeforeground='#808080',activebackground='#808080', disabledforeground='#FFFFFF', height=3, width=8, command=lambda: btnClick(Allbuttons[41])))
 
         index=0
         #on crée la grille pour chaque élément de notre tableau de Bouton
