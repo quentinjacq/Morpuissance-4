@@ -481,10 +481,15 @@ if __name__== '__main__':
     w3 = OptionMenu(tk2, variable3, "Beginner", "Medium", "Hardcore")
     w3.grid(row=2, column=13, columnspan=8)
     
+
+    
     #le boutton lance la grille du jeu choisi, attention le bouton verrouille vos choix
-    button_play = Button(tk2, text='Play', font='Times 20 bold', command = lambda: jeu(), bg='#B22222')
+    button_play = Button(tk2, text='Play', font='Times 20 bold', command = lambda: jeu(), bg='#FFFFFF')
     button_play.grid(row=6, column=3, columnspan=6)
     
+
+                    
+                    
     #le bouton play lance cette méthode
     def jeu():
         global grille, estuneIA, modeJeu, niveau1, niveau2
@@ -503,7 +508,7 @@ if __name__== '__main__':
         variable.get()
         #on récupère le nom du jeu 
         w.configure(state=DISABLED)
-        variable2.get()
+        variable2.get() 
         w2.configure(state=DISABLED)
         variable3.get()
         w3.configure(state=DISABLED)
@@ -630,6 +635,37 @@ if __name__== '__main__':
             Allbuttons[numerobutton-1]['text']='X' if (tourjoueur== True) else 'O'
             Allbuttons[numerobutton-1]['fg']='#FFFFFF'
             Allbuttons[numerobutton-1]['disabledforeground']='#FFFFFF'
+           
+        # méthode qui affiche le résultat de la partie
+        def retry(number, pseudo):   
+            global J1, J2
+            if (number ==1):
+                result = messagebox.askquestion("Tic-Tac-Toe/Connect4", pseudo + " wins.\n Want a remake ?", icon='warning', type='yesno')                      
+            elif (number==2):
+                result = messagebox.askquestion("Tic-Tac-Toe/Connect4", pseudo + " wins.\n Want a remake ?", icon='warning', type='yesno')                
+            else:        
+                result = messagebox.askquestion("Tic-Tac-Toe/Connect4", "It's a tie.\n Want a remake ?", icon='warning', type='yesno')
+            
+            #ceci permet de rejouer, tout les boutons sont réactivés et le joueur peut relancer une partie dans un autre mode de jeu ou autre
+            if result == 'yes':
+                button_play.configure(state=NORMAL)
+                checkIA1.configure(state=NORMAL)
+                checkIA2.configure(state=NORMAL)
+                p1.set(" ")
+                p2.set(' ')
+                player1_name.configure(state=NORMAL)
+                player2_name.configure(state=NORMAL)
+                w.configure(state=NORMAL)
+                w2.configure(state=NORMAL)
+                w3.configure(state=NORMAL)  
+                tk.quit()
+                #tk.quit() est censé fermer la console mais ne fonctionne pas sur mon pc
+                
+            elif result == 'no':
+                tk.close()
+                tk2.quit()
+                #il faut fermer la console manuellement 
+                
     
         # on definit ici ce qu'il se passe lorsque l'on appuie sur un bouton
         def btnClickIA(buttons):
@@ -670,15 +706,16 @@ if __name__== '__main__':
                 #on désactive tous les boutons
                 finaldisableAllButton()
                 #on affiche le message dans une fenetre Tkinter avec le nom du gagnant
-                tkinter.messagebox.showinfo("Tic-Tac-Toe", J1.pseudo + " wins.") 
+                retry(J1.TerminalTest(grille, modeJeu),J1.pseudo)
+                
                 
             elif (J2.TerminalTest(grille, modeJeu)==2):
                 finaldisableAllButton()
-                tkinter.messagebox.showinfo("Tic-Tac-Toe", J2.pseudo + " wins.")
+                retry(J2.TerminalTest(grille, modeJeu),J2.pseudo)
                 
             elif (J2.TerminalTest(grille, modeJeu)==0):
                 finaldisableAllButton()
-                tkinter.messagebox.showinfo("Tic-Tac-Toe", 'There is a Tie.')
+                retry(J2.TerminalTest(grille, modeJeu),J2.pseudo)
     
     
         def btnClick(buttons):
@@ -742,16 +779,16 @@ if __name__== '__main__':
             #meme verification que lors de la methode IA
             if (J2.TerminalTest(grille, modeJeu)==2):
                 finaldisableAllButton()
-                tkinter.messagebox.showinfo("Tic-Tac-Toe", J2.pseudo + " wins.")
+                retry(J2.TerminalTest(grille, modeJeu),J2.pseudo)
                 
             elif (J2.TerminalTest(grille, modeJeu)==0):
                 finaldisableAllButton()
-                tkinter.messagebox.showinfo("Tic-Tac-Toe", 'There is a Tie.')
+                retry(J2.TerminalTest(grille, modeJeu),J2.pseudo)
                 
             elif (J1.TerminalTest(grille, modeJeu)==1):
                 finaldisableAllButton()
-                tkinter.messagebox.showinfo("Tic-Tac-Toe", J1.pseudo + " wins.")
-            
+                retry(J1.TerminalTest(grille, modeJeu),J1.pseudo)
+                
         #variable bouton qui est appelée lors de la methode BtnClick
         buttons = StringVar()
 
@@ -835,5 +872,10 @@ if __name__== '__main__':
             disableIAbutton()
  
         tk.mainloop()
+        
+
+  
+
+        
     
     tk2.mainloop()
