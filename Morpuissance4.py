@@ -593,8 +593,10 @@ if __name__== '__main__':
         
         # les boutons sur lesquelles on a pas cliquer ne seront pas affichés grace a cette méthode
         def AffichepasbuttononUsed(button):
-            if (button['text']=='X' or button['text']=='O'):
-                button['disabledforeground']='#FFFFFF'
+            if (button['text']=='X'):
+                button['disabledforeground']='#008BFF'
+            elif (button['text']=='O'):
+                button['disabledforeground']='#FF0000'
             else:
                 button['disabledforeground']='#808080'
 
@@ -610,9 +612,12 @@ if __name__== '__main__':
             
         #on fait en sorte que les boutons deja utilisés reste affichés   
         def BoutonUsedstayused(button):
-            if (button['text']=='X' or button['text']=='O'):
+            if (button['text']=='X'):
                 button.configure(state=DISABLED)
-                button['disabledforeground']='#FFFFFF'
+                button['disabledforeground']='#008BFF'
+            elif (button['text']=='O'):
+                button.configure(state=DISABLED)
+                button['disabledforeground']='#FF0000'
                 
         #on réactive tous les boutons         
         def EnableAllButton():        
@@ -640,9 +645,15 @@ if __name__== '__main__':
             elif(modeJeu==2):
                 numerobutton=coord[1]+coord[0]*7 + 1
             
-            Allbuttons[numerobutton-1]['text']='X' if (tourjoueur== True) else 'O'
-            Allbuttons[numerobutton-1]['fg']='#FFFFFF'
-            Allbuttons[numerobutton-1]['disabledforeground']='#FFFFFF'
+            if(tourjoueur== True):
+                Allbuttons[numerobutton-1]['text']='X'
+                Allbuttons[numerobutton-1]['fg']='#008BFF'
+                Allbuttons[numerobutton-1]['disabledforeground']='#008BFF'
+            else:
+                Allbuttons[numerobutton-1]['text']='O'
+                Allbuttons[numerobutton-1]['fg']='#FF0000'
+                Allbuttons[numerobutton-1]['disabledforeground']='#FF0000'
+            
            
         # méthode qui affiche le résultat de la partie
         def retry(number, pseudo):   
@@ -766,8 +777,8 @@ if __name__== '__main__':
                     tourjoueur = False
                     #on change la valeur dans le texte du bouton, le fg definit la couleur du texte, le disabledforeground, la couleur du texte quand le bouton est désactivé (meme couleur que le fond de base)
                     buttons['text']='X'
-                    buttons['fg']='#FFFFFF'                    
-                    buttons['disabledforeground']='#FFFFFF'
+                    buttons['fg']='#008BFF'                    
+                    buttons['disabledforeground']='#008BFF'
                     #on désactive le bouton
                     disableButton(buttons)
                     
@@ -783,8 +794,8 @@ if __name__== '__main__':
                     tourjoueur = True
                 
                     buttons['text']='O'
-                    buttons['fg']='#FFFFFF'                    
-                    buttons['disabledforeground']='#FFFFFF'
+                    buttons['fg']='#FF0000'                    
+                    buttons['disabledforeground']='#FF0000'
                     disableButton(buttons)
                     
                     if (Joueurs[0].estuneIA == True):
@@ -897,10 +908,5 @@ if __name__== '__main__':
             EnableAllButton()
  
         tk.mainloop()
-        
-
-  
-
-        
-    
+            
     tk2.mainloop()
