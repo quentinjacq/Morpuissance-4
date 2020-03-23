@@ -70,11 +70,11 @@ class Joueur:
                 if prof==1: #Au choix final, si il y a plusieurs possibilités équivalentes, on choisir aléatoirement entre celles-ci
                     random = choice([1,2,3,4])
                 score, action, profcoupwin = self.MinValue(grillenv, modeJeu, a, b, prof+1, niveau)
-                if prof==1:
+                """if prof==1:
                     print("Coord :")
                     print(actionspossibles[i])
                     print("   Score : ", end='')
-                    print(score)
+                    print(score)"""
                 if (score>scoreMax or (score!=-1 and score==scoreMax and  profcoupwin<profmin) or (score==-1 and score==scoreMax and profcoupwin>profmin) or (score != -1 and score==scoreMax and profcoupwin == profmin and prof == 1 and random==1)):#Si les choix sont équivalent, on en prend un au hasard (pour varier le jeu)
                     profmin = profcoupwin
                     scoreMax = score
@@ -456,13 +456,10 @@ if __name__== '__main__':
     checkIA1 = Checkbutton(tk2, text="Player 1 is an AI", variable=var1, bg='#FFFFFF')
     checkIA1.grid(row=1, column=12)
     
-    
     #ici on fait la meme chose mais avec le 2eme joueur
     var2 = IntVar()
     checkIA2 = Checkbutton(tk2, text="Player 2 is an AI", variable=var2, bg='#FFFFFF')
     checkIA2.grid(row=2, column=12)
-    
-    
     
     # ici on va crée une liste de selection, cad que le joueur peut choisir entre Tic tac toe et Connect 4, la valeur par défaut est Tic tac toe
     variable = StringVar(tk2)
@@ -482,15 +479,10 @@ if __name__== '__main__':
     w3 = OptionMenu(tk2, variable3, "Beginner", "Medium", "Hardcore")
     w3.grid(row=2, column=13, columnspan=8)
     
-
-    
     #le boutton lance la grille du jeu choisi, attention le bouton verrouille vos choix
     button_play = Button(tk2, text='Play', font='Times 20 bold', command = lambda: jeu(), bg='#FFFFFF')
     button_play.grid(row=6, column=3, columnspan=6)
-    
-
-                    
-                    
+              
     #le bouton play lance cette méthode
     def jeu():
         global grille, estuneIA, modeJeu, niveau1, niveau2
@@ -499,9 +491,7 @@ if __name__== '__main__':
         #on va mettre tout les butons en DISABLED, on ne peut plus les utiliser
         checkIA1.configure(state=DISABLED)
         var2.get()
-        print(var2.get())
         var1.get()
-        print(var1.get())
         #.get() permet de prendre la valeur de la case, 0 si elle n'est pas cochée, 1 autrement
         checkIA2.configure(state=DISABLED)
         p1.get()
@@ -520,7 +510,6 @@ if __name__== '__main__':
         #on crée une nouvelle fenetre
         tk = Tk()
         tk.title("Tic Tac Toe/ Connect 4")
-        
         
         Joueurs.clear()
 
@@ -585,7 +574,7 @@ if __name__== '__main__':
         grille = [[0 for j in range(taillegrillex)] for i in range(taillegrilley)]
         
         #On affiche l'état de la grille
-        AfficherGrille(grille)
+        #AfficherGrille(grille)
             
         # on désactive les boutons IA
         def disableIAbutton():        
@@ -654,7 +643,6 @@ if __name__== '__main__':
                 Allbuttons[numerobutton-1]['fg']='#FF0000'
                 Allbuttons[numerobutton-1]['disabledforeground']='#FF0000'
             
-           
         # méthode qui affiche le résultat de la partie
         def retry(number, pseudo):   
             global J1, J2
@@ -684,8 +672,6 @@ if __name__== '__main__':
                 tk.destroy()
                 tk2.destroy()
                 
-                
-    
         # on definit ici ce qu'il se passe lorsque l'on appuie sur un bouton
         def btnClickIA(buttons):
             global tourjoueur, modeJeu, estuneIA, grille, Joueurs,niveau1, niveau2
@@ -699,7 +685,7 @@ if __name__== '__main__':
                 #on change le tour
                 tourjoueur = False
                 #on réafiche la grille
-                AfficherGrille(grille)
+                #AfficherGrille(grille)
                 
                 #ce qui suit est a faire que quand le J2 est un vrai joueur
                 if (Joueurs[1].estuneIA == False):
@@ -714,7 +700,7 @@ if __name__== '__main__':
                 
                 ModifieButton(coord, tourjoueur)
                 tourjoueur = True
-                AfficherGrille(grille)
+                #AfficherGrille(grille)
                 
                 if (Joueurs[0].estuneIA == False):
                     EnableAllButton()
@@ -773,7 +759,7 @@ if __name__== '__main__':
                 if(tourjoueur==True and Joueurs[0].estuneIA == False and listcouppossible in Joueurs[0].Action(grille, modeJeu)):
                     # on change la valeur dans la grille
                     grille[int(buttons['text'][0])][int(buttons['text'][1])]=1
-                    AfficherGrille(grille)
+                    #AfficherGrille(grille)
                     tourjoueur = False
                     #on change la valeur dans le texte du bouton, le fg definit la couleur du texte, le disabledforeground, la couleur du texte quand le bouton est désactivé (meme couleur que le fond de base)
                     buttons['text']='X'
@@ -790,7 +776,7 @@ if __name__== '__main__':
                 #meme chose mais pour le J1
                 elif(tourjoueur==False and Joueurs[1].estuneIA == False and listcouppossible in Joueurs[1].Action(grille, modeJeu)):
                     grille[int(buttons['text'][0])][int(buttons['text'][1])] = 2  
-                    AfficherGrille(grille)            
+                    #AfficherGrille(grille)            
                     tourjoueur = True
                 
                     buttons['text']='O'
@@ -897,7 +883,6 @@ if __name__== '__main__':
             for j in range (taillegrillex): 
                Allbuttons[index].grid(row=i+5, column=j)
                index = index+1
-        
         
         #désactive les boutons du second joueur pour eviter que celui ci triche
         if(Joueurs[0].estuneIA == True):
