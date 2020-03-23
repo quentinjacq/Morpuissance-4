@@ -522,7 +522,7 @@ if __name__== '__main__':
         tk.title("Tic Tac Toe/ Connect 4")
         
         
-        
+        Joueurs.clear()
 
         #selon le choix de la case cochée ou non, on initialise les joueurs comme étant une IA ou non
         estuneIA = False
