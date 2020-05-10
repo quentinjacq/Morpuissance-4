@@ -120,9 +120,9 @@ class Joueur:
     def TerminalTest(self, grille, modeJeu):#Test si c'est la fin du jeu, et qui a gagné
         
         if (modeJeu == 1):
-            nombrepourgagner = 3#Il faut 4 pions alignés pour gagner au puissance 4
+            nombrepourgagner = 3#Il faut 3 pions alignés pour gagner au puissance 4
         else:
-            nombrepourgagner = 4#Il faut 3 pions alignés pour gagner au morpion
+            nombrepourgagner = 4#Il faut 4 pions alignés pour gagner au morpion
         
         gagnant = 0#Retourne 0 si la table est complete sans gagnant, -1 si le jeu continue, 1 si le joueur 1 a gagné, 2 si le joueur 2 a gagné
         for i in range(len(grille)):
@@ -134,13 +134,13 @@ class Joueur:
         for i in range(len(grille)):
             for j in range(len(grille[i])-nombrepourgagner+1):#On parcourt toutes les cases
                 if(grille[i][j]==self.numJoueur and grille[i][j+1]==self.numJoueur and grille[i][j+2]==self.numJoueur):#Si 3 jetons du joueur sont alignés, alors il est le gagnant
-                    if(modeJeu == 2):
+                    if(modeJeu != 1):
                         if(grille[i][j+3]==self.numJoueur):#+1 si on est au puissance 4
                             gagnant = self.numJoueur
                     else:
                         gagnant = self.numJoueur
                 elif(grille[i][j]==((self.numJoueur%2)+1) and grille[i][j+1]==((self.numJoueur%2)+1) and grille[i][j+2]==((self.numJoueur%2)+1)):#idem que ci dessus mais pour son adversaire
-                    if(modeJeu == 2):
+                    if(modeJeu != 1):
                         if(grille[i][j+3]==((self.numJoueur%2)+1)):
                             gagnant = ((self.numJoueur%2)+1)
                     else:
@@ -150,13 +150,13 @@ class Joueur:
         for i in range(len(grille)-nombrepourgagner+1):
             for j in range(len(grille[i])):#On parcourt toutes les cases
                 if(grille[i][j]==self.numJoueur and grille[i+1][j]==self.numJoueur and grille[i+2][j]==self.numJoueur):#Si 3 jetons du joueur sont alignés, alors il est le gagnant
-                    if(modeJeu == 2):
+                    if(modeJeu != 1):
                         if(grille[i+3][j]==self.numJoueur):#+1 si on est au puissance 4
                             gagnant = self.numJoueur
                     else:
                         gagnant = self.numJoueur
                 elif(grille[i][j]==((self.numJoueur%2)+1) and grille[i+1][j]==((self.numJoueur%2)+1) and grille[i+2][j]==((self.numJoueur%2)+1)):#idem que ci dessus mais pour son adversaire
-                    if(modeJeu == 2):
+                    if(modeJeu != 1):
                         if(grille[i+3][j]==((self.numJoueur%2)+1)):
                             gagnant = ((self.numJoueur%2)+1)
                     else:
@@ -166,13 +166,13 @@ class Joueur:
         for i in range(len(grille)-nombrepourgagner+1):
             for j in range(len(grille[i])-nombrepourgagner+1):#On parcourt toutes les cases
                 if(grille[i][j]==self.numJoueur and grille[i+1][j+1]==self.numJoueur and grille[i+2][j+2]==self.numJoueur):#Si 3 jetons du joueur sont alignés, alors il est le gagnant
-                    if(modeJeu == 2):
+                    if(modeJeu != 1):
                         if(grille[i+3][j+3]==self.numJoueur):#+1 si on est au puissance 4
                             gagnant = self.numJoueur
                     else:
                         gagnant = self.numJoueur
                 elif(grille[i][j]==((self.numJoueur%2)+1) and grille[i+1][j+1]==((self.numJoueur%2)+1) and grille[i+2][j+2]==((self.numJoueur%2)+1)):#idem que ci dessus mais pour son adversaire
-                    if(modeJeu == 2):
+                    if(modeJeu != 1):
                         if(grille[i+3][j+3]==((self.numJoueur%2)+1)):
                             gagnant = ((self.numJoueur%2)+1)
                     else:
@@ -182,13 +182,13 @@ class Joueur:
         for i in range(nombrepourgagner-1,len(grille)):
             for j in range(len(grille[i])-nombrepourgagner+1):#On parcourt toutes les cases
                 if(grille[i][j]==self.numJoueur and grille[i-1][j+1]==self.numJoueur and grille[i-2][j+2]==self.numJoueur):#Si 3 jetons du joueur sont alignés, alors il est le gagnant
-                    if(modeJeu == 2):
+                    if(modeJeu != 1):
                         if(grille[i-3][j+3]==self.numJoueur):#+1 si on est au puissance 4
                             gagnant = self.numJoueur
                     else:
                         gagnant = self.numJoueur
                 elif(grille[i][j]==((self.numJoueur%2)+1) and grille[i-1][j+1]==((self.numJoueur%2)+1) and grille[i-2][j+2]==((self.numJoueur%2)+1)):#idem que ci dessus mais pour son adversaire
-                    if(modeJeu == 2):
+                    if(modeJeu != 1):
                         if(grille[i-3][j+3]==((self.numJoueur%2)+1)):
                             gagnant = ((self.numJoueur%2)+1)
                     else:
@@ -217,7 +217,7 @@ class Joueur:
                             selfpion = selfpion+1#On lui ajoute # à son compteur de pions
                         elif grille[i][j+k]==(self.numJoueur%2)+1:#Si c'est a son adversaire
                             pionautre = pionautre + 1#On ajoute à ce dernier 1 à son compteur
-                    if (modeJeu==2):#Si on est dans un puissance 4, on vérifie une case de plus
+                    if (modeJeu!=1):#Si on est dans un puissance 4, on vérifie une case de plus
                         if grille[i][j+3]==self.numJoueur:
                             selfpion = selfpion+1
                         elif grille[i][j+3]==(self.numJoueur%2)+1:
@@ -228,7 +228,7 @@ class Joueur:
                             score = score + 10
                         elif (selfpion==2):
                             score = score + 30
-                        elif (selfpion==3 and modeJeu == 2):
+                        elif (selfpion==3 and modeJeu != 1):
                             score = score + 60
                             
                 elif(grille[i][j]==(self.numJoueur%2)+1):#On fait la même chose que ci-dessus mais si on tombe sur une case de l'adversaire
@@ -238,7 +238,7 @@ class Joueur:
                             selfpion = selfpion+1
                         elif grille[i][j+k]==(self.numJoueur%2)+1:
                             pionautre = pionautre + 1
-                    if (modeJeu==2):
+                    if (modeJeu!= 1):
                         if grille[i][j+3]==self.numJoueur:
                             selfpion = selfpion+1
                         elif grille[i][j+3]==(self.numJoueur%2)+1:
@@ -249,7 +249,7 @@ class Joueur:
                             score = score - 10
                         elif (pionautre==2):
                             score = score - 30
-                        elif (pionautre==3 and modeJeu == 2):
+                        elif (pionautre==3 and modeJeu != 1):
                             score = score - 60
 
         selfpion = 0#On reset les pions
@@ -265,7 +265,7 @@ class Joueur:
                             selfpion = selfpion+1
                         elif grille[i+k][j]==(self.numJoueur%2)+1:
                             pionautre = pionautre + 1
-                    if (modeJeu==2):
+                    if (modeJeu!= 1):
                         if grille[i+3][j]==self.numJoueur:
                             selfpion = selfpion+1
                         elif grille[i+3][j]==(self.numJoueur%2)+1:
@@ -276,7 +276,7 @@ class Joueur:
                             score = score + 10
                         elif (selfpion==2):
                             score = score + 30
-                        elif (selfpion==3 and modeJeu == 2):
+                        elif (selfpion==3 and modeJeu != 1):
                             score = score + 60
                 
                 elif(grille[i][j]==(self.numJoueur%2)+1):
@@ -286,7 +286,7 @@ class Joueur:
                             selfpion = selfpion+1
                         elif grille[i+k][j]==(self.numJoueur%2)+1:
                             pionautre = pionautre + 1
-                    if (modeJeu==2):
+                    if (modeJeu != 1):
                         if grille[i+3][j]==self.numJoueur:
                             selfpion = selfpion+1
                         elif grille[i+3][j]==(self.numJoueur%2)+1:
@@ -297,7 +297,7 @@ class Joueur:
                             score = score - 10
                         elif (pionautre==2):
                             score = score - 30
-                        elif (pionautre==3 and modeJeu == 2):
+                        elif (pionautre==3 and modeJeu != 1):
                             score = score - 60
 
         selfpion = 0#On reset les pions
@@ -313,7 +313,7 @@ class Joueur:
                             selfpion = selfpion+1
                         elif grille[i+k][j+k]==(self.numJoueur%2)+1:
                             pionautre = pionautre + 1
-                    if (modeJeu==2):
+                    if (modeJeu!= 1):
                         if grille[i+3][j+3]==self.numJoueur:
                             selfpion = selfpion+1
                         elif grille[i+3][j+3]==(self.numJoueur%2)+1:
@@ -324,7 +324,7 @@ class Joueur:
                             score = score + 10
                         elif (selfpion==2):
                             score = score + 30
-                        elif (selfpion==3 and modeJeu == 2):
+                        elif (selfpion==3 and modeJeu != 1):
                             score = score + 60
                 
                 elif(grille[i][j]==(self.numJoueur%2)+1):#Si une case est égalse à 1, on ajoute la coord au joueur 1
@@ -334,7 +334,7 @@ class Joueur:
                             selfpion = selfpion+1
                         elif grille[i+k][j+k]==(self.numJoueur%2)+1:
                             pionautre = pionautre + 1
-                    if (modeJeu==2):
+                    if (modeJeu!= 1):
                         if grille[i+3][j+3]==self.numJoueur:
                             selfpion = selfpion+1
                         elif grille[i+3][j+3]==(self.numJoueur%2)+1:
@@ -345,7 +345,7 @@ class Joueur:
                             score = score - 10
                         elif (pionautre==2):
                             score = score - 30
-                        elif (pionautre==3 and modeJeu == 2):
+                        elif (pionautre==3 and modeJeu != 1):
                             score = score - 60
 
         selfpion = 0#On reset les pions
@@ -361,7 +361,7 @@ class Joueur:
                             selfpion = selfpion+1
                         elif grille[i-k][j+k]==(self.numJoueur%2)+1:
                             pionautre = pionautre + 1
-                    if (modeJeu==2):
+                    if (modeJeu!= 1):
                         if grille[i-3][j+3]==self.numJoueur:
                             selfpion = selfpion+1
                         elif grille[i-3][j+3]==(self.numJoueur%2)+1:
@@ -372,7 +372,7 @@ class Joueur:
                             score = score + 10
                         elif (selfpion==2):
                             score = score + 30
-                        elif (selfpion==3 and modeJeu == 2):
+                        elif (selfpion==3 and modeJeu != 1):
                             score = score + 60
                 
                 elif(grille[i][j]==(self.numJoueur%2)+1):
@@ -382,7 +382,7 @@ class Joueur:
                             selfpion = selfpion+1
                         elif grille[i-k][j+k]==(self.numJoueur%2)+1:
                             pionautre = pionautre + 1
-                    if (modeJeu==2):
+                    if (modeJeu!= 1):
                         if grille[i-3][j+3]==self.numJoueur:
                             selfpion = selfpion+1
                         elif grille[i-3][j+3]==(self.numJoueur%2)+1:
@@ -393,7 +393,7 @@ class Joueur:
                             score = score - 10
                         elif (pionautre==2):
                             score = score - 30
-                        elif (pionautre==3 and modeJeu == 2):
+                        elif (pionautre==3 and modeJeu != 1):
                             score = score - 60
         
         return score #On retourne le total score de la table donnée
@@ -573,7 +573,7 @@ if __name__== '__main__':
             if(modeJeu==1):
                 niveau2=9
             elif(modeJeu==3):
-                niveau1=5
+                niveau2=5
             else:
                 niveau2=6
                 
@@ -581,7 +581,7 @@ if __name__== '__main__':
             if(modeJeu==1):
                 niveau2=6
             elif(modeJeu==3):
-                niveau1=4
+                niveau2=4
             else:
                 niveau2=5
          
@@ -754,30 +754,33 @@ if __name__== '__main__':
             #le cas d'un bouton si le joueur est humain
             #on récupère la valeur du bouton
             couple =str(buttons['text'])
+            print(buttons['text'])
             #on met ses valeurs sous la forme d'une liste
             listcouppossible = [int(couple[0:2]),int(couple[2:4])]
-
+            print(listcouppossible)
             #dans le cas du puissance 4, cette méthode modélise la gravité
-            #si les coord j sont pareils, alors le coup a jouer devient celui présent dans actionspossibles
-            if (tourjoueur==True and modeJeu==2):
+            #si les coord j sont pareilles, alors le coup a jouer devient celui présent dans actionspossibles
+            if (tourjoueur==True and modeJeu!=1):
                 for i in range (len(Joueurs[0].Action(grille, modeJeu))):
                     if (Joueurs[0].Action(grille, modeJeu)[i][1]==listcouppossible[1]):
                         listcouppossible=Joueurs[0].Action(grille, modeJeu)[i]
                         buttons = Allbuttons[ModifieOnlyButton(listcouppossible, tourjoueur)-1]
             #meme chose pour le joueur au tour false
-            elif(tourjoueur==False and modeJeu==2): 
+            elif(tourjoueur==False and modeJeu!=1): 
                 for i in range (len(Joueurs[1].Action(grille, modeJeu))):
                     if (Joueurs[1].Action(grille, modeJeu)[i][1]==listcouppossible[1]):
                         listcouppossible=Joueurs[1].Action(grille, modeJeu)[i]
                         buttons = Allbuttons[ModifieOnlyButton(listcouppossible, tourjoueur)-1]
               
             #on vérifie que le bouton n'est pas deja utilisé
-            if(grille[int(buttons['text'][0:1])][int(buttons['text'][2:3])]==0):
+            if(grille[int(buttons['text'][0:2])][int(buttons['text'][2:4])]==0):
                                
                 # on verifie le tour du joueur, que le coup joué fait partie de ceux possible, et que ce n'est pas une IA
                 if(tourjoueur==True and Joueurs[0].estuneIA == False and listcouppossible in Joueurs[0].Action(grille, modeJeu)):
                     # on change la valeur dans la grille
-                    grille[int(buttons['text'][0])][int(buttons['text'][1])]=1
+                    grille[int(buttons['text'][0:2])][int(buttons['text'][2:4])]=1
+                    print(buttons['text'][0:2])
+                    print(buttons['text'][2:4])
                     #AfficherGrille(grille)
                     tourjoueur = False
                     #on change la valeur dans le texte du bouton, le fg definit la couleur du texte, le disabledforeground, la couleur du texte quand le bouton est désactivé (meme couleur que le fond de base)
@@ -794,7 +797,7 @@ if __name__== '__main__':
                     
                 #meme chose mais pour le J1
                 elif(tourjoueur==False and Joueurs[1].estuneIA == False and listcouppossible in Joueurs[1].Action(grille, modeJeu)):
-                    grille[int(buttons['text'][0])][int(buttons['text'][1])] = 2  
+                    grille[int(buttons['text'][0:2])][int(buttons['text'][2:4])] = 2  
                     #AfficherGrille(grille)            
                     tourjoueur = True
                 
