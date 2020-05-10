@@ -435,6 +435,7 @@ if __name__== '__main__':
     tourjoueur = True# variable qui permet de savoir a qui est le tour
     Joueurs = []# tableau de classe
     n=0
+    nombrejeton =0
     gagnant = -1    
     estuneIA = False    # booleen qui nous permet de savoir si un joueur un est une IA ou non
     modeJeu=1   # le mode de Jeu
@@ -697,12 +698,14 @@ if __name__== '__main__':
                 
         # on definit ici ce qu'il se passe lorsque l'on appuie sur un bouton
         def btnClickIA(buttons):
-            global tourjoueur, modeJeu, estuneIA, grille, Joueurs,niveau1, niveau2
+            global tourjoueur, modeJeu, estuneIA, grille, Joueurs,niveau1, niveau2, nombrejeton
+            nombrejeton =nombrejeton +1
             
             #il faut que le joueur est une IA et que ce soit a son tour
             if(Joueurs[0].estuneIA == True and tourjoueur==True):
                 #on récupère les coord de la case jouée par l'IA
                 grille, coord = Joueurs[0].Joue(grille, modeJeu, niveau1)
+
                 #on modifie nos boutons a l'aide des coords
                 ModifieButton(coord, tourjoueur)
                 #on change le tour
@@ -751,11 +754,20 @@ if __name__== '__main__':
                 tourjoueur=True
                 retry(J2.TerminalTest(grille, modeJeu),J2.pseudo)
     
+            elif (nombrejeton == 42):
+                #on désactive tous les boutons
+                finaldisableAllButton()
+                disableIAbutton()
+                tourjoueur=True
+                #on affiche le message dans une fenetre Tkinter avec le nom du gagnant
+                retry(0," ")
+                
     
         def btnClick(buttons):
-            global tourjoueur, modeJeu, estuneIA, grille
+            global tourjoueur, modeJeu, estuneIA, grille, nombrejeton
             #le cas d'un bouton si le joueur est humain
             #on récupère la valeur du bouton
+            nombrejeton =nombrejeton +1
             couple =str(buttons['text'])
             print(buttons['text'])
             #on met ses valeurs sous la forme d'une liste
@@ -782,6 +794,7 @@ if __name__== '__main__':
                 if(tourjoueur==True and Joueurs[0].estuneIA == False and listcouppossible in Joueurs[0].Action(grille, modeJeu)):
                     # on change la valeur dans la grille
                     grille[int(buttons['text'][0:2])][int(buttons['text'][2:4])]=1
+
                     print(buttons['text'][0:2])
                     print(buttons['text'][2:4])
                     #AfficherGrille(grille)
@@ -803,7 +816,6 @@ if __name__== '__main__':
                     grille[int(buttons['text'][0:2])][int(buttons['text'][2:4])] = 2  
                     #AfficherGrille(grille)            
                     tourjoueur = True
-                
                     buttons['text']='O'
                     buttons['fg']='#FF0000'                    
                     buttons['disabledforeground']='#FF0000'
@@ -831,6 +843,13 @@ if __name__== '__main__':
                 disableIAbutton()
                 tourjoueur=True
                 retry(J1.TerminalTest(grille, modeJeu),J1.pseudo)
+            elif (nombrejeton == 42):
+                #on désactive tous les boutons
+                finaldisableAllButton()
+                disableIAbutton()
+                tourjoueur=True
+                #on affiche le message dans une fenetre Tkinter avec le nom du gagnant
+                retry(0," ")
                 
         #variable bouton qui est appelée lors de la methode BtnClick
         buttons = StringVar()
