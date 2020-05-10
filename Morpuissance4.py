@@ -769,10 +769,8 @@ if __name__== '__main__':
             #on récupère la valeur du bouton
             nombrejeton =nombrejeton +1
             couple =str(buttons['text'])
-            print(buttons['text'])
             #on met ses valeurs sous la forme d'une liste
             listcouppossible = [int(couple[0:2]),int(couple[2:4])]
-            print(listcouppossible)
             #dans le cas du puissance 4, cette méthode modélise la gravité
             #si les coord j sont pareilles, alors le coup a jouer devient celui présent dans actionspossibles
             if (tourjoueur==True and modeJeu!=1):
@@ -794,9 +792,6 @@ if __name__== '__main__':
                 if(tourjoueur==True and Joueurs[0].estuneIA == False and listcouppossible in Joueurs[0].Action(grille, modeJeu)):
                     # on change la valeur dans la grille
                     grille[int(buttons['text'][0:2])][int(buttons['text'][2:4])]=1
-
-                    print(buttons['text'][0:2])
-                    print(buttons['text'][2:4])
                     #AfficherGrille(grille)
                     tourjoueur = False
                     #on change la valeur dans le texte du bouton, le fg definit la couleur du texte, le disabledforeground, la couleur du texte quand le bouton est désactivé (meme couleur que le fond de base)
