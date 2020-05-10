@@ -119,10 +119,10 @@ class Joueur:
     
     def TerminalTest(self, grille, modeJeu):#Test si c'est la fin du jeu, et qui a gagné
         
-        if (modeJeu == 2):
-            nombrepourgagner = 4#Il faut 4 pions alignés pour gagner au puissance 4
+        if (modeJeu == 1):
+            nombrepourgagner = 3#Il faut 4 pions alignés pour gagner au puissance 4
         else:
-            nombrepourgagner = 3#Il faut 3 pions alignés pour gagner au morpion
+            nombrepourgagner = 4#Il faut 3 pions alignés pour gagner au morpion
         
         gagnant = 0#Retourne 0 si la table est complete sans gagnant, -1 si le jeu continue, 1 si le joueur 1 a gagné, 2 si le joueur 2 a gagné
         for i in range(len(grille)):
@@ -198,10 +198,10 @@ class Joueur:
     
     def Etatjeu(self, grille, modeJeu):#Reçois une grille non-finie et estime qui est en train de gagner
         
-        if (modeJeu == 2):
-            nombrepourgagner = 4
-        else:
+        if (modeJeu == 1):
             nombrepourgagner = 3
+        else:
+            nombrepourgagner = 4
         
         score = 0#Les différents points des joueurs vont s'addtionner pour attribuer un score à la table en cours
         selfpion = 0#Comptage des pions du joueur actuel
@@ -556,22 +556,32 @@ if __name__== '__main__':
         if(variable2.get()=='Hardcore'):
             if(modeJeu==1):
                 niveau1=9
+            elif(modeJeu==3):
+                niveau1=5
             else:
                 niveau1=6
+                
         elif(variable2.get()=='Medium'):
             if(modeJeu==1):
                 niveau1=6
+            elif(modeJeu==3):
+                niveau1=4
             else:
                 niveau1=5
                 
         if(variable3.get()=='Hardcore'):
             if(modeJeu==1):
                 niveau2=9
+            elif(modeJeu==3):
+                niveau1=5
             else:
                 niveau2=6
+                
         elif(variable3.get()=='Medium'):
             if(modeJeu==1):
                 niveau2=6
+            elif(modeJeu==3):
+                niveau1=4
             else:
                 niveau2=5
          
