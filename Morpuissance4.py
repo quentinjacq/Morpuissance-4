@@ -688,7 +688,8 @@ if __name__== '__main__':
                 player2_name.configure(state=NORMAL)
                 w.configure(state=NORMAL)
                 w2.configure(state=NORMAL)
-                w3.configure(state=NORMAL)  
+                w3.configure(state=NORMAL)
+                nombrejeton = 0
                 tk.destroy ()
                 #tk.destroy() détruit la fenetre et la reinitialise
                 
@@ -700,6 +701,7 @@ if __name__== '__main__':
         def btnClickIA(buttons):
             global tourjoueur, modeJeu, estuneIA, grille, Joueurs,niveau1, niveau2, nombrejeton
             nombrejeton =nombrejeton +1
+            print(nombrejeton)
             
             #il faut que le joueur est une IA et que ce soit a son tour
             if(Joueurs[0].estuneIA == True and tourjoueur==True):
@@ -768,6 +770,7 @@ if __name__== '__main__':
             #le cas d'un bouton si le joueur est humain
             #on récupère la valeur du bouton
             nombrejeton =nombrejeton +1
+            print(nombrejeton)
             couple =str(buttons['text'])
             #on met ses valeurs sous la forme d'une liste
             listcouppossible = [int(couple[0:2]),int(couple[2:4])]
