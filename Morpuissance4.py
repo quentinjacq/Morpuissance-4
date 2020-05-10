@@ -28,6 +28,7 @@ class Joueur:
     def Joue(self,grille, modeJeu, niveau):#Début du tour de l'IA, appelé AlphaBetaSearch dans le TD
         grillenv=copy.deepcopy(grille)#On crée une nouvelle matrice pour ne pas modifier l'originale dans nos test à venir dans le min max
         score,  actionfinal, prof= self.MaxValue(grillenv, modeJeu, -5000, 5000, 1, niveau)#score et prof ne sont pas utilie ici mais le sont lorsque Min et Max s'appellent entre eux
+        print("Dernier jeton joué en : x=",actionfinal[0], "y=", actionfinal[1])
         return self.Result(grille, actionfinal, self.numJoueur), actionfinal#On retourne la grille modifiée avec l'action finale
 
     def MinValue(self,grille, modeJeu, a, b, prof, niveau):#On considère ici que c'est l'adversaire qui joue, donc qu'il va choisir l'action la plus néfaste pour nous (qui à un score/utility la plus faible)
