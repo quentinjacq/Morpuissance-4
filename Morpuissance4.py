@@ -68,6 +68,8 @@ class Joueur:
             choix = 0
             actionspossibles = self.Action(grille, modeJeu)
             for i in range(len(actionspossibles)):
+                if (i%2 ==0 and prof==1):
+                    niveau += 1
                 grillenv=copy.deepcopy(grille)
                 grillenv[:]=list(self.Result(grillenv, actionspossibles[i], self.numJoueur))
                 if prof==1: #Au choix final, si il y a plusieurs possibilités équivalentes, on choisir aléatoirement entre celles-ci
@@ -561,7 +563,7 @@ if __name__== '__main__':
             if(modeJeu==1):
                 niveau1=9
             elif(modeJeu==3):
-                niveau1=6
+                niveau1=5
             else:
                 niveau1=6
                 
@@ -577,7 +579,7 @@ if __name__== '__main__':
             if(modeJeu==1):
                 niveau2=9
             elif(modeJeu==3):
-                niveau2=6
+                niveau2=5
             else:
                 niveau2=6
                 
