@@ -28,7 +28,7 @@ class Joueur:
     def Joue(self,grille, modeJeu, niveau):#Début du tour de l'IA, appelé AlphaBetaSearch dans le TD
         grillenv=copy.deepcopy(grille)#On crée une nouvelle matrice pour ne pas modifier l'originale dans nos test à venir dans le min max
         score,  actionfinal, prof= self.MaxValue(grillenv, modeJeu, -5000, 5000, 1, niveau)#score et prof ne sont pas utilie ici mais le sont lorsque Min et Max s'appellent entre eux
-        print("Dernier jeton joué en : x=",actionfinal[0] + 1, "y=", actionfinal[1] + 1)
+        print("Dernier jeton joué en : x=",actionfinal[1] + 1, "y=", actionfinal[0] + 1)
         return self.Result(grille, actionfinal, self.numJoueur), actionfinal#On retourne la grille modifiée avec l'action finale
 
     def MinValue(self,grille, modeJeu, a, b, prof, niveau):#On considère ici que c'est l'adversaire qui joue, donc qu'il va choisir l'action la plus néfaste pour nous (qui à un score/utility la plus faible)
@@ -561,7 +561,7 @@ if __name__== '__main__':
             if(modeJeu==1):
                 niveau1=9
             elif(modeJeu==3):
-                niveau1=5
+                niveau1=6
             else:
                 niveau1=6
                 
@@ -577,7 +577,7 @@ if __name__== '__main__':
             if(modeJeu==1):
                 niveau2=9
             elif(modeJeu==3):
-                niveau2=5
+                niveau2=6
             else:
                 niveau2=6
                 
@@ -669,7 +669,7 @@ if __name__== '__main__':
             
         # méthode qui affiche le résultat de la partie
         def retry(number, pseudo):   
-            global J1, J2
+            global J1, J2, nombrejeton
             if (number ==1):
                 result = messagebox.askquestion("Tic-Tac-Toe/Connect4", pseudo + " wins.\n Want a remake ?", icon='warning', type='yesno')                      
             elif (number==2):
