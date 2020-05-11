@@ -73,12 +73,12 @@ class Joueur:
                 if prof==1: #Au choix final, si il y a plusieurs possibilités équivalentes, on choisir aléatoirement entre celles-ci
                     random = choice([1,2,3,4])
                 score, action, profcoupwin = self.MinValue(grillenv, modeJeu, a, b, prof+1, niveau)
-                """if prof==1:
+                if prof==1:
                     print("Coord :")
                     print(actionspossibles[i])
                     print("   Score : ", end='')
                     print(score)
-                """
+                
                 if (score>scoreMax or (score!=-5000 and score==scoreMax and  profcoupwin<profmin) or (score==-5000 and score==scoreMax and profcoupwin>profmin) or (score != -5000 and score==scoreMax and profcoupwin == profmin and prof == 1 and random==1)):#Si les choix sont équivalent, on en prend un au hasard (pour varier le jeu)
                     profmin = profcoupwin
                     scoreMax = score
